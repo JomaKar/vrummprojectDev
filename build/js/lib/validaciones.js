@@ -16,10 +16,6 @@ required: true
 "inputPassword2": {
 required: true
 },
-
-"inputcontacto": {
-required: true
-},
 "foto": {
 required: true
 },
@@ -46,11 +42,6 @@ required: "porfavor Ingresa una contraseña."
 "inputPassword2": {
 required: "porfavor confirmar tu contraseña."
 },
-"referido": {
-required: "es necesario llenar este campo."
-},
-
-
 "inputEdad": {
 required: "es necesario llenar este campo.",
 number: "Introduce edad válida."

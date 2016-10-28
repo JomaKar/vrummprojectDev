@@ -30,6 +30,10 @@ $(function(){
 		}, 300);
 	});
 
+	refInput.click(function(e){
+		$(e.target).next('label#referido-error').css({display: 'none'});
+	})
+
 
 	function recordFriends() {
 		friends = posFrList.find('li');

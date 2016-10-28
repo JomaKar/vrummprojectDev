@@ -100,6 +100,10 @@ select{
 }
 /*validaciones color*/
 
+#referido:focus #referido-error{
+  display: none;
+}
+
 #inputAlias-error, #inputEmail-error, #inputPassword-error, #inputPassword2-error, #referido-error, #inputEdad-error, #inputcontacto-error, #foto-error{
   color:red;
 }
