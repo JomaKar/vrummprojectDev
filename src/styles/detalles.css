@@ -1,0 +1,67 @@
+.navbar-inverse{
+	border-radius: 0px !important;
+	margin-bottom: 0px !important;
+}
+.infusuario{
+	/*background-image: url("paper.gif");*/
+	background-image: url('http://images.mazdamexico.com.mx/MusaWeb/mexico3/img/vlp/panels/M3H/exteriorView/RojoBrillante/Negro/img_vlp_360_Mazda3_5dr_Negro_Rojo_Brillante_01.jpg');
+	background-size: 100% auto;
+	height: 150px;
+	padding: 90px 0px 0 10px;
+	position: relative;
+	color: #fff;
+
+}
+.fotoUsuario{
+	max-width: 140px;
+	height: 100px;
+}
+
+.submenu2{
+	margin-top: 50px;
+}
+footer{
+	background: #1a1a1a;
+	color:#fff;
+	padding: 15px;
+}
+
+.imgcontdetalles{
+    margin:10px 0px;
+}
+
+
+.cintainformacion{
+	background: #000;
+	padding: 10px;
+
+}
+	
+
+/**footer**/
+footer ul li{
+	display: inline-block;
+	padding: 5px;
+}
+
+footer ul li a{
+	color:#fff;
+
+}
+footer ul li a:hover{
+	color:#fff;
+	text-decoration: none;
+}
+
+/*galeria de imagenes*/
+#image img{
+	margin:0 auto !important;
+	width: 100%;
+}
+
+
+.thumb{
+	float:left;
+	max-width:140px !important;
+	max-height: 112px !important;
+}

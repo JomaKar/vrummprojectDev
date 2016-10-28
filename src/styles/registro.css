@@ -1,0 +1,105 @@
+body {
+  padding-top: 40px;
+  padding-bottom: 40px;
+  background-color: #000;
+  font-family: 'Roboto', sans-serif;
+}
+
+.form-signin {
+  max-width: 400px;
+  padding: 15px;
+  margin: 0 auto;
+}
+.input-group-addon{
+  background-color: transparent;
+  border-color: #4c4c4c;
+  border-left: transparent;
+}
+
+.UsuarioNombreFijo{
+    margin-top: 1px;
+    background: transparent;
+    position: absolute;
+    z-index: 1;
+    padding: 5px 10px 5px 10px;
+    margin-left: 3px;
+}
+#inputAlias, #inputPassword{
+  position: relative;
+}
+.form-signin input[type="text"] {
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+  background: transparent;
+  border-color: #4c4c4c;
+  text-align: right;
+  color: #fff;
+  z-index: 10;
+}
+.form-signin input[type="email"] {
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+  background: transparent;
+  border-color: #4c4c4c;
+  text-align: right;
+  color: #fff;
+  z-index: 10;
+}
+
+.validarEmail, .validarEmail:hover{
+  background-color: #00bbc2;
+  border-color: #00bbc2;
+  color: #fff;
+}
+
+.form-signin input[type="password"] {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  background: transparent;
+  border-color: #4c4c4c;
+  text-align: right;
+  color: #fff;
+  z-index: 10;
+}
+
+#inputcontacto {
+  margin-bottom: 15px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  background: transparent;
+  border: 1px solid #4c4c4c;
+  position:relative;
+  width: 100%;
+  padding: 25px 0px 0px 12px;
+  color: #fff;
+  z-index: 10;
+}
+
+select{
+  margin: 15px 0px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+  background: transparent;
+  border-color: #4c4c4c;
+}
+.Genero{
+  margin-bottom: 15px;
+}
+
+
+.registrarbtn, .registrarbtn:hover{
+  background: #989898;
+  border-color:#989898;
+  margin: 40px 0 0 0;
+}
+
+
+#terminosreg{
+  color:#fff;
+  text-decoration: none;
+}
+/*validaciones color*/
+
+#inputAlias-error, #inputEmail-error, #inputPassword-error, #inputPassword2-error, #referido-error, #inputEdad-error, #inputcontacto-error, #foto-error{
+  color:red;
+}

@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/main.css">
+    <title></title>
+
+    <!-- Bootstrap -->
+    <link href="css/lib/bootstrap.min.css" rel="stylesheet">    
+  </head>
+
+
+  <body>
+
+    <nav class="navbar navbar-inverse myNavBar">
+      <div class="col-md-12 noPadding noMargin">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand"  href="#">VRUMM</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Inicio</a></li>
+            <li><a href="#">Descarga App</a></li>
+            <li><a href="pages/registro.html">Registro</a></li>
+            <li><a href="pages/login.html">Login</a></li>
+            <li><a href="#">Invitar Amigos a VRUMM</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+    <header class="p-header childHeight">
+      
+      <div class="p-headerBackImg backImg">    
+      </div>
+
+      <div class="p-profileInfoCont row-fluid childHeight noPadding noMargin">
+        <div class="p-profilePhoto noPadding col-xs-offset-1 col-xs-4 col-sm-2 backImg"></div> 
+        <div class="p-profileInfo col-xs-7">
+          <h4 class="profileName fullName">MiNombre Completo Men</h4>
+          <p class="profileAlias"><span>@</span>miAlias</p>
+        </div>  
+      </div>
+
+      <div class="p-profActDetCont row-fluid childHeight noMargin noPadding">
+        
+      </div>
+
+     
+    </header>
+
+    <nav class="navbar navbar-inverse col-md-12 submenu2">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Compartir Garage</a></li>
+            <li><a href="#submenu2">Filtrar</a></li>
+            <li><a href="#submenu3">Likes</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+    <div class="contenedorimagnes  col-md-12">
+      <a href="pages/detalles.html" >
+  	  <div class=" col-sm-6 col-md-4 imagenes">
+  	    <img  src="http://images.mazdamexico.com.mx/MusaWeb/mexico3/img/vlp/panels/M3H/gallery/large/m3h_fullsize8.jpg" class="img-responsive" border="0"/>
+  	  </div>
+      </a>
+      <a href="pages/detalles.html" >
+  	  <div class="col-sm-6 col-md-4 imagenes">
+  	    <img  src="http://images.mazdamexico.com.mx/MusaWeb/mexico3/img/vlp/panels/M3H/gallery/large/m3h_fullsize8.jpg" class="img-responsive" border="0"/>
+  	  </div>
+      </a>
+      <a href="pages/detalles.html" >
+  	  <div class="col-sm-6 col-md-4 imagenes">
+        <img  src="http://images.mazdamexico.com.mx/MusaWeb/mexico3/img/vlp/panels/M3H/gallery/large/m3h_fullsize8.jpg" class="img-responsive" border="0"/>
+  	  </div>
+      </a>
+      <a href="pages/detalles.html" >
+  	  <div class="col-sm-6 col-md-4 imagenes">
+        <img  src="http://images.mazdamexico.com.mx/MusaWeb/mexico3/img/vlp/panels/M3H/gallery/large/m3h_fullsize8.jpg" class="img-responsive" border="0"/>
+  	  </div>
+      </a>
+
+      <a href="pages/detalles.html" >
+      <div class="col-sm-6 col-md-4 imagenes">
+        <img  src="http://images.mazdamexico.com.mx/MusaWeb/mexico3/img/vlp/panels/M3H/gallery/large/m3h_fullsize8.jpg" class="img-responsive" border="0"/>
+      </div>
+      </a>
+
+      <a href="pages/detalles.html" >
+      <div class="col-sm-6 col-md-4 imagenes">
+        <img  src="http://images.mazdamexico.com.mx/MusaWeb/mexico3/img/vlp/panels/M3H/gallery/large/m3h_fullsize8.jpg" class="img-responsive" border="0"/>
+      </div>
+      </a>
+
+  	</div>
+	<footer class="col-xs-12 noPadding">
+    <center>
+      <ul>
+        <li><a> Inf Corporativa</a></li>
+        <li><a> Descarga</a></li>
+        <li><a> Ayuda</a></li>
+        <li><a> Contacto</a></li>
+      </ul>
+    </center>
+  </footer>
+    
+    <script src="js/lib/jquery-3.1.1.min.js"></script>
+    <script src="js/lib/bootstrap.js"></script>
+    <script src="js/lib/fingerprint2.min.js"></script>
+    <script type="text/javascript" src="js/bundle.js"></script>
+    <script type="text/javascript">
+      
+      $(function(){
+
+
+          if(sessionStorage.getItem('activeSession') === 'yes' && sessionStorage.getItem('deviceId') !== null)
+              {
+
+                       $(document).ready(function(){
+                        browFing();
+                      });
+
+                        var fakeU = 0, 
+                        devVal = 0,
+                        getDevAsk = 0,
+                        osValue = '',
+                        fakingUIDAsk = 0;
+
+
+
+                        function regDeviceLogin(val) {
+                          var values = {};
+                          var uuid = fakerUUID();
+                          var os = val;
+                          var keys = ['device', 'type', 'serie', 'os'];
+
+                          var device = {'device': uuid},
+                          type = {type: 'web'},
+                          serie = {serie: uuid}, 
+                          vals = [];
+
+
+                          if(os === undefined) {
+                              os = {'os': 'noAccesible'};
+                            }else{
+                              os = {'os': os};
+                              vals = [device, type, serie, os];
+                          }
+
+
+                          if(vals.length !== 0){
+                            keys.forEach(function(itm, i){
+                              values[itm] = vals[i][itm];
+                            });
+
+                            values = JSON.stringify(values);
+
+                            
+                            $.post('https://vrummapp.net/ws/v2/acceso/getdevice', 
+                              values
+                            ).then(function(res){  
+
+                              var id = res.mensaje.rs[0].id;
+                              console.log(id);
+
+                              getDevId(id)
+
+                              sessionValidation();
+
+                             }).fail(function(err){
+                                console.log(err);
+                            });
+
+                          }
+
+                        }
+
+                        function getDevId(argument) {
+                          if(getDevAsk ===  0){
+                            devVal = argument;
+                            getDevAsk++;
+                            return;
+                          }
+                            return devVal;
+                        }
+
+                        function getOSnum(val){
+                          
+                          osValue = val.value;
+                          regDeviceLogin(osValue);
+                          
+                        }
+
+
+                        function browFing(){
+                          new Fingerprint2().get(function(result, components){
+                            fakerUUID(result);
+                            getOSnum(components[0]);
+                          });
+                        }
+
+
+                        function fakerUUID(val){
+                          if(fakingUIDAsk ===  0){
+                            fakeU = val;
+                            fakingUIDAsk++;
+                            return;
+                          }
+                            return fakeU;
+                          
+                        }
+                              
+
+              }else{
+
+                window.location = 'pages/login.html';
+              
+              }
+
+
+          function sessionValidation(){
+
+                var actualDevId = getDevId();
+
+                actualDevId = actualDevId.toString();
+
+                var name = sessionStorage.getItem('currentUser');
+                var devIdStored = sessionStorage.getItem('deviceId');
+
+                devIdStored = devIdStored.toString();
+                
+
+                if(actualDevId === devIdStored){
+                    $('.fullName').html(name);
+                }else{
+                   window.location = '/pages/login.html';
+                }
+
+          }
+
+      });
+
+    </script>
+  </body>
+</html>
+

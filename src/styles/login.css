@@ -1,0 +1,48 @@
+.form-signin {
+  max-width: 380px;
+  padding: 15px;
+  margin: 0 auto;
+}
+
+.form-signin .form-signin-heading,
+.form-signin {
+  margin-bottom: 10px;
+}
+.form-signin {
+  font-weight: normal;
+}
+.form-signin .form-control {
+  position: relative;
+  height: auto;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  padding: 10px;
+  font-size: 16px;
+}
+.form-signin .form-control:focus {
+  z-index: 2;
+}
+
+.loginbtn, .loginbtn:hover{
+  background: #00bbc2;
+  border-color:#00bbc2;
+  margin: 40px 0 0 0;
+}
+
+.recuperapass{
+  text-align: center;
+
+}
+.recuperapass a{
+  color:#4c4c4c;
+
+}
+
+
+#inputEmail-error{
+  color:red;
+}
+#inputPassword-error{
+  color:red;
+}

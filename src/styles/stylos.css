@@ -1,0 +1,39 @@
+.navbar-inverse{
+	border-radius: 0px !important;
+	margin-bottom: 0px !important;
+}
+
+.submenu2{
+	margin-top: 50px;
+}
+
+footer{
+	background: #1a1a1a;
+	color:#fff;
+	padding: 15px;
+}
+
+.row{
+	margin:0px;
+}
+
+.imagenes{
+	background: silver;
+	height: auto;
+	border: 2px solid #369;
+}
+
+/**footer**/
+footer ul li{
+	display: inline-block;
+	padding: 5px;
+}
+
+footer ul li a{
+	color:#fff;
+
+}
+footer ul li a:hover{
+	color:#fff;
+	text-decoration: none;
+}

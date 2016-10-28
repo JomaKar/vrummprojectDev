@@ -1,0 +1,228 @@
+@import 'colors.styl'
+
+
+.sideImageCont
+	height 95vh
+	
+	.sideImage
+		width 100%
+		position relative
+		left 0
+
+#r-formContainer
+	left -10px
+
+
+.logoHeader
+	background-image url('../img/b_logo-l.png')
+	height 100px
+	margin-top 55px
+	background-repeat no-repeat
+	background-size 64%
+	background-position center
+
+.registrationTitle
+	.r-title
+		text-align center
+		color white
+	.r-subtitle
+		text-align justify
+		color $regTextColor
+		font-size 16px
+
+.goodText
+	color $greenOk
+	font-size 14px
+	font-weight 700
+
+.badText
+	color red
+	font-size 14px
+	font-weight 700
+
+#r-emailInputGrp	
+	#r-mailLeyend
+		text-align justify
+	
+	#r-mailLabel
+		position relative
+		bottom -33px
+		left 0
+		
+#r-nameInputGrp
+		
+	#r-nameLabel
+		position relative
+		bottom -33px
+		left 0			
+
+
+#r-btnGrpCont
+
+	#r-btnGrp
+		
+		.radioBtnBox
+			overflow hidden
+			
+			.manRadioBtn, .womanRadioBtn
+				position absolute
+				transform scale(9.5, 3.5)
+				left 45%
+				bottom 16px
+				opacity 0
+			
+			.genderM, .genderF
+				background-color transparent
+				border-color $regBrd
+				width 100%
+				height 44.9px
+				font-size 16px
+
+	#r-dateRow
+		#r-dateCont
+			#fechaNacimiento
+				border-color $regBrd
+				background-color transparent
+				cursor pointer
+				padding-right 35px !important
+			
+			.dateCaretDown
+				position absolute
+				right 9px
+				top 15px	
+
+.r-fileInputGrp
+	padding-left 15px
+	
+	#r-inpFileImgCont
+		width 100%
+		height 93px
+		border 1px solid $regBrd
+		
+		#image_file
+			width 100%
+			height 100%
+			cursor pointer
+			opacity 0
+
+			
+@css{
+	.manRadioBtn:hover + .genderM,
+	.womanRadioBtn:hover + .genderF,
+	.manRadioBtn:checked + .genderM,
+	.womanRadioBtn:checked + .genderF{
+		background-color: #00bbc2 !important;
+		color: #fff;
+	}
+}
+			
+.posibleFriendsList
+	width 100%
+	background-color $regPosListsBack
+	border 1px solid $regBrd
+	position absolute
+	z-index 10
+	
+
+	.posibleFriend
+		display flex
+		justify-content space-between
+		height 25px
+		cursor pointer
+		padding-bottom 5px
+		width 100%
+		
+		&:first-of-type
+			padding-top 5px
+		
+		.psFrAlias
+			color $psFrAlias
+		
+		.friendId
+			display none
+		
+		&:hover
+			background-color $regPosItmHv
+				
+		
+				
+			 	
+	
+			
+
+.logRedBtnCont
+	padding 15px
+	width 81vw
+	padding-bottom 25px
+	text-align center
+	color white
+	border 1px solid $regBrd
+	margin 0 auto
+	margin-top 30px
+		
+	.redirectLogBtn
+		background-color $regActiveBtn
+		width 94%
+		box-sizing padding-box
+		margin-top 13px
+		height 40px
+		
+
+@media(min-width 500px)
+	.logRedBtnCont
+		width 398px
+
+
+#appStoreFooter
+	height 170px
+	display flex
+	justify-content center
+	background-color $footStorBack
+	border-bottom 5px solid $regActiveBtn
+	margin-top 50px
+	
+
+	.storeFooterCont
+		width 80%
+		height 100%
+		text-align center
+		padding-top 20px
+		
+		.footStoreTxt
+			color #848484
+				
+		.storeLogos
+			width 84%	
+
+
+@media(min-width 600px)
+	#appStoreFooter
+	
+		.storeFooterCont
+			width 32%
+			
+			.storeLogos
+				width 91%
+	
+#vrummFooter
+	height 170px
+	justify-content space-between
+	padding 0 10%
+	display flex
+	
+	.vrummListFooter
+		list-style-type none
+		font-size 17px
+		margin-top 26px
+		
+		.footerMenuItm
+			color white
+			a
+				text-decoration none
+				color white
+	
+	.vrummBrandRegister
+		color $regBrd
+		margin-top 26px			
+
+	
