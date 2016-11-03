@@ -12,17 +12,19 @@ body {
 }
 .input-group-addon{
   background-color: transparent;
-  border-color: #4c4c4c;
+  border-color: #262626;
   border-left: transparent;
 }
 
 .UsuarioNombreFijo{
-    margin-top: 1px;
+    margin-top: 8px;
     background: transparent;
     position: absolute;
+    font-size: 12px;
     z-index: 1;
     padding: 5px 10px 5px 10px;
     margin-left: 3px;
+    color: #585858;
 }
 #inputAlias, #inputPassword{
   position: relative;
@@ -35,7 +37,7 @@ body {
 .form-signin input[type="text"] {
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
-  border-color: #4c4c4c;
+  border-color: #262626;
   text-align: right;
   color: #fff;
   z-index: 10;
@@ -43,22 +45,22 @@ body {
 .form-signin input[type="email"] {
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
-  border-color: #4c4c4c;
+  border-color: #262626;
   text-align: right;
   color: #fff;
   z-index: 10;
 }
 
 .validarEmail, .validarEmail:hover{
-  background-color: #00bbc2;
-  border-color: #00bbc2;
+  background-color: #35c9c7;
+  border-color: #35c9c7;
   color: #fff;
 }
 
 .form-signin input[type="password"] {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
-  border-color: #4c4c4c;
+  border-color: #262626;
   text-align: right;
   color: #fff;
   z-index: 10;
@@ -69,7 +71,7 @@ body {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
   background: transparent;
-  border: 1px solid #4c4c4c;
+  border: 1px solid #262626;
   position:relative;
   width: 100%;
   padding: 25px 0px 0px 12px;
@@ -82,17 +84,17 @@ select{
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
   background: transparent;
-  border-color: #4c4c4c;
+  border-color: #262626;
 }
 .Genero{
   margin-bottom: 15px;
 }
 
 
-.registrarbtn, .registrarbtn:hover{
-  background: #989898;
-  border-color:#989898;
-  margin: 40px 0 0 0;
+.registrarbtn, .registrarbtn:hover, .registrarbtn:active{
+  background: #999;
+  border-color:#999;
+  margin: 30px 0;
 }
 
 

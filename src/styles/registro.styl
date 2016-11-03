@@ -2,7 +2,6 @@
 
 
 .sideImageCont
-	height 95vh
 	
 	.sideImage
 		width 100%
@@ -16,19 +15,22 @@
 .logoHeader
 	background-image url('../img/b_logo-l.png')
 	height 100px
-	margin-top 55px
+	margin-top 8px
 	background-repeat no-repeat
-	background-size 64%
+	background-size 178px 58px
 	background-position center
 
 .registrationTitle
 	.r-title
 		text-align center
 		color white
+		font-size 18px
+		margin-top 0
 	.r-subtitle
 		text-align justify
 		color $regTextColor
-		font-size 16px
+		margin-bottom 6.5px
+		font-size 14px
 
 .goodText
 	color $greenOk
@@ -57,6 +59,39 @@
 		bottom -33px
 		left 0			
 
+
+.posibleFriendsList
+	background-color $regPosListsBack
+	border 1px solid $regBrd
+	position absolute
+	z-index 20
+	
+
+	.posibleFriend
+		display flex
+		justify-content space-between
+		height 25px
+		cursor pointer
+		padding-bottom 2.5px
+		padding-top 2.5px
+		width 380px
+		
+		&:first-of-type
+			padding-top 5px
+			border-bottom 1px solid $regBrd
+		
+		.psFrAlias
+			color $psFrAlias
+		
+		.friendId
+			display none
+		
+		&:hover
+			background-color $regPosItmHv
+				
+.errorFriendNick
+	color red
+	display none		
 
 #r-btnGrpCont
 
@@ -97,7 +132,7 @@
 	
 	#r-inpFileImgCont
 		width 100%
-		height 93px
+		height 88px
 		border 1px solid $regBrd
 		
 		#image_file
@@ -117,43 +152,13 @@
 	}
 }
 			
-.posibleFriendsList
-	background-color $regPosListsBack
-	border 1px solid $regBrd
-	position absolute
-	z-index 20
-	
-
-	.posibleFriend
-		display flex
-		justify-content space-between
-		height 25px
-		cursor pointer
-		padding-bottom 2.5px
-		padding-top 2.5px
-		width 380px
-		
-		&:first-of-type
-			padding-top 5px
-			border-bottom 1px solid $regBrd
-		
-		.psFrAlias
-			color $psFrAlias
-		
-		.friendId
-			display none
-		
-		&:hover
-			background-color $regPosItmHv
-				
-.errorFriendNick
-	color red
-	display none		
 				
 #inputcontacto
-	height 93px		 	
+	height 88px		 	
 	
-			
+.termsConditions
+	color $regTextColor
+	font-size 12px		
 
 .logRedBtnCont
 	padding 15px
@@ -161,9 +166,12 @@
 	padding-bottom 25px
 	text-align center
 	color white
-	border 1px solid $regBrd
+	border 1px solid $redirectBox
 	margin 0 auto
-	margin-top 30px
+	
+	.askLog
+		font-size 18px
+		color white
 		
 	.redirectLogBtn
 		background-color $regActiveBtn
@@ -179,7 +187,7 @@
 
 
 #appStoreFooter
-	height 170px
+	height 185px
 	display flex
 	justify-content center
 	background-color $footStorBack
@@ -194,10 +202,11 @@
 		padding-top 20px
 		
 		.footStoreTxt
-			color #848484
+			color #737373
+			font-size 20px
 				
 		.storeLogos
-			width 84%	
+			width 275px	
 
 
 @media(min-width 600px)
@@ -205,12 +214,9 @@
 	
 		.storeFooterCont
 			width 32%
-			
-			.storeLogos
-				width 91%
 	
 #vrummFooter
-	height 170px
+	height 195px
 	justify-content space-between
 	padding 0 10%
 	display flex
@@ -225,9 +231,11 @@
 			a
 				text-decoration none
 				color white
+				font-size 16px
 	
 	.vrummBrandRegister
-		color $regBrd
-		margin-top 26px			
+		color $regTextColor
+		margin-top 26px
+		font-size 14px			
 
 	

@@ -89,7 +89,7 @@ var inputsNoPad = [passCont, inputAPtn, passConfCont, inputMat];
 
 			inputsNoPad.forEach(function(itm, indx){
 				$.map(classPos975, function(item, idx){
-					(indx <= 1) ? itm.removeClass(item).addClass('noPadding butVertHalf') : itm.removeClass(item).addClass('noPadding');
+					(indx <= 1) ? itm.removeClass(item).css({'padding': '0 0 6.5px 0'}) : itm.removeClass(item).css({'padding': '6.5px 0 0 0'});
 				});
 			});
 
@@ -102,43 +102,29 @@ var inputsNoPad = [passCont, inputAPtn, passConfCont, inputMat];
 			if(wWidth < 880){
 
 				sideImg.css({
-					width: '397',
-					//height: '526.7',
-					left: '-6%',
-					top: '11%'
+					width: '387',
+					left: '-6%'
 				});
 
+			}else{
+				sideImg.css({
+					width: '459',
+					left: '0'
+				});
 			}
-			/*else if(wWidth > 880 && wWidth < 949){
-
-				sideImg.css({
-					width: '101%',
-					left: '-4%',
-					top: '9%'
-				});
-
-			}else if(wWidth > 949 && wWidth < 975){
-
-				sideImg.css({
-					width: '97%',
-					left: '-2%',
-					top: '7%'
-				});
-			}*/
 			
 
-		}else if(wWidth > 975){
+		}else if(wWidth >= 975){
 			
 			inputsNoPad.forEach(function(itm, idx){
 				$.map(classPos975, function(item, idx){
-					itm.removeClass('noPadding butVertHalf').addClass(item);
+					itm.addClass(item).css({'padding-top': 0, 'padding-bottom': 0});
 				});
 			});
-
 			fileInputGrp.removeClass('NoleftP halfR butVertHalf').css({
 				'padding-top': '7.5px',
 				'padding-bottom': '7.5px'
-			}).addClass('NorightP');
+			}).addClass('NorightP halfL');
 
 			txtACont.css({
 				height: 'auto'
@@ -148,55 +134,37 @@ var inputsNoPad = [passCont, inputAPtn, passConfCont, inputMat];
 				'text-align': 'center'
 			})
 
-
-			if(wWidth > 975 && wWidth < 1188){
-
-				sideImg.css({
-					width: '459.19',
-					//height: '607.75',
-					left: '0',
-					top: '4%'
-				});
-
-			/*}else if(wWidth > 1015 && wWidth < 1140){
-
-				sideImg.css({
-					width: '88%'
+			sideImg.css({
+					width: '459',
+					left: '0'
 				});
 
 
-			}else if(wWidth > 1140 && wWidth < 1170){
+			if(wWidth > 1070 && wWidth < 1278){
 
 				sideImg.css({
-					width: '84%'
-				});
-*/
-			//}else if(wWidth > 1170 && wWidth < 1210){
-			}else if(wWidth > 1188){
-
-				sideImg.css({
-					//height: '644.7',
-					width: '487.1'
+					width: '535',
 				});
 
+				sideImageCont.removeClass('col-lg-5 col-lg-offset-1');
 
-				if(wWidth < 1368){
+			}else if(wWidth > 1278){
+
+				sideImageCont.addClass('col-lg-5 col-lg-offset-1')
+							 .removeClass('col-lg-offset-2 col-lg-4');
+
+
+
+				if(wWidth < 1472){
 					sideImageCont.removeClass('col-lg-offset-2 col-lg-4')
 					.addClass('col-lg-offset-1 col-lg-5');
-				}else if(wWidth > 1368){
+				}else if(wWidth > 1472){
 					sideImageCont.removeClass('col-lg-offset-1 col-lg-5')
 					.addClass('col-lg-offset-2 col-lg-4')
 				}
 
 
 			}
-				/*else{
-
-					sideImg.css({
-						width: 515
-					});
-
-				}*/
 
 		}
 	}

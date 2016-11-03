@@ -61,6 +61,10 @@ $(function(){
 		
 			var nextEl = $('p#mailValText');
 			nextEl.remove();
+			var posMail = $(this).val();
+			if(posMail.length > 0){
+				mailValidator(posMail);
+			}
 
 		}).blur(function() {
 
@@ -84,6 +88,7 @@ $(function(){
 				).then(function(res){ 
 
 					if(res.estado === 2){
+						console.log(res.mensaje);
 						mailExist(res);  
 					}else if(res.estado === 1){
 						newMail(res);
@@ -103,19 +108,23 @@ $(function(){
 
 			if (val !== 'noOne' && flag === 'l') {
 				var greenLight = "<p id='mailValText' class='goodText'>"+ posMail +" es un buen mail</p>";
-
+				sessionStorage.setItem('mailGood', 'yes');
+				
+				removeLast()
 				el.after(greenLight);
 
 			} else if(val === 'noOne'){
 
 				var wrongOne = "<p id='mailValText' class='badText'>"+ posMail +" es un mail incorrecto</p>";
-				el.after(wrongOne);
+				var nextEl = $('p#mailValText');
+				removeLast()
 				sessionStorage.setItem('mailGood', 'no');
 
 			}else if(val !== 'noOne' && flag === 'r'){
 
 				sessionStorage.setItem('mailGood', 'no');
 				var existOne = "<p id='mailValText' class='badText'>"+ posMail +" es un mail que ya existe</p>";
+				removeLast()
 				el.after(existOne);
 			}
 
@@ -127,12 +136,20 @@ $(function(){
 			if (flag === 'r') {
 				var greenLight = "<p id='mailValText' class='goodText'>"+ posMail +" es un buen mail</p>";
 				sessionStorage.setItem('mailGood', 'yes');
+				removeLast()
 				el.after(greenLight);
 
 			}else if(flag === 'l'){
 				var existOne = "<p id='mailValText' class='badText'>"+ posMail +" es un mail que no existe aún</p>";
+				sessionStorage.setItem('mailGood', 'no');
+				removeLast()
 				el.after(existOne);
 			}
+		}
+
+		function removeLast() {
+			var nextEl = $('p#mailValText');
+			nextEl.remove();
 		}
 
 		return this;
@@ -141,6 +158,7 @@ $(function(){
 	nickInput.validateMail(nickInput, 'r');
 
 	loginMailInput.validateMail(loginMailInput, 'l');
+
 
 
 

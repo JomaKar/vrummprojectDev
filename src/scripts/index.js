@@ -44,7 +44,7 @@ $(function(){
 
 			 if(storedDeviceId !== null && storedDeviceId !== undefined)
 			 {
-			 	currentDeviceId = sessionStorage.getItem('deviceId');
+			 	currentDeviceId = storedDeviceId;
 
 			 }else{
 			 	con('el device id no fue el mismo')
@@ -102,7 +102,7 @@ $(function(){
 			$.post('https://vrummapp.net/ws/v2/acceso/getdevice', 
 				values
 			).then(function(res){  
-
+				//con(res);
 				if(res.estado === 1){
 
 					var id = res.mensaje.rs[0].id;
@@ -120,8 +120,9 @@ $(function(){
 
 	function deviceId(argument) {
 		if(getDeviceAsk ===  0){
-			deviceIdval = argument;
+			deviceIdval = argument.toString();
 			getDeviceAsk++;
+			sessionStorage.setItem('deviceId', deviceIdval);
 			return;
 		}
 			return deviceIdval;
@@ -172,8 +173,6 @@ $(function(){
 
 		return photoToReturn;
 	}
-
-	//console.log('falta terminar de recabar la información del formulario así como hacer las validaciones a partir de los endpoints')
 
 	function getGeolocalization(){
 		var loc = sessionStorage.getItem('location');
@@ -335,11 +334,8 @@ $(function(){
 			console.log(res)
 
 			var currentUser = user.val().toString();
-			var device = deviceId();
-			device = device.toString();
 
 			sessionStorage.setItem('currentUser', currentUser);
-			sessionStorage.setItem('deviceId', device);
 			sessionStorage.setItem('activeSession', 'yes');
 
 			window.location = 'perfil.html';

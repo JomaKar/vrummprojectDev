@@ -16,9 +16,6 @@ required: true
 "inputPassword2": {
 required: true
 },
-"foto": {
-required: true
-},
 "cpostal": {
 required: true,
 number:true,
@@ -49,9 +46,6 @@ number: "Introduce edad válida."
 },
 "inputcontacto": {
 required: "es necesario llenar este campo."
-},
-"foto": {
-required: "es necesario agregar imagen."
 },
 "cpostal": {
 required: "Introduce tu código postal.",

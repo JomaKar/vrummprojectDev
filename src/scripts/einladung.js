@@ -85,12 +85,10 @@ $(function(){
 
 			var data = JSON.stringify({'abuscar': val});
 
-			con(data);
-
 			$.post('https://vrummapp.net/ws/v2/usuario/buscarqtinv', 
 				data
 			).then(function(res){
-				con(res);
+				//con(res);
 				displayCandidates(res);  
 
 			}).fail(function(err){
@@ -120,6 +118,13 @@ $(function(){
 
 	function displayCandidates(argument) {
 		var candidates = [];
+		var itms = posFrList.children('li');
+		var displayedAlready = [];
+
+		$.map(itms, function(value, key){
+			var id = $(value).find('span.friendId').html();
+			displayedAlready.push(id);
+		});
 
 		if(argument !== 'noOne'){
 			
@@ -128,12 +133,25 @@ $(function(){
 			candidates.forEach(function(itm, idx){
 				var listItm = '<li class="posibleFriend regInputs"><span class="psFrName">'
 				+ itm.full_name +'</span><span class="friendId">'+itm.id+'</span><span class="psFrAlias"> '+ itm.alias +' </span> </li>';
+				
 				if($('li.noFriends')){
 					$('li.noFriends').remove();
 				}
 
+				/*console.log("displayedAlready when necessary", displayedAlready);*/
+
 				if(itm.id.length > 0){
-					posFrList.append(listItm);
+					var idNum = parseInt(itm.id);
+					var idStr = itm.id.toString();
+					var mayBeNum = displayedAlready.indexOf(idNum);
+					var mayBeStr = displayedAlready.indexOf(idStr);
+					/*console.log("item id from server", itm.id, "like num", idNum, "like str", idStr);
+					console.log("exist like num", mayBeNum, "exist like str", mayBeStr);*/
+
+					if(mayBeStr === -1 && mayBeNum === -1){
+						posFrList.append(listItm);
+					}
+
 				}
 
 			});
