@@ -2,59 +2,74 @@ $(function(){
 	var refInput = $('input#referido'),
 	posFrList = $('ul.posibleFriendsList'), 
 	togglingFrList = 0, 
-	friends;
+	friends,
+	noFriendMsg = $('div.errorFriendNick');
+
+	function killLabel(){
+		refInput.next('label#referido-error').css({display: 'none'});
+	}
 
 	$(document).ready(function(){
-		posFrList.css({ height: 0, border: 0});
+
+		posFrList.css({ height: 0, border: 0, width: 380});
 	});
 
 	refInput.on('keyup', function(e){
+
 		var whoInvite = $(this).val();
-		invitationSender(whoInvite);
+
+		if(e.which === 8){
+			setTimeout(killLabel, 5);
+		}
+
+		if(whoInvite.length > 0){
+			invitationSender(whoInvite);
+		}
+
 	});
 
 	refInput.focus(function() {
+
+		var txt = $(this).val();
+
+		if(txt.length > 0){
+			invitationSender(txt);
+		}else{
+			cleanFriendList();
+		}
+
+		setTimeout(killLabel, 5);
+
+		noFriendMsg.css({display: 'none'});
+
 	    var itms = posFrList.children('li').length;
 	  
 	    posFrList.animate({
-				height: itms *  25,
-				border: '1px solid #4c4c4c'
-			}, 200);
-	    recordFriends();
+				height: itms *  25
+			}, 20);
+
+	    //recordFriends();
 
 	}).blur(function() {
+		setTimeout(killLabel, 5);
 
-	    posFrList.animate({
-			height: 0,
-			border: 0
-		}, 300);
+		setTimeout(function(){
+			posFrList.animate({
+				height: 0
+			}, 20);
+		}, 190);
+
 	});
 
-	refInput.click(function(e){
-		$(e.target).next('label#referido-error').css({display: 'none'});
+
+	$(document).on('click', 'li.posibleFriend', function(){
+		var id = $(this).children('span.friendId').html();
+		var nick = $(this).children('span.psFrAlias').html();
+		
+		if(nick !== undefined){
+			refInput.val(nick);
+		}
 	})
-
-
-	function recordFriends() {
-		friends = posFrList.find('li');
-
-		friends.one('click', function(){
-			var id = $(this).children('span.friendId').html();
-			var nick = $(this).children('span.psFrAlias').html();
-			
-			if(nick !== undefined){
-				refInput.val(nick);
-				
-				if(id !== undefined){
-					id = id.toString();					
-					sessionStorage.setItem("id", id);
-				}
-			}
-
-			//here should bind the id to send  it to /usuario/registro
-		});
-
-	}
 
 	function con(val){
 		console.log(val);
@@ -62,16 +77,45 @@ $(function(){
 
 
 	function invitationSender(val){
-		var data = JSON.stringify({'abuscar': val});
-		$.post('https://vrummapp.net/ws/v2/usuario/buscarqtinv', 
-			data
-		).then(function(res){ 
-			displayCandidates(res);  
-		}).fail(function(err){
+		cleanFriendList();
+		
+		if(val.length > 0){
 
-	  		displayCandidates('noOne');
+			val = val.replace(/ /g, "");
 
-		});		
+			var data = JSON.stringify({'abuscar': val});
+
+			con(data);
+
+			$.post('https://vrummapp.net/ws/v2/usuario/buscarqtinv', 
+				data
+			).then(function(res){
+				con(res);
+				displayCandidates(res);  
+
+			}).fail(function(err){
+				//con(err);
+		  		displayCandidates('noOne');
+
+			});	
+		}
+
+	}
+
+	function cleanFriendList() {
+		var listItm = '<li class="posibleFriend noFriends regInputs"><span class="psFrName"></span><span class="psFrAlias">Nadie con ese nombre </span> </li>';
+
+
+		$('li.posibleFriend').each(function(idx, el){
+			if(idx > 0){
+				el.remove();
+			}
+		});
+
+		if(refInput.val().length > 0){
+			posFrList.append(listItm);
+		}
+
 	}
 
 	function displayCandidates(argument) {
@@ -80,38 +124,27 @@ $(function(){
 		if(argument !== 'noOne'){
 			
 			candidates = argument.mensaje.rs;
+
 			candidates.forEach(function(itm, idx){
 				var listItm = '<li class="posibleFriend regInputs"><span class="psFrName">'
 				+ itm.full_name +'</span><span class="friendId">'+itm.id+'</span><span class="psFrAlias"> '+ itm.alias +' </span> </li>';
 				if($('li.noFriends')){
 					$('li.noFriends').remove();
 				}
-				posFrList.append(listItm);
 
-			});
-
-		}else{
-
-			var listItm = '<li class="posibleFriend noFriends regInputs"><span class="psFrName"></span><span class="psFrAlias"> Nadie con ese nombre </span> </li>';
-
-
-			$('li.posibleFriend').each(function(idx, el){
-				if(idx > 0){
-					el.remove();
+				if(itm.id.length > 0){
+					posFrList.append(listItm);
 				}
-			});
 
-			if(refInput.val().length > 0){
-				posFrList.append(listItm);
-			}
+			});
 
 		}
-		recordFriends();
+
+		//recordFriends();
 		var itms = posFrList.children('li').length;
 		posFrList.animate({
-			height: itms *  25,
-			border: '1px solid #4c4c4c'
-		}, 300);	
+			height: itms *  25
+		}, 20);	
 
 	}
 

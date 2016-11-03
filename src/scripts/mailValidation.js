@@ -2,6 +2,7 @@ $(function(){
 
 
 	var nickInput = $('input#inputEmail'),
+	loginMailInput = $('#l-email'),
 	passInput = $('input#inputPassword'),
 	passConfInput = $('input#inputPassword2');
 
@@ -12,34 +13,135 @@ $(function(){
 		fingerprint();
 	});
 
-	passConfInput.keyup(function(){
-		var nextEl = $('p#passConfText');
-		nextEl.remove();
-	})
+	$.fn.validatePass = function(){
+		$(this).keyup(function(){
+			var nextEl = $('p#passConfText');
+			nextEl.remove();
+		})
 
-	passConfInput.focus(function(){
+		$(this).focus(function(){
 
-		var nextEl = $('p#passConfText');
-		nextEl.remove();
+			var nextEl = $('p#passConfText');
+			nextEl.remove();
 
-	}).blur(function() {
+		}).blur(function() {
 
-		var confVal = $(this).val();
+			var confVal = $(this).val();
+			
+		    passConfirmation(confVal);
+		});
+
+		function passConfirmation(val){
+			var pass = passInput.val();
+
+			if(pass.length > 0 && pass !== val){
+
+				var badConf = "<p id='passConfText' class='badText'>Las contraseñas no coinciden</p>";
+
+				passConfInput.after(badConf);	
+
+			}
+		}
+
+
+		return this;
+	
+	}
+
+	passConfInput.validatePass();
+
+
+	$.fn.validateMail = function(el, flag){
+		$(this).keyup(function () {
+			var nextEl = $('p#mailValText');
+			nextEl.remove();
+		})
+
+		$(this).focus(function(){
 		
-	    passConfirmation(confVal);
-	});
+			var nextEl = $('p#mailValText');
+			nextEl.remove();
 
-	function passConfirmation(val){
-		var pass = passInput.val();
+		}).blur(function() {
 
-		if(pass.length > 0 && pass !== val){
+			var posMail = $(this).val();
+			mailValidator(posMail);
+		    
+		});
 
-			var badConf = "<p id='passConfText' class='badText'>Las contraseñas no coinciden</p>";
 
-			passConfInput.after(badConf);	
+		function mailValidator(val){
+			if(val.length > 0){
+
+				var uuid = fakeUUID();
+				var arr = [uuid.slice(0, 8), uuid.slice(8, 12), 
+				uuid.slice(12, 16), uuid.slice(16, 20), uuid.slice(20)];
+				var uuidString = arr.join('-');
+				var data = JSON.stringify({'email': val, 'device': uuidString});
+
+				$.post('https://vrummapp.net/ws/v2/usuario/validacorreo', 
+					data
+				).then(function(res){ 
+
+					if(res.estado === 2){
+						mailExist(res);  
+					}else if(res.estado === 1){
+						newMail(res);
+					}
+
+				}).fail(function(err){
+
+			  		mailExist('noOne');
+
+				});	
+			}	
+		}
+
+
+		function mailExist(val) {
+			var posMail = el.val();
+
+			if (val !== 'noOne' && flag === 'l') {
+				var greenLight = "<p id='mailValText' class='goodText'>"+ posMail +" es un buen mail</p>";
+
+				el.after(greenLight);
+
+			} else if(val === 'noOne'){
+
+				var wrongOne = "<p id='mailValText' class='badText'>"+ posMail +" es un mail incorrecto</p>";
+				el.after(wrongOne);
+				sessionStorage.setItem('mailGood', 'no');
+
+			}else if(val !== 'noOne' && flag === 'r'){
+
+				sessionStorage.setItem('mailGood', 'no');
+				var existOne = "<p id='mailValText' class='badText'>"+ posMail +" es un mail que ya existe</p>";
+				el.after(existOne);
+			}
 
 		}
+
+		function newMail(val) {
+			var posMail = el.val();
+
+			if (flag === 'r') {
+				var greenLight = "<p id='mailValText' class='goodText'>"+ posMail +" es un buen mail</p>";
+				sessionStorage.setItem('mailGood', 'yes');
+				el.after(greenLight);
+
+			}else if(flag === 'l'){
+				var existOne = "<p id='mailValText' class='badText'>"+ posMail +" es un mail que no existe aún</p>";
+				el.after(existOne);
+			}
+		}
+
+		return this;
 	}
+
+	nickInput.validateMail(nickInput, 'r');
+
+	loginMailInput.validateMail(loginMailInput, 'l');
+
 
 
 	function fingerprint(){
@@ -57,67 +159,6 @@ $(function(){
 			return camaleonUUID;
 		
 	}
-
-	nickInput.keyup(function () {
-		var nextEl = $('p#mailValText');
-		nextEl.remove();
-	})
-
-	nickInput.focus(function(){
-		
-		var nextEl = $('p#mailValText');
-		nextEl.remove();
-
-	}).blur(function() {
-
-		var posMail = $(this).val();
-		mailValidator(posMail);
-	    
-	});
-
-
-	function mailValidator(val){
-		if(val.length > 0){
-
-			var uuid = fakeUUID();
-			var arr = [uuid.slice(0, 8), uuid.slice(8, 12), 
-			uuid.slice(12, 16), uuid.slice(16, 20), uuid.slice(20)];
-			var uuidString = arr.join('-');
-			var data = JSON.stringify({'email': val, 'device': uuidString});
-
-			$.post('https://vrummapp.net/ws/v2/usuario/validacorreo', 
-				data
-			).then(function(res){ 
-
-				mailExist(res);  
-
-			}).fail(function(err){
-				con(err)
-		  		mailExist('noOne');
-
-			});	
-		}	
-	}
-
-
-	function mailExist(val) {
-		var posMail = nickInput.val();
-
-		if (val !== 'noOne') {
-			var greenLight = "<p id='mailValText' class='goodText'>"+ posMail +" es un buen mail</p>";
-
-			nickInput.after(greenLight);
-
-		} else {
-
-			var wrongOne = "<p id='mailValText' class='badText'>"+ posMail +" es un mail incorrecto o ya existe</p>";
-			nickInput.after(wrongOne);
-
-		}
-	}
-
-
-
 
 
 	function con(val){

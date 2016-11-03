@@ -17,6 +17,77 @@ footer{
 	margin:0px;
 }
 
+#fechaNacimiento, #inputPassword2, #inputPaterno, #inputMaterno{
+  text-align: right;
+}
+
+
+input#fechaNacimiento::-webkit-input-placeholder{
+	text-align: left;
+	padding-left: 10px;
+}
+
+input#fechaNacimiento::-moz-placeholder{
+	text-align: left;
+	padding-left: 10px;
+}
+
+input#fechaNacimiento:-moz-placeholder{
+	text-align: left;
+	padding-left: 10px;
+}
+
+input#fechaNacimiento:-ms-input-placeholder{
+	text-align: left;
+	padding-left: 10px;
+}
+
+input#inputPassword2::-webkit-input-placeholder{
+	text-align: left;
+	padding-left: 5px;
+}
+
+input#inputPassword2::-moz-placeholder{
+	text-align: left;
+	padding-left: 5px;
+}
+
+input#inputPassword2:-ms-input-placeholder{
+	text-align: left;
+	padding-left: 5px;
+}
+
+
+input#inputPaterno::-webkit-input-placeholder{
+	text-align: left;
+	padding-left: 5px;
+}
+
+input#inputPaterno::-moz-placeholder{
+	text-align: left;
+	padding-left: 5px;
+}
+
+input#inputPaterno:-ms-input-placeholder{
+	text-align: left;
+	padding-left: 5px;
+}
+
+input#inputMaterno::-webkit-input-placeholder{
+	text-align: left;
+	padding-left: 5px;
+}
+
+input#inputMaterno::-moz-placeholder{
+	text-align: left;
+	padding-left: 5px;
+}
+
+input#inputMaterno:-ms-input-placeholder{
+	text-align: left;
+	padding-left: 5px;
+}
+
 .imagenes{
 	background: silver;
 	height: auto;

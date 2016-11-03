@@ -1,264 +1,121 @@
 <!DOCTYPE html>
-<html>
+<html >
+  
   <head>
+
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="css/main.css">
+    
     <title></title>
 
     <!-- Bootstrap -->
-    <link href="css/lib/bootstrap.min.css" rel="stylesheet">    
+    <link href="css/lib/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/lib/bootstrap-datetimepicker.css">    
   </head>
+  
 
-
-  <body>
-
-    <nav class="navbar navbar-inverse myNavBar">
-      <div class="col-md-12 noPadding noMargin">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand"  href="#">VRUMM</a>
-        </div>
-        <div id="navbar" class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Inicio</a></li>
-            <li><a href="#">Descarga App</a></li>
-            <li><a href="pages/registro.html">Registro</a></li>
-            <li><a href="pages/login.html">Login</a></li>
-            <li><a href="#">Invitar Amigos a VRUMM</a></li>
-          </ul>
-        </div><!--/.nav-collapse -->
-      </div>
-    </nav>
-
-    <header class="p-header childHeight">
-      
-      <div class="p-headerBackImg backImg">    
-      </div>
-
-      <div class="p-profileInfoCont row-fluid childHeight noPadding noMargin">
-        <div class="p-profilePhoto noPadding col-xs-offset-1 col-xs-4 col-sm-2 backImg"></div> 
-        <div class="p-profileInfo col-xs-7">
-          <h4 class="profileName fullName">MiNombre Completo Men</h4>
-          <p class="profileAlias"><span>@</span>miAlias</p>
-        </div>  
-      </div>
-
-      <div class="p-profActDetCont row-fluid childHeight noMargin noPadding">
+  <body class="noPadding">
+    <div class="container-fluid noPadding">
+      <div class="row-fluid noPadding childHeight">
         
-      </div>
-
-     
-    </header>
-
-    <nav class="navbar navbar-inverse col-md-12 submenu2">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
+        <div class="col-sm-6 hidden-xs col-xs-0 noPadding sideImageCont">
+          
+          <img class="sideImage" src="img/origin.png">
+        
         </div>
-        <div id="navbar" class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Compartir Garage</a></li>
-            <li><a href="#submenu2">Filtrar</a></li>
-            <li><a href="#submenu3">Likes</a></li>
-          </ul>
-        </div><!--/.nav-collapse -->
-      </div>
-    </nav>
-    <div class="contenedorimagnes  col-md-12">
-      <a href="pages/detalles.html" >
-  	  <div class=" col-sm-6 col-md-4 imagenes">
-  	    <img  src="http://images.mazdamexico.com.mx/MusaWeb/mexico3/img/vlp/panels/M3H/gallery/large/m3h_fullsize8.jpg" class="img-responsive" border="0"/>
-  	  </div>
-      </a>
-      <a href="pages/detalles.html" >
-  	  <div class="col-sm-6 col-md-4 imagenes">
-  	    <img  src="http://images.mazdamexico.com.mx/MusaWeb/mexico3/img/vlp/panels/M3H/gallery/large/m3h_fullsize8.jpg" class="img-responsive" border="0"/>
-  	  </div>
-      </a>
-      <a href="pages/detalles.html" >
-  	  <div class="col-sm-6 col-md-4 imagenes">
-        <img  src="http://images.mazdamexico.com.mx/MusaWeb/mexico3/img/vlp/panels/M3H/gallery/large/m3h_fullsize8.jpg" class="img-responsive" border="0"/>
-  	  </div>
-      </a>
-      <a href="pages/detalles.html" >
-  	  <div class="col-sm-6 col-md-4 imagenes">
-        <img  src="http://images.mazdamexico.com.mx/MusaWeb/mexico3/img/vlp/panels/M3H/gallery/large/m3h_fullsize8.jpg" class="img-responsive" border="0"/>
-  	  </div>
-      </a>
+        
+        <div id="r-formContainer" class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-0 noPadding">
+          
+          <div class="row-fluid noPadding childHeight butVerHalf">
+            
+            <div class="col-xs-10 col-xs-offset-1 noPadding logoHeader backImg"></div>
 
-      <a href="pages/detalles.html" >
-      <div class="col-sm-6 col-md-4 imagenes">
-        <img  src="http://images.mazdamexico.com.mx/MusaWeb/mexico3/img/vlp/panels/M3H/gallery/large/m3h_fullsize8.jpg" class="img-responsive" border="0"/>
-      </div>
-      </a>
+          </div>
 
-      <a href="pages/detalles.html" >
-      <div class="col-sm-6 col-md-4 imagenes">
-        <img  src="http://images.mazdamexico.com.mx/MusaWeb/mexico3/img/vlp/panels/M3H/gallery/large/m3h_fullsize8.jpg" class="img-responsive" border="0"/>
-      </div>
-      </a>
+          <form class="form-signin noPadding" id="login">
+            
+            <div class="form-control myFormContr noPadding butVertHalf registrationTitle">
+              <h5 class="r-subtitle">
+                <span id="normalText">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Praesentium unde, voluptatum eligendi quae pariatur quo eos aut </span>
+                <span id="recoverPassTxt">Ingresa el e-mail con el que te registraste y te enviaremos una liga para recuperar tu contraseña</span>
+              </h5>
 
-  	</div>
-	<footer class="col-xs-12 noPadding">
-    <center>
-      <ul>
-        <li><a> Inf Corporativa</a></li>
-        <li><a> Descarga</a></li>
-        <li><a> Ayuda</a></li>
-        <li><a> Contacto</a></li>
-      </ul>
-    </center>
-  </footer>
-    
-    <script src="js/lib/jquery-3.1.1.min.js"></script>
-    <script src="js/lib/bootstrap.js"></script>
-    <script src="js/lib/fingerprint2.min.js"></script>
-    <script type="text/javascript" src="js/bundle.js"></script>
-    <script type="text/javascript">
-      
-      $(function(){
+            </div>
 
 
-          if(sessionStorage.getItem('activeSession') === 'yes' && sessionStorage.getItem('deviceId') !== null)
-              {
+            <div id="r-emailInputGrp" class="form-control myFormContr noPadding butVertHalf">
 
-                       $(document).ready(function(){
-                        browFing();
-                      });
-
-                        var fakeU = 0, 
-                        devVal = 0,
-                        getDevAsk = 0,
-                        osValue = '',
-                        fakingUIDAsk = 0;
+              <span id="l-mailLabel" class="UsuarioNombreFijo">E-mail*</span>
+              <input type="email" id="l-email" name="email" class="form-control"  required >
+            </div>
 
 
-
-                        function regDeviceLogin(val) {
-                          var values = {};
-                          var uuid = fakerUUID();
-                          var os = val;
-                          var keys = ['device', 'type', 'serie', 'os'];
-
-                          var device = {'device': uuid},
-                          type = {type: 'web'},
-                          serie = {serie: uuid}, 
-                          vals = [];
-
-
-                          if(os === undefined) {
-                              os = {'os': 'noAccesible'};
-                            }else{
-                              os = {'os': os};
-                              vals = [device, type, serie, os];
-                          }
-
-
-                          if(vals.length !== 0){
-                            keys.forEach(function(itm, i){
-                              values[itm] = vals[i][itm];
-                            });
-
-                            values = JSON.stringify(values);
-
-                            
-                            $.post('https://vrummapp.net/ws/v2/acceso/getdevice', 
-                              values
-                            ).then(function(res){  
-
-                              var id = res.mensaje.rs[0].id;
-                              console.log(id);
-
-                              getDevId(id)
-
-                              sessionValidation();
-
-                             }).fail(function(err){
-                                console.log(err);
-                            });
-
-                          }
-
-                        }
-
-                        function getDevId(argument) {
-                          if(getDevAsk ===  0){
-                            devVal = argument;
-                            getDevAsk++;
-                            return;
-                          }
-                            return devVal;
-                        }
-
-                        function getOSnum(val){
-                          
-                          osValue = val.value;
-                          regDeviceLogin(osValue);
-                          
-                        }
-
-
-                        function browFing(){
-                          new Fingerprint2().get(function(result, components){
-                            fakerUUID(result);
-                            getOSnum(components[0]);
-                          });
-                        }
-
-
-                        function fakerUUID(val){
-                          if(fakingUIDAsk ===  0){
-                            fakeU = val;
-                            fakingUIDAsk++;
-                            return;
-                          }
-                            return fakeU;
-                          
-                        }
-                              
-
-              }else{
-
-                window.location = 'pages/login.html';
+            <div id="l-passCont" class="form-control myFormContr childHeight noPadding butVertHalf">
               
-              }
+                <span class="UsuarioNombreFijo">Contraseña*</span>
+                <input type="password" id="l-pass" name="passw" class="form-control" required>
+              
+            </div>
+                   
+          
+            <div class="errorLogin">Hay un error en el mail o la contraseña</div>
+            <div class="passRecover">¿Olvidaste tu contraseña?</div>
+            <button class="btn btn-lg btn-primary btn-block registrarbtn" type="submit"><span id="subBtnNrTxt">Iniciar Sesión</span><span id="subBtnRecTxt">Recuperar</span></button>
+          </form>
+
+            
+          <div class="logRedBtnCont">
+
+            <h3 class="askLog">¿Aún no tienes cuenta?</h3>
+            <div id="l-regInv">Regístrate para navegar, buscar, compartir y comparar autos con Vrumm</div>
+            <button id="goToReg" class="btn btn-primary redirectLogBtn">Regístrate</button>
+    
+          </div>
+
+        </div>
+      
+      </div>
+
+      <div class="row-fluid noPadding childHeight mainFooter">
+        
+          <div id="appStoreFooter" class="col-xs-12 noPadding">
+              <div class="storeFooterCont">
+                    <h3 class="footStoreTxt">Descárgalo para IOS o Android</h3>
+                    <img src="../img/f_downloadApp.png" class="storeLogos">
+              </div>
+          </div>
+
+          <div id="vrummFooter" class="col-xs-12 noMargin">
+            
+                <ul class="vrummListFooter NoleftP">
+                  <li class="footerMenuItm"><a href="">Sobre Vrumm</a></li>
+                  <li class="footerMenuItm"><a href="">Políticas de privacidad</a></li>
+                  <li class="footerMenuItm"><a href="">Ayuda</a></li>
+                  <li class="footerMenuItm"><a href="">Contacto</a></li>
+                </ul>
+
+                <div class="vrummBrandRegister">© 2015 vrumm</div>
+
+          </div>
 
 
-          function sessionValidation(){
+      </div>
 
-                var actualDevId = getDevId();
+    </div> 
 
-                actualDevId = actualDevId.toString();
-
-                var name = sessionStorage.getItem('currentUser');
-                var devIdStored = sessionStorage.getItem('deviceId');
-
-                devIdStored = devIdStored.toString();
-                
-
-                if(actualDevId === devIdStored){
-                    $('.fullName').html(name);
-                }else{
-                   window.location = '/pages/login.html';
-                }
-
-          }
-
-      });
-
-    </script>
+    <script src="js/lib/jquery-3.1.1.min.js"></script>
+        <script type="text/javascript" src="js/lib/moment.min.js"></script>
+        <script type="text/javascript" src="js/lib/bootstrap-datetimepicker.min.js"></script>
+        <script src="js/lib/bootstrap.min.js"></script>
+        <script src="js/lib/jquery.validate.min.js"></script>
+        <script src="js/lib/md5.js"></script>
+        <script src="js/lib/validaciones.js"></script>
+        <script src="js/lib/subirFoto.js"></script>
+        <script src="js/lib/fingerprint2.min.js"></script>
+        <script type="text/javascript" src="js/bundle.js"></script>
   </body>
 </html>
-

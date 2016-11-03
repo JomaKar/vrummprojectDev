@@ -6,10 +6,27 @@ passConfCont = $('#inputPassword2').closest('div.col-md-6'),
 inputAPtn = $('#inputPaterno').closest('div.col-md-6'),
 inputMat = $('#inputMaterno').closest('div.col-md-6'),
 sideImg = $('img.sideImage'),
+sideImageCont = $('div.sideImageCont'),
 classPos975 = ['NorightP', 'NoleftP'],
 fileInputGrp = $('#r-fileInputGrp'),
 txtACont = $('#r-textACont'),
-regTitleCont = $('#registrationTitle');
+regTitleCont = $('#registrationTitle'),
+errMsg = $('div.errorLogin'),
+loginPassInput = $('input#l-pass'),
+loginMailInput = $('input#l-email'),
+simInputsCont = $('#simInputsCont');
+
+loginMailInput.focus(function(){
+	if(errMsg.css('display') === 'block'){
+		errMsg.css({display: 'none'});
+	}
+});
+
+loginPassInput.focus(function(){
+	if(errMsg.css('display') === 'block'){
+		errMsg.css({display: 'none'});
+	}
+});
 
 
 var inputsNoPad = [passCont, inputAPtn, passConfCont, inputMat];
@@ -27,6 +44,9 @@ var inputsNoPad = [passCont, inputAPtn, passConfCont, inputMat];
 		elementsPositioning(profileImg.width());
 		imageResize();
 
+		var theWidth = $(window).width();
+
+		console.log(theWidth);
 
 		upDown975();
 
@@ -56,9 +76,14 @@ var inputsNoPad = [passCont, inputAPtn, passConfCont, inputMat];
 		}
 	}
 
+	function con(argument) {
+		console.log(argument);
+	}
+
 	function upDown975() {
 	
 		var wWidth = $(window).width();
+		con(wWidth);
 
 		if(wWidth < 975){
 
@@ -74,11 +99,33 @@ var inputsNoPad = [passCont, inputAPtn, passConfCont, inputMat];
 				height: '100%'
 			}).addClass('NorightP halfL');
 
-			sideImg.css({
-				width: '108%',
-				left: '-6%',
-				top: '11%'
-			});
+			if(wWidth < 880){
+
+				sideImg.css({
+					width: '397',
+					//height: '526.7',
+					left: '-6%',
+					top: '11%'
+				});
+
+			}
+			/*else if(wWidth > 880 && wWidth < 949){
+
+				sideImg.css({
+					width: '101%',
+					left: '-4%',
+					top: '9%'
+				});
+
+			}else if(wWidth > 949 && wWidth < 975){
+
+				sideImg.css({
+					width: '97%',
+					left: '-2%',
+					top: '7%'
+				});
+			}*/
+			
 
 		}else if(wWidth > 975){
 			
@@ -97,11 +144,59 @@ var inputsNoPad = [passCont, inputAPtn, passConfCont, inputMat];
 				height: 'auto'
 			}).removeClass('NorightP halfL');
 
-			sideImg.css({
-				width: '98%',
-				left: '0',
-				top: '5%'
-			});
+			sideImg.closest('div').css({
+				'text-align': 'center'
+			})
+
+
+			if(wWidth > 975 && wWidth < 1188){
+
+				sideImg.css({
+					width: '459.19',
+					//height: '607.75',
+					left: '0',
+					top: '4%'
+				});
+
+			/*}else if(wWidth > 1015 && wWidth < 1140){
+
+				sideImg.css({
+					width: '88%'
+				});
+
+
+			}else if(wWidth > 1140 && wWidth < 1170){
+
+				sideImg.css({
+					width: '84%'
+				});
+*/
+			//}else if(wWidth > 1170 && wWidth < 1210){
+			}else if(wWidth > 1188){
+
+				sideImg.css({
+					//height: '644.7',
+					width: '487.1'
+				});
+
+
+				if(wWidth < 1368){
+					sideImageCont.removeClass('col-lg-offset-2 col-lg-4')
+					.addClass('col-lg-offset-1 col-lg-5');
+				}else if(wWidth > 1368){
+					sideImageCont.removeClass('col-lg-offset-1 col-lg-5')
+					.addClass('col-lg-offset-2 col-lg-4')
+				}
+
+
+			}
+				/*else{
+
+					sideImg.css({
+						width: 515
+					});
+
+				}*/
 
 		}
 	}

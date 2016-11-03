@@ -14,7 +14,14 @@
     <link rel="stylesheet" href="../css/main.css">
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 
-    <link rel="stylesheet" href="../css/lib/bootstrap-datetimepicker.css">    
+    <link rel="stylesheet" href="../css/lib/bootstrap-datetimepicker.css">
+    <script src="../js/lib/jquery-3.1.1.min.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function(){
+        $(this).scrollTop(0);
+      });
+    </script>  
+
   </head>
   
 
@@ -22,13 +29,13 @@
     <div class="container-fluid noPadding">
       <div class="row-fluid noPadding childHeight">
         
-        <div class="col-sm-6 hidden-xs col-xs-0 noPadding sideImageCont">
+        <div class="col-sm-6 hidden-xs col-xs-0 noPadding sideImageCont col-lg-5 col-lg-offset-1">
           
-          <img class="sideImage" src="../img/fondoDif.png">
+          <img class="sideImage" src="../img/origin.png">
         
         </div>
         
-        <div id="r-formContainer" class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-0 noPadding">
+        <div id="r-formContainer" class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-0 noPadding col-lg-4">
           
           <div class="row-fluid noPadding childHeight butVerHalf">
             
@@ -51,11 +58,11 @@
 
             <div class="form-control myFormContr childHeight noPadding butVertHalf">
               <div class="col-md-6 NoleftP halfR">
-                <span class="UsuarioNombreFijo">clave*</span>
+                <span class="UsuarioNombreFijo">Contraseña*</span>
                 <input type="password" id="inputPassword" name="clave" class="form-control" required>
               </div>
               <div class="col-md-6 NorightP halfL">
-                <input type="password" id="inputPassword2" name="claveConf" class="form-control" placeholder="Reingresar Clave*" required>
+                <input type="password" id="inputPassword2" name="claveConf" class="form-control" placeholder="Reingresar*" required>
               </div>
             </div>
 
@@ -73,11 +80,12 @@
               <span class="UsuarioNombreFijo">¿Quien te invito?*</span>
               <input type="text" id="referido" name="refered_by" class="form-control NobottomM" required autocomplete="off">
               <ul class="noPadding posibleFriendsList row-fluid childHeight NobottomM">
-                <li class="posibleFriend col-xs-12 regInputs">
+                <li class="posibleFriend regInputs">
                   <span class="psFrName"></span>
-                  <span class="psFrAlias">Sin invitación</span> 
+                  <span class="psFrAlias">Sin invitación</span>
                 </li>
               </ul>
+               <div class="errorFriendNick">Ese usuario no existe</div>
             </div>
 
             <div id="r-nameInputGrp" class="form-control myFormContr noPadding butVertHalf">
@@ -99,7 +107,7 @@
               </div>
             </div>
 
-            <div class="form-control myFormContr noPadding">
+            <div id="simInputsCont" class="form-control myFormContr noPadding">
                   
                 <div class="row-fluid noPadding">
 
@@ -122,7 +130,7 @@
 
                             <div id="r-dateCont" class="col-xs-12 noPadding">
                               
-                                  <input id="fechaNacimiento"  type='text' class="form-control NobottomM butVertHalf" name="fecha_nacimiento" />
+                                  <input id="fechaNacimiento"  type='text' class="form-control NobottomM butVertHalf" name="fecha_nacimiento" placeholder="Fecha de Nacimiento" />
                                   <span class="glyphicon glyphicon-chevron-down dateCaretDown"></span>
 
                             </div>
@@ -141,14 +149,14 @@
 
                     <div id="r-textACont" class="col-md-12 col-xs-6 noPadding butVertHalf">
                       <span class="UsuarioNombreFijo">Cómo te pueden encontrar.</span>
-                      <textarea name="tags" id="inputcontacto" required></textarea>
+                      <textarea name="tags" class="NobottomM" id="inputcontacto" required></textarea>
                     </div>
 
                 </div>   
               
             </div>
 
-            <div>Al Registrarte estas aceptando los <a href="" id="terminosreg" >Términos y Condicones</a> de Vrumm</div>
+            <div>Al Registrarte estas aceptando los <a href="" id="terminosreg" >Términos y Condiciones</a> de Vrumm</div>
             <button class="btn btn-lg btn-primary btn-block registrarbtn" type="submit">Registrate</button>
           </form>
 
@@ -156,7 +164,7 @@
           <div class="logRedBtnCont">
 
             <h3 class="askLog">¿Ya tienes cuenta?</h3>
-            <button class="btn btn-primary redirectLogBtn">Entrar</button>
+            <button id="goToLogin" class="btn btn-primary redirectLogBtn">Entrar</button>
     
           </div>
 
@@ -191,8 +199,8 @@
 
     </div> 
 
-    <script src="../js/lib/jquery-3.1.1.min.js"></script>
-        <script type="text/javascript" src="../js/lib/moment.min.js"></script>
+
+    <script type="text/javascript" src="../js/lib/moment.min.js"></script>
         <script type="text/javascript" src="../js/lib/bootstrap-datetimepicker.min.js"></script>
         <script src="../js/lib/bootstrap.min.js"></script>
         <script src="../js/lib/jquery.validate.min.js"></script>

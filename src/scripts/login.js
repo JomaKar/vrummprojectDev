@@ -12,8 +12,27 @@ $(function(){
 	getDevAsk = 0,
 	osValue = '',
 	fakingUIDAsk = 0, 
-	userE = $('#l-email');
+	userE = $('#l-email'),
+	userPass = $('#l-pass'),
+	linkReg = $('button#goToReg'),
+	passRecTxt = $('div.passRecover'),
+	errMsg = $('div.errorLogin'),
+	passCont = $('div#l-passCont'),
+	emailCont = $('div#r-emailInputGrp'),
+	recoverPass = false,
+	normalText = $('span#normalText'),
+	recoverPassTxt = $('span#recoverPassTxt'),
+	subBtnNrTxt = $('span#subBtnNrTxt'),
+	subBtnRecTxt = $('span#subBtnRecTxt');
 
+	passRecTxt.click(function(){
+		recover();
+	});
+
+	linkReg.click(function(){
+
+		window.location = 'pages/registro.html'
+	});
 
 
 	function regDeviceLogin(val) {
@@ -42,17 +61,18 @@ $(function(){
 			});
 
 			values = JSON.stringify(values);
-			console.log(values);
 			
 			$.post('https://vrummapp.net/ws/v2/acceso/getdevice', 
 				values
 			).then(function(res){  
 
-				var id = res.mensaje.rs[0].id;
-				console.log(id);
+				if(res.estado === 1){
 
-				getDevId(id)
+					var id = res.mensaje.rs[0].id;
 
+					getDevId(id)
+
+				}
 
 			 }).fail(function(err){
 		  		console.log(err);
@@ -97,26 +117,47 @@ $(function(){
 		
 	}
 
+	function recover(){
+		errMsg.css({display: 'none'});
+		passCont.animate({height: 'toggle'}, 200).remove();
+		passRecTxt.animate({height: 'toggle'}, 200).remove();
+		normalText.css({display: 'none'});
+		subBtnNrTxt.css({display: 'none'});
+		subBtnRecTxt.css({display: 'block'});
+		recoverPassTxt.css({display: 'block'});
+		recoverPass = true;
+	}
 
 
 	loginForm.submit(function(e){
 		e.preventDefault();
 
+		if(!recoverPass){
+			var data = $(this).serializeArray();
 
-		var data = $(this).serializeArray();
-		var devID = getDevId();
-		devID = devID.toString();
+			var devID = getDevId();
+			devID = devID.toString();
 
-		var values = {device: devID};
+			var values = {device: devID};
 
-		$.map(data, function(itm, idx){
-			values[itm.name] = itm.value;
+			$.map(data, function(itm, idx){
+				values[itm.name] = itm.value;
 
-		});
+			});
 
-		sendLogin(values);
-
-
+			sendLogin(values);
+		}else{
+			recoverPass = false;
+			console.log('revisa tu mensajería para recuperar tu contraseña');
+			emailCont.after(passCont);
+			errMsg.after(passRecTxt);
+			recoverPassTxt.css({display: 'none'});
+			normalText.css({display: 'block'});
+			subBtnRecTxt.css({display: 'none'});
+			subBtnNrTxt.css({display: 'block'});
+			passCont.animate({height: 'toggle'}, 200)
+			passRecTxt.animate({height: 'toggle'}, 200).click(recover);
+		}
 
 	});
 
@@ -132,26 +173,37 @@ $(function(){
 			).then(function(res){  
 				console.log(res);
 
-				var currentUser = userE.val().toString();
-				var device = getDevId();
-				device = device.toString();
+				if(res.estado === 1){
+					var currentUser = userE.val().toString();
+					var device = getDevId();
+					device = device.toString();
 
-				var id = res.mensaje.rs;
+					var id = res.mensaje.rs;
 
-				sessionStorage.setItem('currentUser', currentUser);
-				sessionStorage.setItem('deviceId', device);
-				sessionStorage.setItem('currentUserId', id);
-				sessionStorage.setItem('activeSession', 'yes');
+					sessionStorage.setItem('currentUser', currentUser);
+					sessionStorage.setItem('deviceId', device);
+					sessionStorage.setItem('currentUserId', id);
+					sessionStorage.setItem('activeSession', 'yes');
 
 
-				window.location = '../index.html';
+					window.location = 'pages/perfil.html';
+				}else{
 
+					showSubmitError(res);
+				}
 
 			 }).fail(function(err){
 		  		console.log(err);
 			});
 
 
+	}
+
+
+	function showSubmitError(res) {
+		errMsg.css({display: 'block'});
+		userE.val("");
+		userPass.val("");
 	}
 
 

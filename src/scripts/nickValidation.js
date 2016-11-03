@@ -1,61 +1,80 @@
 $(function(){
-var nickInput = $('input#alias');
+
+	var nickInput = $('input#alias');
 
 
-	nickInput.keyup(function () {
-		var nextEl = $('p#nicknameText');
-		nextEl.remove();
-	})
+	$.fn.nicknameValidation = function(el){
+		$(this).keyup(function () {
+			var nextEl = $('p#nicknameText');
+			nextEl.remove();
+		});
 
-	nickInput.focus(function(){
-		
-		var nextEl = $('p#nicknameText');
-		nextEl.remove();
+		$(this).focus(function(){
+			
+			var nextEl = $('p#nicknameText');
+			nextEl.remove();
 
-	}).blur(function() {
+		}).blur(function() {
 
-		var posNick = $(this).val();
-		nickValidator(posNick);
-	    
-	});
+			var posNick = $(this).val();
+			nickValidator(posNick);
+		    
+		});
 
+		function nickValidator(val){
+			if(val.length > 0){
+				var data = JSON.stringify({'nickname': val});
+				$.post('https://vrummapp.net/ws/v2/usuario/validanickname', 
+					data
+				).then(function(res){ 
+					con(res)
+					if(res.estado === 2){
+						nickExist(res);
+					}else if(res.estado === 1){
+						sayIfDoes(res);
+					}
 
-	function nickValidator(val){
-		if(val.length > 0){
-			var data = JSON.stringify({'nickname': val});
-			$.post('https://vrummapp.net/ws/v2/usuario/validanickname', 
-				data
-			).then(function(res){ 
+				}).fail(function(err){
+			
+			  		sayIfDoes('noOne');
 
-				sayIfDoes(res);  
-
-			}).fail(function(err){
-		
-		  		sayIfDoes('noOne');
-
-			});	
-		}	
-	}
-
-
-	function sayIfDoes(val) {
-		var posNick = nickInput.val();
-
-		if (val !== 'noOne') {
-			var greenLight = "<p id='nicknameText' class='goodText'>"+ posNick +" es un nickname bueno</p>";
-
-			nickInput.after(greenLight);
-
-		} else {
-
-			var wrongOne = "<p id='nicknameText' class='badText'>"+ posNick +" es un nickname que ya existe</p>";
-			nickInput.after(wrongOne);
-
+				});	
+			}	
 		}
+
+
+		function sayIfDoes(val) {
+			var posNick = el.val();
+
+			if (val !== 'noOne') {
+				var greenLight = "<p id='nicknameText' class='goodText'>"+ posNick +" es un nickname bueno</p>";
+				sessionStorage.setItem('nickGood', 'yes');
+				el.after(greenLight);
+
+			} else {
+
+				var wrongOne = "<p id='nicknameText' class='badText'>"+ posNick +" es un nickname que ya existe</p>";
+				el.after(wrongOne);
+				sessionStorage.setItem('nickGood', 'no');
+
+			}
+		}
+
+		function nickExist() {
+			var posNick = el.val();
+			var alreadyNick = "<p id='nicknameText' class='badText'>"+ posNick +" es un nickname que ya existe</p>";
+			sessionStorage.setItem('nickGood', 'no');
+			el.after(alreadyNick);
+		}
+
+
 	}
+
+	nickInput.nicknameValidation(nickInput);
 
 
 	function con(val){
 		console.log(val);
 	}
+
 })

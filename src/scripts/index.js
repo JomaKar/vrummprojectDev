@@ -1,5 +1,6 @@
 $(function(){
 
+	whereIam();
 
 	var fakeUUID = 0, 
 	geoloc, locationAsk = 0,
@@ -10,15 +11,65 @@ $(function(){
 	fakingUUIDAsk = 0,
 	photoAsk = 0,
 	photoToReturn, 
-	locationToReturn, 
+	locationToReturn,
 	photo = '',
-	user = $('#alias');
+	user = $('#alias'),
+	linkLogin = $('button#goToLogin'),
+	refInput = $('input#referido'),
+	posFrList = $('ul.posibleFriendsList'),
+	noFriendMsg = $('div.errorFriendNick'),
+	registrarbtn = $('button.registrarbtn');
 
+	linkLogin.click(function(){
+
+		window.location = '../index.html'
+
+	});
 
 	$(document).ready(function(){
+		$(this).scrollTop(0);
 		browserFingerprint();
 		getGeolocalization();
 	});
+
+	function whereIam() {
+		var place = window.location.pathname;
+		
+		if(place === "/pages/perfil.html"){
+
+			 var currentDeviceId = '',
+			 storedDeviceId = sessionStorage.getItem('deviceId');
+			 sessionStorage.removeItem('nickGood');
+			 sessionStorage.removeItem('mailGood');
+
+			 if(storedDeviceId !== null && storedDeviceId !== undefined)
+			 {
+			 	currentDeviceId = sessionStorage.getItem('deviceId');
+
+			 }else{
+			 	con('el device id no fue el mismo')
+			 	currentDeviceId = deviceId();
+			 	con(currentDeviceId);
+			 }
+
+			 var currUsrName = sessionStorage.getItem('currentUser');
+
+			 if(currUsrName !== null && currUsrName !== undefined){
+			 	$('.fullName').html(currUsrName);
+			 }
+		}else{
+
+			sessionStorage.removeItem('activeSession');
+			sessionStorage.removeItem('currentUser');
+
+		}
+
+		
+	}
+
+	function con(argument) {
+		console.log(argument);
+	}
 
 	function registerDevice(val) {
 		var values = {};
@@ -52,11 +103,12 @@ $(function(){
 				values
 			).then(function(res){  
 
-				var id = res.mensaje.rs[0].id;
-				console.log(id);
+				if(res.estado === 1){
 
-				deviceId(id)
+					var id = res.mensaje.rs[0].id;
+					deviceId(id)
 
+				}
 
 			 }).fail(function(err){
 		  		console.log(err);
@@ -124,14 +176,45 @@ $(function(){
 	//console.log('falta terminar de recabar la información del formulario así como hacer las validaciones a partir de los endpoints')
 
 	function getGeolocalization(){
-		if(navigator.geolocation) {
-        		navigator.geolocation.getCurrentPosition(function(position) {
-            	var latitude = position.coords.latitude;
-            	var longitude = position.coords.longitude;
-            	geoloc = latitude + ', ' + longitude;
-            	currentLocation(geoloc);
-        	});
-    	}
+		var loc = sessionStorage.getItem('location');
+
+		if(loc !== undefined && loc !== null){
+
+			currentLocation(loc);
+
+		}else{
+
+			if(navigator.geolocation) {
+	        		navigator.geolocation.getCurrentPosition(function(position) {
+	            	var latitude = position.coords.latitude;
+	            	var longitude = position.coords.longitude;
+	            	geoloc = latitude + ', ' + longitude;
+	            	currentLocation(geoloc);
+	            	sessionStorage.setItem('location', geoloc); 
+        		});
+    		}
+		}
+	}
+
+
+	function checkFriend(val) {
+		var itms = posFrList.children('li');
+
+		return $.map(itms, function(value, key){
+			
+			var nickTxt = $(itms[key]).find('span.psFrAlias').html();
+			var idTxt = $(itms[key]).find('span.friendId').html();
+			if(nickTxt === val){ 
+
+				if(idTxt !== undefined && idTxt !== null && idTxt.length > 0){
+					idTxt = idTxt.toString();					
+					sessionStorage.setItem("id", idTxt);
+				}
+				
+				return true;
+			}
+
+		});
 	}
 
 
@@ -142,7 +225,25 @@ $(function(){
 	registroForm.on('submit', function(e){
 		e.preventDefault();
 		var data = $(this).serializeArray();
-		dataManagement(data);
+		var value = refInput.val();
+		
+		if(value.length > 0 && value !== 'Sin invitación'){
+			var exist = checkFriend(value);
+			
+			if(exist.length > 0 && exist[0] === true){
+				dataManagement(data);
+
+			}else{
+
+				noFriendMsg.toggle();
+			}
+
+		}else if(value === 'Sin invitación'){
+			
+			dataManagement(data);
+
+		}
+
 	});
 
 
@@ -201,6 +302,8 @@ $(function(){
 				}else{
 					if(field.name === 'refered_by'){
 						values[field.name] = sessionStorage.getItem('id');
+					}else if(field.name === 'tags'){
+						values[field.name] = field.value + ', ' + values.alias + ', '+ values.email + ', '+ values.nombre;
 					}else{
 						values[field.name] = field.value;
 					}
@@ -209,13 +312,23 @@ $(function(){
 			});
 
 			var formData = JSON.stringify(values)
-			sendForm(formData);
+			var mailGood = sessionStorage.getItem('mailGood'),
+			goodNick = sessionStorage.getItem('nickGood');
 
+			if(mailGood === 'yes' && goodNick === 'yes'){
+				sendForm(formData);
+			}else{
+			
+				var wrongOne = "<p id='nicknameText' class='badText'>Te falto algún dato o escribiste algo mal</p>";
+				registrarbtn.before(wrongOne);
+
+			}
 		}	
+
 	}
 
 	function sendForm(val){
-
+		
 		$.post('https://vrummapp.net/ws/v2/usuario/registro', 
 			val
 		).then(function(res){ 
@@ -229,7 +342,7 @@ $(function(){
 			sessionStorage.setItem('deviceId', device);
 			sessionStorage.setItem('activeSession', 'yes');
 
-			window.location = '../index.html';
+			window.location = 'perfil.html';
 
 		 }).fail(function(err){
 	  		console.log(err);

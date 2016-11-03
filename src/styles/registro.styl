@@ -118,7 +118,6 @@
 }
 			
 .posibleFriendsList
-	width 100%
 	background-color $regPosListsBack
 	border 1px solid $regBrd
 	position absolute
@@ -130,11 +129,13 @@
 		justify-content space-between
 		height 25px
 		cursor pointer
-		padding-bottom 5px
-		width 100%
+		padding-bottom 2.5px
+		padding-top 2.5px
+		width 380px
 		
 		&:first-of-type
 			padding-top 5px
+			border-bottom 1px solid $regBrd
 		
 		.psFrAlias
 			color $psFrAlias
@@ -145,9 +146,12 @@
 		&:hover
 			background-color $regPosItmHv
 				
-		
+.errorFriendNick
+	color red
+	display none		
 				
-			 	
+#inputcontacto
+	height 93px		 	
 	
 			
 
