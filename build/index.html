@@ -19,8 +19,15 @@
   
 
   <body class="noPadding">
-    <div class="container-fluid noPadding">
+    <div class="container-fluid login noPadding">
       <div class="row-fluid noPadding childHeight">
+
+
+        <div class="passModalCont">
+          <div class="recoverPassModal">
+            <p class="recPassMdTxt">Se ha enviado una liga para cambiar su contraseña al correo <span class="mailRecover"></span></p>
+          </div>
+        </div>
         
         <div class="col-sm-6 hidden-xs col-xs-0 noPadding sideImageCont">
           
@@ -64,15 +71,17 @@
           
             <div class="errorLogin">Hay un error en el mail o la contraseña</div>
             <div class="passRecover">¿Olvidaste tu contraseña?</div>
-            <button class="btn btn-lg btn-primary btn-block registrarbtn" type="submit"><span id="subBtnNrTxt">Iniciar Sesión</span><span id="subBtnRecTxt">Recuperar</span></button>
+            <button class="btn btn-lg btn-block registrarbtn loginBtn" type="submit"><span id="subBtnNrTxt">Iniciar Sesión</span><span id="subBtnRecTxt">Recuperar</span></button>
           </form>
 
             
           <div class="logRedBtnCont">
 
             <h3 class="askLog">¿Aún no tienes cuenta?</h3>
-            <div id="l-regInv">Regístrate para navegar, buscar, compartir y comparar autos con Vrumm</div>
-            <button id="goToReg" class="btn btn-primary redirectLogBtn">Regístrate</button>
+            <div class="l-regInv">Regístrate para navegar, buscar, compartir y comparar autos con Vrumm</div>
+            <button id="goToReg" class="btn btn-primary redirectLogBtn loginPoint">Regístrate</button>
+            <div class="l-regInv scnTxt">ó</div>
+            <button id="goToCatBrand" class="btn btn-primary redirectLogBtn loginPoint">Navega como invitado</button>
     
           </div>
 
@@ -108,13 +117,7 @@
     </div> 
 
     <script src="js/lib/jquery-3.1.1.min.js"></script>
-        <script type="text/javascript" src="js/lib/moment.min.js"></script>
-        <script type="text/javascript" src="js/lib/bootstrap-datetimepicker.min.js"></script>
         <script src="js/lib/bootstrap.min.js"></script>
-        <script src="js/lib/jquery.validate.min.js"></script>
-        <script src="js/lib/md5.js"></script>
-        <script src="js/lib/validaciones.js"></script>
-        <script src="js/lib/subirFoto.js"></script>
         <script src="js/lib/fingerprint2.min.js"></script>
         <script type="text/javascript" src="js/bundle.js"></script>
   </body>

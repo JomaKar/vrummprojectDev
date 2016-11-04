@@ -37,26 +37,15 @@ $(function(){
 		
 		if(place === "/pages/perfil.html"){
 
-			 var currentDeviceId = '',
-			 storedDeviceId = sessionStorage.getItem('deviceId');
-			 sessionStorage.removeItem('nickGood');
-			 sessionStorage.removeItem('mailGood');
-
-			 if(storedDeviceId !== null && storedDeviceId !== undefined)
-			 {
-			 	currentDeviceId = storedDeviceId;
-
-			 }else{
-			 	con('el device id no fue el mismo')
-			 	currentDeviceId = deviceId();
-			 	con(currentDeviceId);
-			 }
+			 getDeviceIDStarting();
 
 			 var currUsrName = sessionStorage.getItem('currentUser');
 
 			 if(currUsrName !== null && currUsrName !== undefined){
 			 	$('.fullName').html(currUsrName);
 			 }
+		}else if(place === "/pages/catalogo-marcas.html"){
+			getDeviceIDStarting();
 		}else{
 
 			sessionStorage.removeItem('activeSession');
@@ -65,6 +54,24 @@ $(function(){
 		}
 
 		
+	}
+
+	function getDeviceIDStarting(){
+		var currentDeviceId = '',
+		 storedDeviceId = sessionStorage.getItem('deviceId');
+		 sessionStorage.removeItem('nickGood');
+		 sessionStorage.removeItem('mailGood');
+
+		 if(storedDeviceId !== null && storedDeviceId !== undefined)
+		 {
+		 	currentDeviceId = storedDeviceId;
+		 	con('el device id fue el mismo')
+
+		 }else{
+		 	con('el device id no fue el mismo')
+		 	browserFingerprint();
+		 	con(currentDeviceId);
+		 }
 	}
 
 	function con(argument) {

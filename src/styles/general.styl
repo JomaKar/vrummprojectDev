@@ -4,7 +4,11 @@ body
 	padding 0px
 	
 	.container-fluid
-		margin-top 70px
+		&.login,  &.registro
+			margin-top 70px
+		
+		&.conNav
+			margin-top 52px	
 
 .myNavBar
 	position fixed !important
@@ -77,6 +81,9 @@ body
 	background-clip content-box
 	&.circ
 		boder-radius 50%
+	
+	&.centerBackImg
+		background-position center	
 
 .regInputs
 	color white

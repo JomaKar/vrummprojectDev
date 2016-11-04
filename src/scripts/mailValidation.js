@@ -9,9 +9,6 @@ $(function(){
 	var camaleonUUID = 0, 
 	fakingUUIDAsking = 0;
 
-	$(document).ready(function(){
-		fingerprint();
-	});
 
 	$.fn.validatePass = function(){
 		$(this).keyup(function(){
@@ -50,8 +47,21 @@ $(function(){
 
 	passConfInput.validatePass();
 
-
 	$.fn.validateMail = function(el, flag){
+		
+		$(document).ready(function(){
+
+			setTimeout(function(){
+				var txt = $(el).val();
+				if(txt !== undefined){
+					if(txt.length > 0){
+						mailValidator(txt);
+					}
+				}
+			}, 300);
+
+		})
+
 		$(this).keyup(function () {
 			var nextEl = $('p#mailValText');
 			nextEl.remove();
@@ -77,18 +87,16 @@ $(function(){
 		function mailValidator(val){
 			if(val.length > 0){
 
-				var uuid = fakeUUID();
-				var arr = [uuid.slice(0, 8), uuid.slice(8, 12), 
-				uuid.slice(12, 16), uuid.slice(16, 20), uuid.slice(20)];
-				var uuidString = arr.join('-');
-				var data = JSON.stringify({'email': val, 'device': uuidString});
+				var devID = sessionStorage.getItem('deviceId');
+				devID = devID.toString();
+
+				var data = JSON.stringify({'email': val, 'device': devID});
 
 				$.post('https://vrummapp.net/ws/v2/usuario/validacorreo', 
 					data
 				).then(function(res){ 
 
 					if(res.estado === 2){
-						console.log(res.mensaje);
 						mailExist(res);  
 					}else if(res.estado === 1){
 						newMail(res);
@@ -159,24 +167,6 @@ $(function(){
 
 	loginMailInput.validateMail(loginMailInput, 'l');
 
-
-
-
-	function fingerprint(){
-		new Fingerprint2().get(function(result, components){
-		  fakeUUID(result);
-		});
-	}
-
-	function fakeUUID(val){
-		if(fakingUUIDAsking ===  0){
-			camaleonUUID = val;
-			fakingUUIDAsking++;
-			return;
-		}
-			return camaleonUUID;
-		
-	}
 
 
 	function con(val){

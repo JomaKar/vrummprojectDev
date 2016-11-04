@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html >
+  
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title></title>
+
+    <!-- Bootstrap -->
+    <link href="../css/lib/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/main.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <script src="../js/lib/jquery-3.1.1.min.js"></script>
+    <script type="text/javascript">
+      $(function(){
+          var brandsStored = sessionStorage.getItem('catalogBrands'),
+          brands = [],
+          newBrand = '<div class="col-xs-2 noPadding noMargin backImg"></div>',
+          newBrandRow = '<div class="row-fluid noPadding noMargin brandCatRow"></div>';
+          console.log('in the header')
+
+          if(brandsStored === null || brandsStored === undefined || brandsStored === 'nothing stored'){
+              
+              getBrands();
+          
+          }
+
+          function getBrands(){
+          
+            $.post('https://vrummapp.net/ws/v2/catalogo/getmarcas')
+            .then(function(res){ 
+              
+              if(res.estado === 1){
+                brands = res.mensaje.rs;
+                brands = JSON.stringify(brands);
+
+                sessionStorage.setItem('catalogBrands', brands);
+
+              }else{
+                con(res);
+              }
+
+
+             }).fail(function(err){
+                con(err);
+            });
+            
+          }
+
+          $(document).ready(function(){
+            $(this).scrollTop(0);
+          });
+
+      })
+    </script>  
+
+  </head>
+  
+
+  <body class="noPadding">
+    <nav class="navbar navbar-inverse myNavBar">
+      <div class="col-md-12 noPadding noMargin">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand"  href="#">VRUMM</a>
+        </div>
+
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Descargar app |</a></li>
+            <li><a href="#">Ingresar |</a></li>
+            <li><a href="pages/registro.html">Crear cuenta</a></li>
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="" aria-expanded="false" aria-controls="">
+              <span class="sr-only"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+    
+    <div class="container-fluid conNav noPadding">
+      
+      <div class="row-fluid noPadding noMargin childHeight mainCatBrandCont">
+          <div class="col-xs-12 col-sm-offset-1 col-sm-10 col-md-offset-2 col-md-8 noPadding brandsSpace">
+            <div class="row-fluid noPadding noMargin brandCatRow firstRow">
+              <p class="startingText">Cargando las marcas para desplegarlas...</p>
+            </div>
+          </div>
+      </div>
+
+    </div> 
+        <script src="../js/lib/bootstrap.min.js"></script>
+        <script src="../js/lib/fingerprint2.min.js"></script>
+        <script type="text/javascript" src="../js/bundle.js"></script>
+  </body>
+</html>

@@ -6,6 +6,7 @@ $(function(){
 	var userE = $('#l-email'),
 	userPass = $('#l-pass'),
 	linkReg = $('button#goToReg'),
+	linkBrand = $('button#goToCatBrand'),
 	passRecTxt = $('div.passRecover'),
 	errMsg = $('div.errorLogin'),
 	passCont = $('div#l-passCont'),
@@ -15,7 +16,9 @@ $(function(){
 	recoverPassTxt = $('span#recoverPassTxt'),
 	subBtnNrTxt = $('span#subBtnNrTxt'),
 	subBtnRecTxt = $('span#subBtnRecTxt'),
-	registrarbtn = $('button.registrarbtn');
+	registrarbtn = $('button.registrarbtn'),
+	modal = $('div.passModalCont'),
+	recoverPassFragment = $('span.mailRecover');
 
 	userE.focus(removePrev);
 	userPass.focus(removePrev);
@@ -26,17 +29,42 @@ $(function(){
 
 	linkReg.click(function(){
 
-		window.location = 'pages/registro.html'
+		window.location = 'pages/registro.html';
+
+		askForBrands();
+
 	});
 
+	function askForBrands(){
+			
+		$.post('https://vrummapp.net/ws/v2/catalogo/getmarcas')
+		.then(function(res){ 
+			if(res.estado === 1){
+				var brands = JSON.stringify(res.mensaje.rs);
+				sessionStorage.setItem('catalogBrands', brands);
+			}else{
+				sessionStorage.setItem('catalogBrands', 'nothing stored');
+			}
+
+
+		 }).fail(function(err){
+	  		con(err);
+		});
+		
+	}
+
+	linkBrand.click(function(){
+		window.location = 'pages/catalogo-marcas.html'
+	})
+
 	function recover(){
-		errMsg.css({display: 'none'});
-		passCont.animate({height: 'toggle'}, 200).remove();
-		passRecTxt.animate({height: 'toggle'}, 200).remove();
-		normalText.css({display: 'none'});
-		subBtnNrTxt.css({display: 'none'});
-		subBtnRecTxt.css({display: 'block'});
-		recoverPassTxt.css({display: 'block'});
+		errMsg.disNone();
+		passCont.an().remove();
+		passRecTxt.an().remove();
+		normalText.disNone();
+		subBtnNrTxt.disNone();
+		subBtnRecTxt.disBlock();
+		recoverPassTxt.disBlock();
 		recoverPass = true;
 	}
 
@@ -72,12 +100,12 @@ $(function(){
 			recoverPass = false;
 			emailCont.after(passCont);
 			errMsg.after(passRecTxt);
-			recoverPassTxt.css({display: 'none'});
-			normalText.css({display: 'block'});
-			subBtnRecTxt.css({display: 'none'});
-			subBtnNrTxt.css({display: 'block'});
-			passCont.animate({height: 'toggle'}, 200)
-			passRecTxt.animate({height: 'toggle'}, 200).click(recover);
+			recoverPassTxt.disNone();
+			normalText.disBlock();
+			subBtnRecTxt.disNone();
+			subBtnNrTxt.disBlock();
+			passCont.an();
+			passRecTxt.an().click(recover);
 
 			var mailTxt = userE.val();
 			var geoLoc = sessionStorage.getItem('location');
@@ -138,16 +166,32 @@ $(function(){
 		//console.log(argument)
 		$.post('https://vrummapp.net/ws/v2/usuario/getpasswd', 
 				argument
-			).then(function(res){  
-				console.log(res);
+			).then(function(res){
 
-				if(res.mensaje === 2){
-					console.log(res.mensaje);
+				if(res.estado === 2){
+
+					displayRecoverModal();
 				}
 
 			 }).fail(function(err){
 		  		console.log(err);
 			});
+	}
+
+	$.fn.disNone = function(){
+		
+		this.css({display: 'none'});
+		return this;
+	}
+
+	$.fn.disBlock = function(){
+		this.css({display: 'block'});
+		return this;
+	}
+
+	$.fn.an = function(){
+		this.animate({height: 'toggle'}, 200);
+		return this;
 	}
 
 
@@ -160,6 +204,16 @@ $(function(){
 	function removePrev(){
 		var prevEl = registrarbtn.prev('p#nicknameText');
 		prevEl.remove();
+	}
+
+	function displayRecoverModal() {
+
+		var textVal = userE.val();
+
+		recoverPassFragment.html(textVal);
+
+		modal.css({display: 'flex'});
+		setTimeout(function(){ modal.hide(); }, 2000)
 	}
 
 
