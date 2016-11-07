@@ -187,6 +187,8 @@
 	color white
 	border 1px solid $redirectBox
 	margin 0 auto
+	&.catalogo
+		width 100%
 	
 	.askLog
 		font-size 18px
@@ -208,12 +210,12 @@
 @media(min-width 500px)
 	.logRedBtnCont
 		width 398px
+		&.catalogo
+			width 100%
 
 
 #appStoreFooter
 	height 185px
-	display flex
-	justify-content center
 	background-color $footStorBack
 	border-bottom 5px solid $regActiveBtn
 	margin-top 50px
@@ -224,6 +226,7 @@
 		height 100%
 		text-align center
 		padding-top 20px
+		margin 0 auto
 		
 		.footStoreTxt
 			color #737373

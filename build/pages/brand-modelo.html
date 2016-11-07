@@ -16,34 +16,42 @@
     <script src="../js/lib/jquery-3.1.1.min.js"></script>
     <script type="text/javascript">
       $(function(){
-          var brandsStored = sessionStorage.getItem('catalogBrands'),
-          brands = [];
+          var brandsModels = sessionStorage.getItem('currentBrandAutos'),
+          modelsStored = sessionStorage.getItem('modelsArr'),
+          models = [];
 
-          if(brandsStored === null || brandsStored === undefined || brandsStored === 'nothing stored'){
-              
-              getBrands();
+          if(brandsModels === null || brandsModels === undefined || 
+
+            brandsModels === 'nothing stored'){
+            window.location = 'catalogo-marcas.html';
+          
+          }else if(modelsStored === null || modelsStored === undefined){
+            getModelsInfo(brandsModels);
           
           }
 
-          function getBrands(){
-          
-            $.post('https://vrummapp.net/ws/v2/catalogo/getmarcas')
-            .then(function(res){ 
-              
-              if(res.estado === 1){
-                brands = res.mensaje.rs;
-                brands = JSON.stringify(brands);
+          function getModelsInfo(id){
 
-                sessionStorage.setItem('catalogBrands', brands);
+              id = parseInt(id),
+              modelsArr = [];
+              var device = sessionStorage.getItem('deviceId');
 
-              }else{
-                con(res);
+              if(device !== undefined && device !== null && id){
+                var data = {'device': device, brandId: id};
+                data = JSON.stringify(data);
+
+                $.post('https://vrummapp.net/ws/v2/catalogo/getmodelos',
+                  data).then(function(res){
+                    if(res.estado === 1){
+                      modelsArr = res.mensaje.rs;
+                      modelsArr = JSON.stringify(modelsArr);
+                      sessionStorage.setItem('modelsArr', modelsArr);
+                    }
+                  }).fail(function(err){
+                    console.log(err);
+                  });
+
               }
-
-
-             }).fail(function(err){
-                con(err);
-            });
             
           }
 
@@ -84,13 +92,7 @@
     
     <div class="container-fluid conNav noPadding">
       
-      <div class="row-fluid noPadding noMargin childHeight mainCatBrandCont">
-          <div class="col-xs-12 col-sm-offset-1 col-sm-10 col-md-offset-2 col-md-8 noPadding brandsSpace">
-            <div class="row-fluid noPadding noMargin brandCatRow firstRow">
-              <p class="startingText">Cargando las marcas para desplegarlas...</p>
-            </div>
-          </div>
-      </div>
+      <div class="hi"></div>
 
       <div class="row-fluid noPadding childHeight mainFooter">
         
@@ -99,6 +101,7 @@
                     <h3 class="footStoreTxt">Descárgalo para IOS o Android</h3>
                     <img src="../img/f_downloadApp.png" class="storeLogos">
               </div>
+
           </div>
 
           <div class="logRedBtnCont catalogo col-xs-12 noPadding">
@@ -121,8 +124,6 @@
                 <div class="vrummBrandRegister">© 2016 vrumm</div>
 
           </div>
-
-
       </div>
 
 

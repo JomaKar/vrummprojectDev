@@ -3,8 +3,12 @@ $(function(){
 	var place = window.location.pathname,
 	brands = [],
 	rowsCont = $('div.brandsSpace'),
+	linkRegCat = $('button#goToReg-Cat'),
 	initialRow = $('div.firstRow');
 
+	linkRegCat.click(function(){
+		window.location = 'registro.html';
+	})
 
 
 	if(place === "/pages/catalogo-marcas.html"){
@@ -14,7 +18,7 @@ $(function(){
 			var brandsStored = sessionStorage.getItem('catalogBrands');
 			checkBrands(brandsStored);
 
-		}, 20);
+		}, 5);
 
 
 		function checkBrands(argument) {
@@ -24,11 +28,10 @@ $(function(){
 				displayBrands(brands);
 		    }	
 		}
-		
-		console.log('you are in catalogue', Date.now())
 
 
 		function displayBrands(brandsArr){
+
 			$('p.startingText').remove();
 
 			brands = JSON.parse(brandsArr);
@@ -36,33 +39,99 @@ $(function(){
 			var num = brands.length;
 			var fullRowsNumber = 0;
 			var itmsLastRow = 0;
+			var brandItmCounter = 0;
 			
 			if(num > 5){
-				fullRowsNumber = num/5;
+				fullRowsNumber = Math.floor(num/5);
 				itmsLastRow = num%5;
 			}
-			
+
 			//dividing on rows
-			for(var x = 0; x <= fullRowsNumber; x++){
+			for(var x = 0; x < fullRowsNumber; x++){
 
 				//dividing on items initial row
-				if(x == 0){
-					for(var i = 0; i <= 5; i++){
-						var newBrand = '<div class="col-xs-2 noPadding noMargin backImg brandItem centerBackImg dynamicItem'+ i +'" style="background-image: url('+ brands[i].pic_url +');"></div>';
+				if(x === 0){
+					
+					for(var i = 0; i < 5; i++){
+						var newBrand = '<div class="noPadding noMargin brandItem dynamicItem'+ i +'"><span class="brandId">'+ brands[i].id +'</span>'+ 
+											'<div class="backImg centerBackImg brandItmImg" style="background-image: url('+ brands[i].pic_url +');"></div></div>';
 						initialRow.append(newBrand);
+						brandItmCounter++;
 					}
 				}
 
+				
+
 				if(x > 0){
 					var newBrandRow = '<div class="row-fluid noPadding noMargin brandCatRow dynamicRow'+ x +'"></div>';
-					rowsCont.append(newBrand);
+					rowsCont.append(newBrandRow);
+
+					var actualRow = $('div.dynamicRow' + x);
+					
+					for(var i = 0; i < 5; i++){
+						var newBrand = '<div class="noPadding noMargin brandItem dynamicItem'+  brandItmCounter +'"><span class="brandId">'+ brands[brandItmCounter].id +'</span>'+ 
+											'<div class="backImg centerBackImg brandItmImg" style="background-image: url('+ brands[brandItmCounter].pic_url +');"></div></div>';
+						actualRow.append(newBrand);
+						brandItmCounter++;
+					}
 
 
 				}
 			
 			}
 
+			if(itmsLastRow > 0){
+				var lastRow = fullRowsNumber + 1;
+
+				var newBrandRow = '<div class="row-fluid noPadding noMargin brandCatRow dynamicRow'+ lastRow +'"></div>';
+				rowsCont.append(newBrandRow);
+
+				var actualRow = $('div.dynamicRow' + lastRow);
+				
+				for(var xx = 0; xx < itmsLastRow; xx++){
+					var newBrand = '<div class="noPadding noMargin brandItem dynamicItem'+  brandItmCounter +'"><span class="brandId">'+ brands[brandItmCounter].id +'</span>'+ 
+											'<div class="backImg centerBackImg brandItmImg" style="background-image: url('+ brands[brandItmCounter].pic_url +');"></div></div>';
+					actualRow.append(newBrand);
+					brandItmCounter++;
+				}
+			}
+
 		}
+
+		$(document).on('click', 'div.brandItem', function(){
+			var id = $(this).find('span.brandId').html();
+
+			if(id !== undefined && id !== null){
+				sessionStorage.setItem('currentBrandAutos', id.toString());
+				window.location = 'brand-modelo.html';
+				askForModels(id);
+			}else{
+				sessionStorage.setItem('currentBrandAutos', 'nothing stored');
+			}
+
+		})
+
+		function askForModels(id) {
+			id = parseInt(id),
+			modelsArr = [];
+			var device = sessionStorage.getItem('deviceId');
+
+			if(device !== undefined && device !== null && id){
+				var data = {'device': device, brandId: id};
+				data = JSON.stringify(data);
+
+				$.post('https://vrummapp.net/ws/v2/catalogo/getmodelos',
+					data).then(function(res){
+						if(res.estado === 1){
+							modelsArr = res.mensaje.rs;
+							modelsArr = JSON.stringify(modelsArr);
+							sessionStorage.setItem('modelsArr', modelsArr);
+						}
+					}).fail(function(err){con(err)});
+
+			}
+		}
+
 
 	}
 

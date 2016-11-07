@@ -22,7 +22,7 @@ var config = {
 	scripts: {
 	  	main: ['./src/scripts/index.js', './src/scripts/generalLook.js',
 	  	 './src/scripts/einladung.js', './src/scripts/nickValidation.js',
-	  	 './src/scripts/mailValidation.js', './src/scripts/login.js', './src/scripts/catalogBrands.js'],
+	  	 './src/scripts/mailValidation.js', './src/scripts/autModels.js', './src/scripts/login.js', './src/scripts/catalogBrands.js'],
 	  	watch:'./src/scripts/**/*.js',
 	  	output:'./build/js'
 	},
