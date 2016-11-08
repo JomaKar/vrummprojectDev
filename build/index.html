@@ -26,14 +26,17 @@
         <div class="passModalCont">
           <div class="recoverPassModal">
             <span class="closeModal">X</span>
-            <h3 class="passRecTitles">¡Recupera tu contraseña!</h3>
-            <p class="recPassMdTxt">Ya se envió una liga al E-Mail que registraste para que puedas cambiar tu contraseña.</p>
-            <p class="recPassMdTxt">
-            Sigue las indicaciones detalladas en el E-mail para recuperar tu acceso a Vrumm!
-            </p>
-            <h3 class="passRecTitles">¿No has recibido una liga aún?</h3>
-            <div class="resendPart">
-              <p class="recPassTxt"><img src="img/ic_resend.png" alt=""> Reenvía la liga a tu E-Mail</p>
+            <div class="modalTxtContainer noMargin noPadding">
+              <h3 class="passRecTitles">¡Recupera tu contraseña!</h3>
+              <p class="recPassMdTxt">Ya se envió una liga al E-Mail que registraste para que puedas cambiar tu contraseña.</p>
+              <p class="recPassMdTxt">
+              Sigue las indicaciones detalladas en el E-mail para recuperar tu acceso a Vrumm!
+              </p>
+              <h3 class="passRecTitles">¿No has recibido una liga aún?</h3>
+              <div class="resendPart">
+                <img src="img/ic_resend.png" class="resendImg">
+                <p class="recPassTxt">Reenvía la liga a tu E-Mail</p>
+              </div>
             </div>
           </div>
         </div>
@@ -80,7 +83,10 @@
           
             <div class="errorLogin">Hay un error en el mail o la contraseña</div>
             <div class="passRecover">¿Olvidaste tu contraseña?</div>
-            <button class="btn btn-lg btn-block registrarbtn loginBtn" type="submit"><span id="subBtnNrTxt">Iniciar Sesión</span><span id="subBtnRecTxt">Recuperar</span></button>
+            <div class="loginBtnCont noPadding noMargin">
+              <button class="btn btn-lg cancelarBtn NoleftM halfMR">Cancelar</button>
+              <button class="btn btn-lg btn-block registrarbtn loginBtn" type="submit"><span id="subBtnNrTxt">Iniciar Sesión</span><span id="subBtnRecTxt">Recuperar</span></button>
+            </div>
           </form>
 
             

@@ -53,7 +53,7 @@ $(function(){
 				if(x === 0){
 					
 					for(var i = 0; i < 5; i++){
-						var newBrand = '<div class="noPadding noMargin brandItem dynamicItem'+ i +'"><span class="brandId">'+ brands[i].id +'</span>'+ 
+						var newBrand = '<div class="noPadding noMargin brandItem dynamicItem'+ i +'"><span class="brandName">'+ brands[i].name +'</span><span class="brandId">'+ brands[i].id +'</span>'+ 
 											'<div class="backImg centerBackImg brandItmImg" style="background-image: url('+ brands[i].pic_url +');"></div></div>';
 						initialRow.append(newBrand);
 						brandItmCounter++;
@@ -69,7 +69,7 @@ $(function(){
 					var actualRow = $('div.dynamicRow' + x);
 					
 					for(var i = 0; i < 5; i++){
-						var newBrand = '<div class="noPadding noMargin brandItem dynamicItem'+  brandItmCounter +'"><span class="brandId">'+ brands[brandItmCounter].id +'</span>'+ 
+						var newBrand = '<div class="noPadding noMargin brandItem dynamicItem'+  brandItmCounter +'"><span class="brandName">'+ brands[brandItmCounter].name +'</span><span class="brandId">'+ brands[brandItmCounter].id +'</span>'+ 
 											'<div class="backImg centerBackImg brandItmImg" style="background-image: url('+ brands[brandItmCounter].pic_url +');"></div></div>';
 						actualRow.append(newBrand);
 						brandItmCounter++;
@@ -89,7 +89,7 @@ $(function(){
 				var actualRow = $('div.dynamicRow' + lastRow);
 				
 				for(var xx = 0; xx < itmsLastRow; xx++){
-					var newBrand = '<div class="noPadding noMargin brandItem dynamicItem'+  brandItmCounter +'"><span class="brandId">'+ brands[brandItmCounter].id +'</span>'+ 
+					var newBrand = '<div class="noPadding noMargin brandItem dynamicItem'+  brandItmCounter +'"><span class="brandName">'+ brands[brandItmCounter].name +'</span><span class="brandId">'+ brands[brandItmCounter].id +'</span>'+ 
 											'<div class="backImg centerBackImg brandItmImg" style="background-image: url('+ brands[brandItmCounter].pic_url +');"></div></div>';
 					actualRow.append(newBrand);
 					brandItmCounter++;
@@ -100,9 +100,17 @@ $(function(){
 
 		$(document).on('click', 'div.brandItem', function(){
 			var id = $(this).find('span.brandId').html();
+			var name = $(this).find('span.brandName').html();
+			var brandUrl = $(this).find('div.brandItmImg').css('background-image');
 
 			if(id !== undefined && id !== null){
 				sessionStorage.setItem('currentBrandAutos', id.toString());
+				if(brandUrl !== undefined && brandUrl !== null){
+					sessionStorage.setItem('currentBrandImg', brandUrl);
+				}
+				if(name !== undefined && name !== null){
+					sessionStorage.setItem('currentBrandName', name);
+				}
 				window.location = 'brand-modelo.html';
 				askForModels(id);
 			}else{

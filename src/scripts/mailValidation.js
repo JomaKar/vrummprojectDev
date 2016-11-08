@@ -4,11 +4,11 @@ $(function(){
 	var nickInput = $('input#inputEmail'),
 	loginMailInput = $('#l-email'),
 	passInput = $('input#inputPassword'),
+	passRecTxt = $('div.passRecover'),
 	passConfInput = $('input#inputPassword2');
 
 	var camaleonUUID = 0, 
 	fakingUUIDAsking = 0;
-
 
 	$.fn.validatePass = function(){
 		$(this).keyup(function(){
@@ -61,6 +61,15 @@ $(function(){
 			}, 300);
 
 		})
+
+		passRecTxt.click(function(){
+			var txt = $(el).val();
+			if(txt !== undefined){
+				if(txt.length > 0){
+					mailValidator(txt);
+				}
+			}
+		});
 
 		$(this).keyup(function () {
 			var nextEl = $('p#mailValText');

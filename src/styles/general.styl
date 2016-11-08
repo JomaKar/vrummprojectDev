@@ -63,9 +63,13 @@ body
 	margin-top 0px !important
 	margin-bottom 0px !important
 .NoleftM
-	margin-left 0px !important	
+	margin-left 0px !important
+	&.halfMR
+		margin-right 7.5px
 .NorightM
 	margin-right 0px !important
+	&.halfML
+		margin-left 7.5px
 .NobottomM
 	margin-bottom 0px !important
 .NotopM
@@ -81,6 +85,10 @@ body
 	background-clip content-box
 	&.circ
 		boder-radius 50%
+		
+	&.backSz
+		background-size 85%
+		background-repeat no-repeat
 	
 	&.centerBackImg
 		background-position center	

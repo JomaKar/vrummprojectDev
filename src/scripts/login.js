@@ -1,7 +1,5 @@
 $(function(){
 
-
-
 	var loginForm = $('#login');
 	var userE = $('#l-email'),
 	userPass = $('#l-pass'),
@@ -16,16 +14,22 @@ $(function(){
 	recoverPassTxt = $('span#recoverPassTxt'),
 	subBtnNrTxt = $('span#subBtnNrTxt'),
 	subBtnRecTxt = $('span#subBtnRecTxt'),
+	loginBtnCont =$('div.loginBtnCont'),
 	registrarbtn = $('button.registrarbtn'),
+	cancelarBtn = $('button.cancelarBtn'),
 	modal = $('div.passModalCont'),
+	closeModal = $('span.closeModal'),
+	resendPassMail = $('div.resendPart'),
 	recoverPassFragment = $('span.mailRecover');
 
 	userE.focus(removePrev);
 	userPass.focus(removePrev);
 
-	passRecTxt.click(function(){
-		recover();
-	});
+	passRecTxt.click(recover);
+
+	cancelarBtn.click(recoverPassEnd);
+
+	
 
 	linkReg.click(function(){
 
@@ -33,6 +37,10 @@ $(function(){
 
 		askForBrands();
 
+	});
+
+	closeModal.click(function(){
+		modal.hide();
 	});
 
 	function askForBrands(){
@@ -58,6 +66,7 @@ $(function(){
 	})
 
 	function recover(){
+		removePrev();
 		errMsg.disNone();
 		passCont.an().remove();
 		passRecTxt.an().remove();
@@ -65,7 +74,25 @@ $(function(){
 		subBtnNrTxt.disNone();
 		subBtnRecTxt.disBlock();
 		recoverPassTxt.disBlock();
+		cancelarBtn.disBlock();
+		loginBtnCont.css({display: 'flex'});
+		registrarbtn.addClass('NorightM halfML');
 		recoverPass = true;
+	}
+
+	function recoverPassEnd() {
+		recoverPass = false;
+		loginBtnCont.disBlock();
+		emailCont.after(passCont);
+		errMsg.after(passRecTxt);
+		recoverPassTxt.disNone();
+		normalText.disBlock();
+		subBtnRecTxt.disNone();
+		subBtnNrTxt.disBlock();
+		passCont.an();
+		passRecTxt.an().click(recover);
+		cancelarBtn.disNone();
+		registrarbtn.removeClass('NorightM halfML');
 	}
 
 
@@ -97,15 +124,7 @@ $(function(){
 			}
 
 		}else{
-			recoverPass = false;
-			emailCont.after(passCont);
-			errMsg.after(passRecTxt);
-			recoverPassTxt.disNone();
-			normalText.disBlock();
-			subBtnRecTxt.disNone();
-			subBtnNrTxt.disBlock();
-			passCont.an();
-			passRecTxt.an().click(recover);
+			recoverPassEnd();
 
 			var mailTxt = userE.val();
 			var geoLoc = sessionStorage.getItem('location');
@@ -116,7 +135,7 @@ $(function(){
 			var mailGood = sessionStorage.getItem('mailGood');
 
 			if(mailGood === 'yes'){
-				recoverPassSend(params);
+				recoverPassSend(params, null);
 			}else{
 			
 				var wrongOne = "<p id='nicknameText' class='badText'>Te falto algún dato o escribiste algo mal</p>";
@@ -162,7 +181,7 @@ $(function(){
 
 	}
 
-	function recoverPassSend(argument) {
+	function recoverPassSend(argument, flag) {
 		//console.log(argument)
 		$.post('https://vrummapp.net/ws/v2/usuario/getpasswd', 
 				argument
@@ -170,7 +189,11 @@ $(function(){
 
 				if(res.estado === 2){
 
-					displayRecoverModal();
+					if(flag === null){
+						displayRecoverModal();						
+					}else{
+						modal.hide();
+					}
 				}
 
 			 }).fail(function(err){
@@ -208,15 +231,30 @@ $(function(){
 
 	function displayRecoverModal() {
 
-		var textVal = userE.val();
-
-		recoverPassFragment.html(textVal);
-
 		modal.css({display: 'flex'});
-		setTimeout(function(){ modal.hide(); }, 2000)
+		
+		var devID = sessionStorage.getItem('deviceId');
+		devID = devID.toString();
+		var mailTxt = userE.val();
+		var geoLoc = sessionStorage.getItem('location');
+		var params = {device: devID, mail: mailTxt, geoloc: geoLoc};
+
+		resendPassMail.click(function(){
+			params = JSON.stringify(params);
+
+			var mailGood = sessionStorage.getItem('mailGood');
+
+			if(mailGood === 'yes'){
+				recoverPassSend(params,'etw');
+			}
+		});
 	}
 
 
 
 
-})
+});
+
+function con(etw){
+	console.log(etw);
+}

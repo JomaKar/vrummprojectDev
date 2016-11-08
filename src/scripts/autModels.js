@@ -2,7 +2,13 @@ $(function(){
 	var place = window.location.pathname;
 
 	if(place === "/pages/brand-modelo.html"){
-		var models = [];
+		$(document).ready(function(){
+			displayBrand();
+		});
+
+		var models = [],
+		headerBrandImg = $('div.headerBrandImg'),
+		brandName = sessionStorage.getItem('currentBrandName');
 
 		var askInterval = setInterval(function(){
 		
@@ -22,10 +28,19 @@ $(function(){
 
 
 		function displayModels(brandsArr){
-			$('div.hi').css({width: '100vw', background: 'green'}).html(brandsArr);
 
 			models = JSON.parse(brandsArr);
 			con(models);
+
+		}
+
+
+		function displayBrand() {
+			var brandURL = sessionStorage.getItem('currentBrandImg');
+			
+			headerBrandImg.css({
+				'background-image': brandURL
+			});
 
 		}
 
