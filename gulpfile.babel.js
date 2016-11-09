@@ -2,6 +2,7 @@ var gulp = require('gulp');
 var webserver = require('gulp-webserver');
 var stylus = require('gulp-stylus');
 var nib = require('nib');
+var babelify = require('babelify');
 var cleanCSS = require('gulp-clean-css');
 var browserify = require('browserify');
 var source= require('vinyl-source-stream');
@@ -65,7 +66,7 @@ gulp.task('inline', function(){
 });
 
 gulp.task('build:js', function(){
-	return browserify(config.scripts.main)
+	return browserify(config.scripts.main).transform(babelify)
 	.bundle()
 	.pipe(source('bundle.js'))
 	.pipe(buffer())

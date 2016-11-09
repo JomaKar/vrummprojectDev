@@ -98,10 +98,16 @@ select{
 }
 /*validaciones color*/
 
+#inputAlias-error, #alias-error, #inputEmail-error, #inputPassword-error, #inputPassword2-error, #inputEdad-error, #inputcontacto-error, #foto-error{
+  color:red;
+}
+
 #referido:focus #referido-error{
   display: none;
 }
 
-#inputAlias-error, #inputEmail-error, #inputPassword-error, #inputPassword2-error, #referido-error, #inputEdad-error, #inputcontacto-error, #foto-error{
-  color:red;
+#referido-error{
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
 }

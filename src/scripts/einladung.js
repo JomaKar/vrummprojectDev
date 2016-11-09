@@ -20,6 +20,7 @@ $(function(){
 
 		if(e.which === 8){
 			setTimeout(killLabel, 5);
+			cleanFriendList();
 		}
 
 		if(whoInvite.length > 0){
@@ -113,6 +114,11 @@ $(function(){
 		if(refInput.val().length > 0){
 			posFrList.append(listItm);
 		}
+		
+		var itms = posFrList.children('li').length;
+		posFrList.animate({
+			height: itms *  25
+		}, 20);	
 
 	}
 
@@ -129,10 +135,12 @@ $(function(){
 		if(argument !== 'noOne'){
 			
 			candidates = argument.mensaje.rs;
-
 			candidates.forEach(function(itm, idx){
-				var listItm = '<li class="posibleFriend regInputs"><span class="psFrName">'
-				+ itm.full_name +'</span><span class="friendId">'+itm.id+'</span><span class="psFrAlias"> '+ itm.alias +' </span> </li>';
+				var listItm = `<li class="posibleFriend regInputs">
+									<span class="psFrName">${itm.full_name}</span>
+									<span class="friendId">${itm.id}</span>
+									<span class="psFrAlias">${itm.alias}</span>
+								</li>`;
 				
 				if($('li.noFriends')){
 					$('li.noFriends').remove();
@@ -158,7 +166,6 @@ $(function(){
 
 		}
 
-		//recordFriends();
 		var itms = posFrList.children('li').length;
 		posFrList.animate({
 			height: itms *  25

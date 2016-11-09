@@ -53,8 +53,13 @@ $(function(){
 				if(x === 0){
 					
 					for(var i = 0; i < 5; i++){
-						var newBrand = '<div class="noPadding noMargin brandItem dynamicItem'+ i +'"><span class="brandName">'+ brands[i].name +'</span><span class="brandId">'+ brands[i].id +'</span>'+ 
-											'<div class="backImg centerBackImg brandItmImg" style="background-image: url('+ brands[i].pic_url +');"></div></div>';
+										
+						var newBrand = `<div class="noPadding noMargin brandItem dynamicItem${i}">
+											<span class="brandName">${brands[i].name}</span>
+											<span class="brandId">${brands[i].id}</span>
+											<div class="backImg centerBackImg brandItmImg" style="background-image: url('${brands[i].pic_url}');"></div>
+										</div>`;
+
 						initialRow.append(newBrand);
 						brandItmCounter++;
 					}
@@ -63,14 +68,20 @@ $(function(){
 				
 
 				if(x > 0){
-					var newBrandRow = '<div class="row-fluid noPadding noMargin brandCatRow dynamicRow'+ x +'"></div>';
+									 
+					var newBrandRow = `<div class="row-fluid noPadding noMargin brandCatRow dynamicRow${x}"></div>`;
 					rowsCont.append(newBrandRow);
 
 					var actualRow = $('div.dynamicRow' + x);
 					
 					for(var i = 0; i < 5; i++){
-						var newBrand = '<div class="noPadding noMargin brandItem dynamicItem'+  brandItmCounter +'"><span class="brandName">'+ brands[brandItmCounter].name +'</span><span class="brandId">'+ brands[brandItmCounter].id +'</span>'+ 
-											'<div class="backImg centerBackImg brandItmImg" style="background-image: url('+ brands[brandItmCounter].pic_url +');"></div></div>';
+										
+						var newBrand = `<div class="noPadding noMargin brandItem dynamicItem${brandItmCounter}">
+											<span class="brandName">${brands[brandItmCounter].name}</span>
+											<span class="brandId">${brands[brandItmCounter].id}</span>
+											<div class="backImg centerBackImg brandItmImg" style="background-image: url('${brands[brandItmCounter].pic_url}');"></div>
+										</div>`;
+
 						actualRow.append(newBrand);
 						brandItmCounter++;
 					}
@@ -83,14 +94,18 @@ $(function(){
 			if(itmsLastRow > 0){
 				var lastRow = fullRowsNumber + 1;
 
-				var newBrandRow = '<div class="row-fluid noPadding noMargin brandCatRow dynamicRow'+ lastRow +'"></div>';
+				var newBrandRow = `<div class="row-fluid noPadding noMargin brandCatRow dynamicRow${lastRow}"></div>`;
 				rowsCont.append(newBrandRow);
 
 				var actualRow = $('div.dynamicRow' + lastRow);
 				
 				for(var xx = 0; xx < itmsLastRow; xx++){
-					var newBrand = '<div class="noPadding noMargin brandItem dynamicItem'+  brandItmCounter +'"><span class="brandName">'+ brands[brandItmCounter].name +'</span><span class="brandId">'+ brands[brandItmCounter].id +'</span>'+ 
-											'<div class="backImg centerBackImg brandItmImg" style="background-image: url('+ brands[brandItmCounter].pic_url +');"></div></div>';
+					var newBrand =  `<div class="noPadding noMargin brandItem dynamicItem${brandItmCounter}">
+										<span class="brandName">${brands[brandItmCounter].name}</span>
+										<span class="brandId">${brands[brandItmCounter].id}</span>
+										<div class="backImg centerBackImg brandItmImg" style="background-image: url('${brands[brandItmCounter].pic_url}');"></div>
+									</div>`;
+									
 					actualRow.append(newBrand);
 					brandItmCounter++;
 				}
@@ -120,12 +135,12 @@ $(function(){
 		})
 
 		function askForModels(id) {
-			id = parseInt(id),
+			var theid = parseInt(id),
 			modelsArr = [];
 			var device = sessionStorage.getItem('deviceId');
 
-			if(device !== undefined && device !== null && id){
-				var data = {'device': device, brandId: id};
+			if(device !== undefined && device !== null && theid){
+				var data = {'device': device, brandId: theid};
 				data = JSON.stringify(data);
 
 				$.post('https://vrummapp.net/ws/v2/catalogo/getmodelos',
