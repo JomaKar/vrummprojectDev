@@ -29,161 +29,186 @@ $(function(){
 
 
 		function extractModels(brandsArr){
-
 			models = JSON.parse(brandsArr);
 			var availableYears = [],
+			availableUses = [],
+			availableTypes = [],
 			diffUses = [], 
 			tipo = [];
-			var collections = {};
 
-			//figuring out of how many different years the cars belong
-			//the different years are gonna be stored in the 'availableYears' array
+			//figuring out the different years available
+
 			models.forEach(function(itm, idx){
 				var inArray = $.inArray(itm.year, availableYears, 0);
 				if(inArray === -1){
-					availableYears.push(itm.year);
-					collections[`year${itm.year}`] = [];
+					availableYears.push(itm.year);				}
+			});
+
+			//asking which of the elements in the full array
+			//match the available years and grouping them
+
+			var itmsDependingOnYear = [];
+			
+			availableYears.forEach(function(yearName, idx){
+				itmsDependingOnYear[idx] = [];
+
+				itmsDependingOnYear[idx] = $.grep(models, function(el, idex){
+					return (el.year === availableYears[idx] && el.uso);
+				});
+
+			});
+
+
+			//figuring out the different uses available
+
+			models.forEach(function(itm, idx){
+				var inArr = $.inArray(itm.uso, availableUses, 0);
+				if(inArr === -1){
+					availableUses.push(itm.uso);
 				}
 			});
 
+			models.forEach(function(itm, idx){
+				var inArray = $.inArray(itm.tipo_catalogo, availableTypes, 0);
+				if(inArray === -1){
+					availableTypes.push(itm.tipo_catalogo);
+				}
+			});
 
+			var itmsYearUse = [];
+
+			itmsDependingOnYear.forEach(function(yearColl, indx){
+				itmsYearUse[indx] = [];
+
+				availableUses.forEach(function(useName, index){
+					itmsYearUse[indx][index] = [];
+
+					itmsYearUse[indx][index] = $.grep(yearColl, function(el, idx){
+						return el.uso === availableUses[index];
+					});
+				});
+
+			});
 			
-			//we split the full models in chunks depending of the year they belong
-			//and we use the same array where the years where stored to stored this new
-			//chunks, which are a number of groups equal to the number of differents dates
-			availableYears.forEach(function(yearName, yearBoxIdx){
-				availableYears[yearBoxIdx] = $.grep(models, function(el, idex){
-					return el.year === availableYears[yearBoxIdx];
-				});
-			});
+			// con(itmsYearUse);
 
-			availableYears.forEach(function(yearColl, idxColl){
-				$.each(yearColl, function(idexYear, yearItm){
-					diffUses[idxColl] = [];
-					var inArr = $.inArray(yearItm.uso, diffUses[idxColl], 0);
-					if(inArr === -1){
-						diffUses[idxColl].push(yearItm.uso);
-					}
-				});
-			});
+			var itmsYearUseType = [];
 
+			itmsYearUse.forEach(function(yearColl, indx){
+				itmsYearUseType[indx] = [];
 
-			//con(availableYears);
+				yearColl.forEach(function(useColl, index){
+					itmsYearUseType[indx][index] = [];
 
+					availableTypes.forEach(function(typeName, ind){
+						itmsYearUseType[indx][index][ind] = [];
 
-			//divide again the yearsChunksModels in smaller usesChunks
-
-			$.map(diffUses, function(usoName, idx){
-				$.each(usoName, function(indx, item){
-					diffUses[idx][indx] = $.grep(availableYears[idx], function(el, idex){
-						return el.uso === diffUses[idx][indx];
+						itmsYearUseType[indx][index][ind] = $.grep(useColl, function(el, idx){
+							return el.tipo_catalogo === availableTypes[ind];
+						});
 					});
+
 				});
+
 			});
 
-			//con(diffUses);
+			itmsYearUseType.forEach(function(yearColl, indx){
 
+				yearColl.forEach(function(useColl, index){
 
-			//extract the different types to filter then. Coll = collection
-			diffUses.forEach(function(yearColl, yearIdx){
-				tipo[yearIdx] = [];
-				yearColl.forEach(function(useColl, useIdx){
-					tipo[yearIdx][useIdx] = [];
-					useColl.forEach(function(useItm, idx){
-						var inArr = $.inArray(useItm.tipo_catalogo, tipo[yearIdx][useIdx], 0);
-						if(inArr === -1){
-							tipo[yearIdx][useIdx].push(useItm.tipo_catalogo);
-						}
-
-					});
+					itmsYearUseType[indx][index] = $.grep(useColl, function(arr, idx){
+							return arr.length > 0;
+						});
 				});
+
 			});
-
-			//con(tipo);
-
-			tipo.forEach(function(yearColl, yearIdx){
-				yearColl.forEach(function(useColl, useIdx){
-					useColl.forEach(function(typeName, idx){
-						tipo[yearIdx][useIdx][idx] = $.grep(diffUses[yearIdx][useIdx], function(el, elIdx){
-							return el.tipo_catalogo === typeName;
-						})
-
-					});
-				});
-			});
-
-			con(tipo);
-			displayModels(tipo);
+			con(itmsYearUse);
+			con(itmsYearUseType);
+			displayModels(itmsDependingOnYear, itmsYearUse, itmsYearUseType);
 
 		}
 
 		var yearCollCounter = 0;
 		var modelsSpace = $('div.modelsSpace');
 		var initialTxt = $('p.modelsStartTxt');
+		var iterateInYears = true;
+		var iterateInUse = true;
+		var iterateInTypes = true;
 
-		function displayModels(arrModels) {
+		function displayModels(collYear, collYearUse, collYearUseType) {
 			initialTxt.remove();
 
-            arrModels.forEach(function(yearColl, yearIdx){
-				yearColl.forEach(function(useColl, useIdx){
-					useColl.forEach(function(typeColl, typeIdx){
-						typeColl.forEach(function(typeItems, typeIdx){
-							
-							if(typeItems.length > 1){
+			collYearUse.forEach(function(yearColl, ind){
+				yearColl.forEach(function(useColl, indx){
+					var year = useColl[0].year;
+					var use = useColl[0].uso;
 
-								typeItems.sort(function(a, b){
-									return parseFloat(a.year) - parseFloat(b.year);
-								});
+					var yearUseFilter = `<div class="galleryHead col-xs-12 noPadding noMargin yearFilter${year + use}">
+											<span class="modelUse">${use}</span>
+											<span class="modelY">${year}</span>
+										</div>`;
 
-							}
+					modelsSpace.append(yearUseFilter);					
 
-							yearColl.forEach(function(yearItem, ycollIdx){
-								yearCollCounter = ycollIdx;
-								var yearUseFilter = `<div class="galleryHead col-xs-12 noPadding noMargin yearFilter${yearCollCounter}"><span class="modelUse"></span><span class="modelY">${typeItems.year}</span></div>`;
+				});
+			});
 
-								modelsSpace.append(yearUseFilter);
-							});
+			collYearUseType.forEach(function(yearColl, ind){
+				yearColl.forEach(function(useColl, indx){
 
-							useColl.forEach(function(useItem, ucIdx){
-								for(var i = 0; i <= yearCollCounter; i++){
-									var actualFilter = $('div.yearFilter' + i);
-									actualFilter.find('span.modelUse').html(typeItems.uso);
-								}
-							});
+					useColl.forEach(function(typeColl, index){
+						var year = typeColl[0].year;
+						var use =  typeColl[0].uso;
+						var yearUse = year + use;
+						var currentYearUseFilter = $('div.yearFilter' + yearUse);
+						var type = typeColl[0].tipo_catalogo;
+						type = type.replace(/ /g, '');
+						
+						var yearUseType = yearUse + type;
 
-							//////////am here
-							//////
-							//////
-							/////
-							
-							var typeFilter = `<div class="galleryNeck col-xs-12 noPadding noMargin">
-							                    <span class="gallNeckCarSp"></span>
-							                    <span class="gallNeckCarTxt">SUVs</span>
-							                </div>`;
 
-							var modelContainer = `<div class="col-xs-12 noPadding noMargin">
-								                    <div class="row-fluid noPadding noMargin childHeight modelBox">
-								                        
-								                    </div>
-								                </div>`;
-							
-							var model = `<div class="col-xs-12 col-sm-4 noPadding noMargin backImg centerBackImg modelItem" style="background-image:url('')">
+						var typeFilter = `<div class="galleryNeck col-xs-12 noPadding noMargin typeFilter${year + use + type}">
+						                    <span class="gallNeckCarSp"></span>
+						                    <span class="gallNeckCarTxt">${type}</span>
+						                </div>
+						                <div class="col-xs-12 noPadding noMargin">
+						                    <div class="row-fluid noPadding noMargin childHeight modelBox${year + use + type}">
+						                        
+						                    </div>
+						                </div>`;
+
+						currentYearUseFilter.after(typeFilter);
+						
+						typeColl.forEach(function(typeItem, indexx){
+							var currentBox = $('div.modelBox' + yearUseType);
+
+							var model = `<div class="col-xs-12 col-sm-4 noPadding noMargin backImg centerBackImg modelItem" style="background-image:url('${typeItem.pic_url}')">
 				                            <div class="hoverInfo">
 				                                <ul class="mDetails noPadding">
-				                                  <li class="mName"></li>
-				                                  <li class="vName"></li>
-				                                  <li class="yModel"></li>
+				                                  <li class="mName">${typeItem.name}</li>
+				                                  <li class="vName">${typeItem.desde} - ${typeItem.hasta}</li>
+				                                  <li class="yModel">${typeItem.year}</li>
 				                                </ul>
 				                            </div>
 				                        </div>`;
 
-
-
-
+				            currentBox.append(model);            
 						});
+
+
 					});
 				});
 			});
+
+
+           
+
+			var modelContainer = `<div class="col-xs-12 noPadding noMargin">
+				                    <div class="row-fluid noPadding noMargin childHeight modelBox">
+				                        
+				                    </div>
+				                </div>`;
+
 		}
 
 

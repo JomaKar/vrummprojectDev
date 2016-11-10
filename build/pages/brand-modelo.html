@@ -20,9 +20,7 @@
           modelsStored = sessionStorage.getItem('modelsArr'),
           models = [];
 
-          if(brandsModels === null || brandsModels === undefined || 
-
-            brandsModels === 'nothing stored'){
+          if(brandsModels === null || brandsModels === undefined || brandsModels === 'nothing store'){
             window.location = 'catalogo-marcas.html';
           
           }else if(modelsStored === null || modelsStored === undefined){
@@ -59,7 +57,9 @@
             $(this).scrollTop(0);
           });
 
-      })
+          window.onbeforeunload = function() { sessionStorage.removeItem('modelsArr') };
+
+      });
 
     </script>  
 

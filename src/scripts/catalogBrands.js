@@ -126,8 +126,10 @@ $(function(){
 				if(name !== undefined && name !== null){
 					sessionStorage.setItem('currentBrandName', name);
 				}
-				window.location = 'brand-modelo.html';
+				
 				askForModels(id);
+				window.location = 'brand-modelo.html';
+				
 			}else{
 				sessionStorage.setItem('currentBrandAutos', 'nothing stored');
 			}
@@ -142,9 +144,11 @@ $(function(){
 			if(device !== undefined && device !== null && theid){
 				var data = {'device': device, brandId: theid};
 				data = JSON.stringify(data);
+				con(data);
 
 				$.post('https://vrummapp.net/ws/v2/catalogo/getmodelos',
 					data).then(function(res){
+						con(res);
 						if(res.estado === 1){
 							modelsArr = res.mensaje.rs;
 							modelsArr = JSON.stringify(modelsArr);
