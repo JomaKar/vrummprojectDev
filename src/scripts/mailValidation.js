@@ -5,6 +5,7 @@ $(function(){
 	loginMailInput = $('#l-email'),
 	passInput = $('input#inputPassword'),
 	passRecTxt = $('div.passRecover'),
+	submitButt = $('button.registrarbtn.loginBtn'),
 	passConfInput = $('input#inputPassword2');
 
 	var camaleonUUID = 0, 
@@ -63,6 +64,15 @@ $(function(){
 		})
 
 		passRecTxt.click(function(){
+			var txt = $(el).val();
+			if(txt !== undefined){
+				if(txt.length > 0){
+					mailValidator(txt);
+				}
+			}
+		});
+
+		submitButt.click(function(){
 			var txt = $(el).val();
 			if(txt !== undefined){
 				if(txt.length > 0){

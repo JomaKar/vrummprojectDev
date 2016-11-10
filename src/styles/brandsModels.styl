@@ -8,7 +8,7 @@
 	position fixed
 	top 52px
 	left 0
-	z-index 100
+	z-index 1
 	padding-top 32px
 	border-bottom 1px solid white
 	
@@ -27,6 +27,9 @@
 	background-color white
 	box-shadow inset 29vw 0px 75px -10px black, inset -29vw 10px 75px -10px black
 	border-bottom 3.5px solid $regActiveBtn
+	text-align center
+	padding-top 8px !important
+	color $headModelTxt
 	
 .galleryNeck
 	height 20px
@@ -46,13 +49,36 @@
 		color white
 		font-size 13px
 		
-.modelItem
-	&:hover
+.col-xs-12	
+	&.modelItem
+		overflow hidden
+		.img-responsive
+			&.carImg
+				width 100%
+		&:hover
+			.hoverInfo
+				visibility visible
+				background-color rgba(50, 50, 50, .6)
+				color white
+		
 		.hoverInfo
-			visibility visible
-			background-color rgba(150, 150, 150, .3)
-			color white
-	
-	.hoverInfo
-		visibility hidden
-	
+			visibility hidden
+			position absolute
+			top 0
+			width 100%
+			height 100%
+			font-size 16px
+			padding 10%
+			
+			.mDetails
+				list-style-type none
+
+@media(min-width 500px)
+	.col-xs-12	
+		&.modelItem
+			width 50%
+			
+@media(min-width 768px)
+	.col-sm-4	
+		&.modelItem
+			width 33.33333333%

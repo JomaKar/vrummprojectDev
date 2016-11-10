@@ -6,12 +6,17 @@ $(function(){
 	linkRegCat = $('button#goToReg-Cat'),
 	initialRow = $('div.firstRow');
 
+	var lastSlash = place.lastIndexOf('/');
+
+	place = place.slice(lastSlash);
+
 	linkRegCat.click(function(){
 		window.location = 'registro.html';
 	})
 
 
-	if(place === "/pages/catalogo-marcas.html"){
+	if(place === "/catalogo-marcas.html"){
+		console.log('hello from brands again')
 
 		var askInterval = setInterval(function(){
 		

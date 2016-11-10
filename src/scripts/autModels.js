@@ -2,10 +2,16 @@ $(function(){
 	var place = window.location.pathname;
 	var brands = [];
 
-	if(place === "/pages/brand-modelo.html"){
+	var lastSlash = place.lastIndexOf('/');
+
+	place = place.slice(lastSlash);
+
+
+	if(place === "/brand-modelo.html"){
 		$(document).ready(function(){
 			displayBrand();
 		});
+
 
 		var models = [],
 		headerBrandImg = $('div.headerBrandImg'),
@@ -28,6 +34,10 @@ $(function(){
 		}
 
 
+		var modelsSpace = $('div.modelsSpace');
+		var initialTxt = $('p.modelsStartTxt');
+
+
 		function extractModels(brandsArr){
 			models = JSON.parse(brandsArr);
 			var availableYears = [],
@@ -36,104 +46,118 @@ $(function(){
 			diffUses = [], 
 			tipo = [];
 
-			//figuring out the different years available
+			if(models !== ''){
+				//figuring out the different years available
 
-			models.forEach(function(itm, idx){
-				var inArray = $.inArray(itm.year, availableYears, 0);
-				if(inArray === -1){
-					availableYears.push(itm.year);				}
-			});
-
-			//asking which of the elements in the full array
-			//match the available years and grouping them
-
-			var itmsDependingOnYear = [];
-			
-			availableYears.forEach(function(yearName, idx){
-				itmsDependingOnYear[idx] = [];
-
-				itmsDependingOnYear[idx] = $.grep(models, function(el, idex){
-					return (el.year === availableYears[idx] && el.uso);
+				models.forEach(function(itm, idx){
+					var inArray = $.inArray(itm.year, availableYears, 0);
+					if(inArray === -1){
+						availableYears.push(itm.year);				}
 				});
 
-			});
+				//asking which of the elements in the full array
+				//match the available years and grouping them
 
+				var itmsDependingOnYear = [];
+				
+				availableYears.forEach(function(yearName, idx){
+					itmsDependingOnYear[idx] = [];
 
-			//figuring out the different uses available
-
-			models.forEach(function(itm, idx){
-				var inArr = $.inArray(itm.uso, availableUses, 0);
-				if(inArr === -1){
-					availableUses.push(itm.uso);
-				}
-			});
-
-			models.forEach(function(itm, idx){
-				var inArray = $.inArray(itm.tipo_catalogo, availableTypes, 0);
-				if(inArray === -1){
-					availableTypes.push(itm.tipo_catalogo);
-				}
-			});
-
-			var itmsYearUse = [];
-
-			itmsDependingOnYear.forEach(function(yearColl, indx){
-				itmsYearUse[indx] = [];
-
-				availableUses.forEach(function(useName, index){
-					itmsYearUse[indx][index] = [];
-
-					itmsYearUse[indx][index] = $.grep(yearColl, function(el, idx){
-						return el.uso === availableUses[index];
+					itmsDependingOnYear[idx] = $.grep(models, function(el, idex){
+						return (el.year === availableYears[idx] && el.uso);
 					});
+
 				});
 
-			});
-			
-			// con(itmsYearUse);
+				//figuring out the different uses available
 
-			var itmsYearUseType = [];
+				models.forEach(function(itm, idx){
+					var inArr = $.inArray(itm.uso, availableUses, 0);
+					if(inArr === -1){
+						availableUses.push(itm.uso);
+					}
+				});
 
-			itmsYearUse.forEach(function(yearColl, indx){
-				itmsYearUseType[indx] = [];
+				models.forEach(function(itm, idx){
+					var inArray = $.inArray(itm.tipo_catalogo, availableTypes, 0);
+					if(inArray === -1){
+						availableTypes.push(itm.tipo_catalogo);
+					}
+				});
 
-				yearColl.forEach(function(useColl, index){
-					itmsYearUseType[indx][index] = [];
+				var itmsYearUse = [];
 
-					availableTypes.forEach(function(typeName, ind){
-						itmsYearUseType[indx][index][ind] = [];
+				//creating clasification depending on their use
 
-						itmsYearUseType[indx][index][ind] = $.grep(useColl, function(el, idx){
-							return el.tipo_catalogo === availableTypes[ind];
+				itmsDependingOnYear.forEach(function(yearColl, indx){
+					itmsYearUse[indx] = [];
+
+					availableUses.forEach(function(useName, index){
+						itmsYearUse[indx][index] = [];
+
+						itmsYearUse[indx][index] = $.grep(yearColl, function(el, idx){
+							return el.uso === availableUses[index];
 						});
 					});
 
 				});
 
-			});
+				//deleting arrays with nothing inside them in the useCollection 
 
-			itmsYearUseType.forEach(function(yearColl, indx){
+				itmsYearUse.forEach(function(yearColl, indx){
 
-				yearColl.forEach(function(useColl, index){
+					itmsYearUse[indx] = $.grep(yearColl, function(arr, idx){
+						return arr.length > 0;
+					});
 
-					itmsYearUseType[indx][index] = $.grep(useColl, function(arr, idx){
-							return arr.length > 0;
+				});
+				
+				// con(itmsYearUse);
+
+				var itmsYearUseType = [];
+
+				//creating last clasification depending on their type
+
+				itmsYearUse.forEach(function(yearColl, indx){
+					itmsYearUseType[indx] = [];
+
+					yearColl.forEach(function(useColl, index){
+						itmsYearUseType[indx][index] = [];
+
+						availableTypes.forEach(function(typeName, ind){
+							itmsYearUseType[indx][index][ind] = [];
+
+							itmsYearUseType[indx][index][ind] = $.grep(useColl, function(el, idx){
+								return el.tipo_catalogo === availableTypes[ind];
+							});
 						});
+
+					});
+
 				});
 
-			});
-			con(itmsYearUse);
-			con(itmsYearUseType);
-			displayModels(itmsDependingOnYear, itmsYearUse, itmsYearUseType);
+				//deleting arrays with nothing inside them in typeCollection
+
+				itmsYearUseType.forEach(function(yearColl, indx){
+
+					yearColl.forEach(function(useColl, index){
+
+						itmsYearUseType[indx][index] = $.grep(useColl, function(arr, idx){
+								return arr.length > 0;
+							});
+					});
+
+				});
+				con(itmsYearUse);
+				con(itmsYearUseType);
+				displayModels(itmsDependingOnYear, itmsYearUse, itmsYearUseType);
+	
+			}else{
+				initialTxt.html('No hay información sobre esta marca para mostrar');
+			}
 
 		}
 
-		var yearCollCounter = 0;
-		var modelsSpace = $('div.modelsSpace');
-		var initialTxt = $('p.modelsStartTxt');
-		var iterateInYears = true;
-		var iterateInUse = true;
-		var iterateInTypes = true;
 
 		function displayModels(collYear, collYearUse, collYearUseType) {
 			initialTxt.remove();
@@ -162,6 +186,7 @@ $(function(){
 						var yearUse = year + use;
 						var currentYearUseFilter = $('div.yearFilter' + yearUse);
 						var type = typeColl[0].tipo_catalogo;
+						var typeName = type;
 						type = type.replace(/ /g, '');
 						
 						var yearUseType = yearUse + type;
@@ -169,7 +194,7 @@ $(function(){
 
 						var typeFilter = `<div class="galleryNeck col-xs-12 noPadding noMargin typeFilter${year + use + type}">
 						                    <span class="gallNeckCarSp"></span>
-						                    <span class="gallNeckCarTxt">${type}</span>
+						                    <span class="gallNeckCarTxt">${typeName}</span>
 						                </div>
 						                <div class="col-xs-12 noPadding noMargin">
 						                    <div class="row-fluid noPadding noMargin childHeight modelBox${year + use + type}">
@@ -182,7 +207,8 @@ $(function(){
 						typeColl.forEach(function(typeItem, indexx){
 							var currentBox = $('div.modelBox' + yearUseType);
 
-							var model = `<div class="col-xs-12 col-sm-4 noPadding noMargin backImg centerBackImg modelItem" style="background-image:url('${typeItem.pic_url}')">
+							var model = `<div class="col-xs-12 col-sm-4 noPadding noMargin modelItem">
+				                            <img src="${typeItem.pic_url}" class="img-responsive carImg"/>
 				                            <div class="hoverInfo">
 				                                <ul class="mDetails noPadding">
 				                                  <li class="mName">${typeItem.name}</li>
@@ -200,15 +226,38 @@ $(function(){
 				});
 			});
 
+			sizingModelItms();
 
-           
+		}
 
-			var modelContainer = `<div class="col-xs-12 noPadding noMargin">
-				                    <div class="row-fluid noPadding noMargin childHeight modelBox">
-				                        
-				                    </div>
-				                </div>`;
 
+		function sizingModelItms() {
+			
+			var carContainer = $('div.modelItem');
+			
+			if(carContainer.length){
+				alleGleichlich(carContainer);
+			}
+			
+		}
+
+
+		$(window).resize(function(){
+			var carContainer = $('div.modelItem');
+			if(carContainer.length){
+				alleGleichlich(carContainer);
+			}
+		});
+
+
+
+		function alleGleichlich(el) {
+			var img = $(el).find('img.carImg').first();
+			var images = $(el).find('img.carImg')
+			var width = img.width();
+			var height = width * 0.6309;
+
+			images.css({height: height});
 		}
 
 

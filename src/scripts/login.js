@@ -33,9 +33,9 @@ $(function(){
 
 	linkReg.click(function(){
 
+		askForBrands();
 		window.location = 'pages/registro.html';
 
-		askForBrands();
 
 	});
 
@@ -137,9 +137,17 @@ $(function(){
 			if(mailGood === 'yes'){
 				recoverPassSend(params, null);
 			}else{
-			
-				var wrongOne = "<p id='nicknameText' class='badText'>Te falto algún dato o escribiste algo mal</p>";
-				registrarbtn.before(wrongOne);
+				if(mailTxt.length > 0){
+					setTimeout(function(){
+						var askMailAgain  = sessionStorage.getItem('mailGood');
+						if(askMailAgain === 'yes'){
+							recoverPassSend(params, null);
+						}else{
+							var wrongOne = "<p id='nicknameText' class='badText'>Te falto algún dato o escribiste algo mal</p>";
+							registrarbtn.before(wrongOne);
+						}
+					}, 300);
+				}
 
 			}
 
