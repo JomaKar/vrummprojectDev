@@ -252,10 +252,14 @@ $(function(){
 
 	});
 
+	var photo;
 
 	$('#image_file').on('change', function(){
 
 		if($(this)[0].files.length > 0){
+			console.log(typeof $(this)[0].files, $(this)[0].files);
+
+			photo = $(this)[0].files[0];
 
 			var pict = $(this)[0].files[0].name;
 			
