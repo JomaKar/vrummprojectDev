@@ -1,3 +1,5 @@
+@import 'colors'
+
 .p-header
 	position relative
 
@@ -7,17 +9,181 @@
 		position relative
 		color #fff
 		background-position top center
+		box-shadow inset 0 -60px 75px 26px black, inset 21vw 0 122px -29px black, inset -19vw 0 129px -24px black
 	
 	.p-profileInfoCont
 		position relative
 		
 		.p-profilePhoto
 			background-image url('/img/profileDafault.png')
+			z-index 1
+			border-radius 4px
+			
+		.p-profileInfo
+			color white
+			
+			.profileName
+				color $regActiveBtn
+				font-size small
+				margin 0
+			
+			.profileAlias
+				font-size smaller	
+			
+			.cameraIconHead
+				position absolute
+				right 16px
+				font-size 1.5em
+				top 16%
+				color rgba(225, 225, 225, 0.4)
+			
+			
+	.p-profActDetCont
+		position relative
+		
+		.garagaInfoDetails
+			background-color black
+			box-shadow inset 0 10px 20px -10px white
+			color white
+			padding-top 3.5%
+
+			.garageCarsCounter, .garageShareCounter
+				display flex
+				flex-wrap wrap-reverse
+				
+			.membershipDateCounter
+				text-align right	
+
+.garageFilterBar
+	height 40px
+	background-color $redirectBox
+	
+	.garageFilterRow
+		.filterBar
+			height 40px
+			text-align right
+			
+			.shareGarageIcon
+				width 36px
+				height 35px
+				padding-top 5px
+				color white
+				border-right 1.5px solid gray
+				font-size 26px
+				text-align left
+			
+			.filterDivCont
+				height 100%
+				width 200px
+				float right
+				padding 5px 20px
+				
+				.filtrationListDiv
+					border 0.2px solid white
+					border-radius 2px
+					background-color transparent
+					padding 4px 10px
+					width 100%
+					height 100%
+					display flex
+					justify-content space-between
+					color white
+					
+					.filterText
+						text-align center
+						
+					.filterList
+						position absolute
+						top 35px
+						right 35px
+						background-color black
+						list-style-type none
+						padding-left 0
+						margin-left 0
+						width 160px
+						border 1.5px solid white
+						border-top hidden
+						height 0
+						
+						.filterGarage
+							width 100%
+							height 20px
+	
+
+.carsCountTxt, .sharedCountTxt, .membershipCountTxt
+	color $regTextColor
+	font-size 9px
+
+.membershipCountTxt
+	position relative
+	top -7px
+
+.memDateNumb
+	font-size 11px
+
+.carsNumb, .shareNumb
+	color white
+	font-size 14px
+	
+.garageImg
+	width 100%	
+
+@media(min-width 400px)
+	.carsCountTxt, .sharedCountTxt, .membershipCountTxt
+		margin-left 5px
+		
+	.p-header
+		.p-profileInfoCont	
+			.p-profileInfo
+				.profileName
+					font-size 18px
+					
+				.profileAlias
+					font-size 14px	
+
+@media(min-width 500px)
+	.p-header
+		.p-profActDetCont
+			.garagaInfoDetails
+				padding-top 2.5%
 
 
+@media(min-width 630px)		
+	.p-header
+		.p-profileInfoCont	
+			.p-profileInfo
+				.profileName
+					font-size 18px
+					margin 10px 0
+					
+				.cameraIconHead
+					font-size 2em
+					top 23%
+
+	.memDateNumb
+		font-size 14px
+
+	.carsCountTxt, .sharedCountTxt, .membershipCountTxt
+		font-size 11px
+		
+
+
+@media(min-width 730px)
+	.carsCountTxt, .sharedCountTxt, .membershipCountTxt
+		margin-left 10px
+		
 
 @media(min-width 992px)
 	.p-header
 		.p-headerBackImg
 			height 400px
 			background-position left
+			
+
+@media(min-width 1100px)
+	.p-header
+		.p-profileInfoCont	
+			.p-profileInfo
+				.profileName
+					margin-top 25px
+					

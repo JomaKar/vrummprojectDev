@@ -20,7 +20,7 @@
   </head>
 
 
-  <body>
+  <body class="noPadding">
 
     <nav class="navbar navbar-inverse myNavBar">
       <div class="col-md-12 noPadding noMargin">
@@ -31,104 +31,135 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand"  href="#">VRUMM</a>
+          <a class="navbar-brand noPadding backImg iconLogo" href="#"></a>
         </div>
+
         <div id="navbar" class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Inicio</a></li>
-            <li><a href="#">Descarga App</a></li>
-            <li><a href="pages/registro.html">Registro</a></li>
-            <li><a href="pages/login.html">Login</a></li>
-            <li><a href="#">Invitar Amigos a VRUMM</a></li>
+          <ul class="nav navbar-nav navMenuList">
+            <li class="active"><a href="#">Descargar app </a></li>
+            <li class="hidden-xs menuItmSign"><span>|</span></li>
+            <li><a href="../index.html">Invitar amigos</a></li>
+            <li class="hidden-xs menuItmSign"><span>|</span></li>
+            <li><a href="registro.html">Configuraciones</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
     </nav>
 
-    <header class="p-header childHeight">
+    <header class="p-header">
       
       <div class="p-headerBackImg backImg">    
       </div>
 
       <div class="p-profileInfoCont row-fluid childHeight noPadding noMargin">
-        <div class="p-profilePhoto noPadding col-xs-offset-1 col-xs-4 col-sm-2 backImg"></div> 
-        <div class="p-profileInfo col-xs-7">
-          <h4 class="profileName fullName">MiNombre Completo Men</h4>
-          <p class="profileAlias"><span>@</span>miAlias</p>
-        </div>  
+          <div class="p-profilePhoto noPadding col-xs-offset-1 col-xs-4 col-sm-2 backImg"></div> 
+          <div class="p-profileInfo col-xs-7 col-sm-8 col-md-7">
+              <h4 class="profileName fullName">MiNombre Completo Men</h4>
+              <p class="profileAlias"><span>@</span>miAlias</p>
+              <span class="glyphicon glyphicon-camera cameraIconHead"></span>
+          </div>  
       </div>
 
       <div class="p-profActDetCont row-fluid childHeight noMargin noPadding">
-        
+          <div class="garagaInfoDetails col-xs-12">
+              <div class="row-fluid childHeight noMargin noPadding">
+                  <div class="col-xs-offset-5 col-xs-2 col-sm-offset-3 NorightP garageCarsCounter">
+                      <span class="carsNumb">5</span>
+                      <span class="carsCountTxt">VEHICULOS <br> EN EL GARAGE</span>
+                  </div>
+                  <div class="col-xs-2 NorightP garageShareCounter">
+                      <span class="shareNumb">13</span>
+                      <span class="sharedCountTxt">VECES <br> COMPARTIDO</span>
+                  </div>
+                  <div class="col-xs-2 noPadding col-xs-offset-1 col-sm-offset-2 col-md-offset-1 membershipDateCounter">
+                      <span class="membershipCountTxt">EN VRUMM DESDE</span>
+                      <br class="hidden-xs hidden-sm">
+                      <span class="memDateNumb">12/07/2016</span>
+                  </div>
+              </div>
+          </div>
+          <div class="col-xs-12 garageFilterBar">
+              <div class="row-fluid noPadding noMargin childHeight garageFilterRow">
+                  <div class="col-xs-12 col-sm-6 col-md-11 filterBar">
+                      <span class="shareGarageIcon glyphicon glyphicon-log-out"></span>
+                      <div class="filterDivCont">
+                          <div class="filtrationListDiv">
+                              <span class="filterText">Ordenar por...</span>
+                              <ul class="filterList">
+                                <li class="filterGarage" data-filter=".garageImgCont">Ordenar por...</li>
+                                <li class="filterGarage" data-filter=".now">Now</li>
+                                <li class="filterGarage" data-filter=".soon">Soon</li>
+                                <li class="filterGarage" data-filter=".love">Love</li>
+                              </ul>
+                              <span class="glyphicon glyphicon-triangle-bottom"></span>
+                          </div>
+                      </div>    
+                  </div>
+              </div>
+          </div>
       </div>
-
-     
     </header>
 
-    <nav class="navbar navbar-inverse col-md-12 submenu2">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-        </div>
-        <div id="navbar" class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Compartir Garage</a></li>
-            <li><a href="#submenu2">Filtrar</a></li>
-            <li><a href="#submenu3">Likes</a></li>
-          </ul>
-        </div><!--/.nav-collapse -->
-      </div>
-    </nav>
-    <div class="contenedorimagnes  col-md-12">
-      <a href="pages/detalles.html" >
-  	  <div class=" col-sm-6 col-md-4 imagenes">
-  	    <img  src="http://images.mazdamexico.com.mx/MusaWeb/mexico3/img/vlp/panels/M3H/gallery/large/m3h_fullsize8.jpg" class="img-responsive" border="0"/>
-  	  </div>
-      </a>
-      <a href="pages/detalles.html" >
-  	  <div class="col-sm-6 col-md-4 imagenes">
-  	    <img  src="http://images.mazdamexico.com.mx/MusaWeb/mexico3/img/vlp/panels/M3H/gallery/large/m3h_fullsize8.jpg" class="img-responsive" border="0"/>
-  	  </div>
-      </a>
-      <a href="pages/detalles.html" >
-  	  <div class="col-sm-6 col-md-4 imagenes">
-        <img  src="http://images.mazdamexico.com.mx/MusaWeb/mexico3/img/vlp/panels/M3H/gallery/large/m3h_fullsize8.jpg" class="img-responsive" border="0"/>
-  	  </div>
-      </a>
-      <a href="pages/detalles.html" >
-  	  <div class="col-sm-6 col-md-4 imagenes">
-        <img  src="http://images.mazdamexico.com.mx/MusaWeb/mexico3/img/vlp/panels/M3H/gallery/large/m3h_fullsize8.jpg" class="img-responsive" border="0"/>
-  	  </div>
-      </a>
+    <div class="container-fluid noPadding">
 
-      <a href="pages/detalles.html" >
-      <div class="col-sm-6 col-md-4 imagenes">
-        <img  src="http://images.mazdamexico.com.mx/MusaWeb/mexico3/img/vlp/panels/M3H/gallery/large/m3h_fullsize8.jpg" class="img-responsive" border="0"/>
+      <div class="row-fluid noPadding noMargin childHeight mainCatBrandCont garage">
+          <div class="col-xs-12 col-sm-offset-1 col-sm-10 col-md-offset-2 col-md-8 noPadding">
+            <div class="row-fluid childHeight noPadding noMargin modelsSpace">
+                <div class="col-xs-12 noPadding noMargin">
+                    <div class="row-fluid noPadding noMargin childHeight garageGrid">
+                        <!-- <p class="startingText gallery modelsStartTxt">Cargando modelos de la marca solicitada...</p> -->
+                        <div class="col-xs-12 noPadding col-sm-6 col-md-4 garageImgCont love">
+                            <img  src="http://198.12.157.96/contenido/vrm/th_2051.jpg" class="noMargin garageImg img-responsive" border="0"/>
+                        </div>
+                        <div class="col-xs-12 noPadding col-sm-6 col-md-4 garageImgCont love">
+                            <img  src="http://198.12.157.96/contenido/vrm/th_4956.jpg" class="noMargin garageImg img-responsive" border="0"/>
+                        </div>
+                        <div class="col-xs-12 noPadding col-sm-6 col-md-4 garageImgCont love">
+                            <img  src="http://198.12.157.96/contenido/vrm/th_2361.jpg" class="noMargin garageImg img-responsive" border="0"/>
+                        </div>
+                        <div class="col-xs-12 noPadding col-sm-6 col-md-4 garageImgCont soon">
+                            <img  src="http://198.12.157.96/contenido/vrm/th_2054.jpg" class="noMargin garageImg img-responsive" border="0"/>
+                        </div>
+                        <div class="col-xs-12 noPadding col-sm-6 col-md-4 garageImgCont soon">
+                            <img  src="http://198.12.157.96/contenido/vrm/th_2055.jpg" class="noMargin garageImg img-responsive" border="0"/>
+                        </div>
+                        <div class="col-xs-12 noPadding col-sm-6 col-md-4 garageImgCont now">
+                            <img  src="http://198.12.157.96/contenido/vrm/th_2056.jpg" class="noMargin garageImg img-responsive" border="0"/>
+                        </div>
+                        <div class="col-xs-12 noPadding col-sm-6 col-md-4 garageImgCont now">
+                            <img  src="http://198.12.157.96/contenido/vrm/th_2057.jpg" class="noMargin garageImg img-responsive" border="0"/>
+                        </div>
+                    </div>
+                </div>        
+            </div>
+          </div>
       </div>
-      </a>
 
-      <a href="pages/detalles.html" >
-      <div class="col-sm-6 col-md-4 imagenes">
-        <img  src="http://images.mazdamexico.com.mx/MusaWeb/mexico3/img/vlp/panels/M3H/gallery/large/m3h_fullsize8.jpg" class="img-responsive" border="0"/>
+      <div class="row-fluid noPadding childHeight mainFooter">
+          <div id="appStoreFooter" class="col-xs-12 noPadding profile">
+              <div class="storeFooterCont">
+                    <h3 class="footStoreTxt">Descárgalo para IOS o Android</h3>
+                    <img src="../img/f_downloadApp.png" class="storeLogos">
+              </div>
+          </div>
+
+          <div id="vrummFooter" class="col-xs-12 noMargin">
+            
+                <ul class="vrummListFooter NoleftP">
+                  <li class="footerMenuItm"><a href="">Sobre Vrumm</a></li>
+                  <li class="footerMenuItm"><a href="">Políticas de privacidad</a></li>
+                  <li class="footerMenuItm"><a href="">Ayuda</a></li>
+                  <li class="footerMenuItm"><a href="">Contacto</a></li>
+                </ul>
+
+                <div class="vrummBrandRegister">© 2016 vrumm</div>
+
+          </div>
       </div>
-      </a>
 
-  	</div>
-	<footer class="col-xs-12 noPadding">
-    <center>
-      <ul>
-        <li><a> Inf Corporativa</a></li>
-        <li><a> Descarga</a></li>
-        <li><a> Ayuda</a></li>
-        <li><a> Contacto</a></li>
-      </ul>
-    </center>
-  </footer>
+
+    </div> 
+    <script src="../js/lib/isotope.js"></script>
     <script src="../js/lib/bootstrap.js"></script>
     <script src="../js/lib/fingerprint2.min.js"></script>
     <script type="text/javascript" src="../js/bundle.js"></script>

@@ -54,11 +54,6 @@ footer ul li a:hover{
 }
 
 /*galeria de imagenes*/
-#image img{
-	margin:0 auto !important;
-	width: 100%;
-}
-
 
 .thumb{
 	float:left;
