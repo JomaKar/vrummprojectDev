@@ -34,8 +34,12 @@ $(function(){
 
 	function whereIam() {
 		var place = window.location.pathname;
+
+		var lastSlash = place.lastIndexOf('/');
+
+		place = place.slice(lastSlash);
 		
-		if(place === "/pages/perfil.html"){
+		if(place === "/perfil.html"){
 
 			 getDeviceIDStarting();
 
@@ -44,7 +48,7 @@ $(function(){
 			 if(currUsrName !== null && currUsrName !== undefined){
 			 	$('.fullName').html(currUsrName);
 			 }
-		}else if(place === "/pages/catalogo-marcas.html"){
+		}else if(place === "/catalogo-marcas.html"){
 			getDeviceIDStarting();
 		}else{
 
@@ -72,10 +76,6 @@ $(function(){
 		 	browserFingerprint();
 		 	con(currentDeviceId);
 		 }
-	}
-
-	function con(argument) {
-		console.log(argument);
 	}
 
 	function registerDevice(val) {
@@ -344,12 +344,20 @@ $(function(){
 		).then(function(res){ 
 			console.log(res)
 
-			var currentUser = user.val().toString();
+			if(res.estado === 1){
+				var currentUser = user.val().toString();
 
-			sessionStorage.setItem('currentUser', currentUser);
-			sessionStorage.setItem('activeSession', 'yes');
+				var id = res.mensaje.rs;
+				con(id);
+				//getUserInfo(id);
+				//id.toString();
 
-			window.location = 'perfil.html';
+				/*sessionStorage.setItem('currentUser', currentUser);
+				sessionStorage.setItem('currentUserId', id);
+				sessionStorage.setItem('activeSession', 'yes');
+
+				window.location = 'perfil.html';*/
+			}
 
 		 }).fail(function(err){
 	  		console.log(err);
@@ -358,4 +366,31 @@ $(function(){
 	}
 
 
+	function getUserInfo(id) {
+		var data = {idUsr: id};
+		data = JSON.stringify(data);
+
+		$.post('https://vrummapp.net/ws/v2/usuario/info', 
+				data
+			).then(function(res){
+
+				if(res.estado === 1){
+
+					var userInfo = res.mensaje.rs;
+					userInfo = JSON.stringify(userInfo);
+
+					sessionStorage.setItem('currentUserInfo', userInfo);
+					
+				}
+
+			 }).fail(function(err){
+	  			console.log(err);
+		});
+	}
+
+
 });
+
+function con(argument) {
+	console.log(argument);
+}

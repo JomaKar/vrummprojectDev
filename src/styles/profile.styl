@@ -1,5 +1,8 @@
 @import 'colors'
 
+.hambur
+	color white
+
 .p-header
 	position relative
 
@@ -34,6 +37,7 @@
 				position absolute
 				right 16px
 				font-size 1.5em
+				cursor pointer
 				top 16%
 				color rgba(225, 225, 225, 0.4)
 			
@@ -74,41 +78,41 @@
 			
 			.filterDivCont
 				height 100%
-				width 200px
+				width 180px
 				float right
 				padding 5px 20px
+				text-align center
 				
-				.filtrationListDiv
-					border 0.2px solid white
+				#filterSelect
+					width 160px
+					height 30px
 					border-radius 2px
-					background-color transparent
-					padding 4px 10px
-					width 100%
-					height 100%
-					display flex
-					justify-content space-between
+					border 1px solid white
+					color white
+					appearance none
+					-webkit-appearance none
+					-moz-appearance none
+					background-color $redirectBox
+					padding-left 7px
+					
+				.selectCaret
+					position absolute
+					right 20px
+					top 13px
 					color white
 					
-					.filterText
-						text-align center
+@media(min-width 768px)
+	.garageFilterBar
+		
+		.garageFilterRow
+			.filterBar
+				
+				.filterDivCont
+					text-align right
 						
-					.filterList
-						position absolute
-						top 35px
-						right 35px
-						background-color black
-						list-style-type none
-						padding-left 0
-						margin-left 0
-						width 160px
-						border 1.5px solid white
-						border-top hidden
-						height 0
-						
-						.filterGarage
-							width 100%
-							height 20px
-	
+					.selectCaret
+						right 10px
+							
 
 .carsCountTxt, .sharedCountTxt, .membershipCountTxt
 	color $regTextColor
@@ -125,8 +129,191 @@
 	color white
 	font-size 14px
 	
-.garageImg
-	width 100%	
+.garageGridCont
+	padding-bottom 1px !important	
+	
+.garageImgCont
+	.sideInfoBar
+		position absolute
+		display flex
+		flex-wrap wrap
+		width 11%
+		min-width 36px
+		height auto
+		background-color rgba(26, 26, 26, 0.5)
+		text-align center
+		color white
+		fill white
+		flex-direction column
+		
+		.userCarCatCont
+			width 100%
+			height 28px
+			background-color black
+			padding-top 3px
+			cursor pointer
+			
+			.selectionContainer
+				width 36px
+				display flex
+				background-color black
+				margin 0 auto
+				
+				.selectedCat
+					width 36px
+					height 25px
+					cursor pointer
+					
+				.notSelectedCat
+					width 72px
+					display none	
+		
+		.toggleableIcons
+			height 83%
+			display none
+			justify-content space-around
+			flex-direction column
+			
+			.compareGroup
+				width 20px
+				margin 0 auto
+				height 24px
+				position relative
+				cursor pointer
+				
+				.right, .left, .circle
+					position absolute
+					
+				.right
+					left 3px
+					top 0
+				.left
+					right 5px
+					top 6px
+				.circle
+					top 10px
+					right 0px
+					
+				.message
+					display none
+					position absolute
+					font-size 12px
+					background-color $carHoverMsg
+					padding 2px 5px
+					border 0.5px solid $carHoverMsgBrd
+					border-radius 8px
+					left 129%
+					top -4px
+					
+				&:hover
+					.message
+						display block
+					
+			.shareGroup
+				margin 0 auto
+				width 20px
+				height 24px
+				position relative
+				cursor pointer
+				
+				.arUp
+					position absolute
+					right 7px
+					
+				.sqEmp
+					position absolute
+					bottom 4px
+					right 4.5px
+					
+				.message
+					display none
+					position absolute
+					font-size 12px
+					background-color $carHoverMsg
+					padding 2px 5px
+					border 0.5px solid $carHoverMsgBrd
+					border-radius 8px
+					left 129%
+					top 0
+					
+				&:hover
+					.message
+						display block
+					
+			.toggleTrashGrp
+				width 20px
+				height 24px
+				margin 0 auto
+				position relative
+				font-size 16px
+				cursor pointer
+				
+				.trash
+					position absolute
+					bottom 0
+					left 19%
+				
+				.message
+					display none
+					position absolute
+					font-size 12px
+					background-color $carHoverMsg
+					padding 2px 5px
+					border 0.5px solid $carHoverMsgBrd
+					border-radius 8px
+					left 129%
+					top 5px
+					
+				&:hover
+					.message
+						display block
+					
+		.dots
+			margin-top 5px
+			cursor pointer	
+						
+			
+	.garageImg
+		width 100%
+	
+.calendarGroup
+	color aqua
+	fill aqua
+	cursor pointer
+	width 36px
+	height 25px
+
+.heartGroup
+	width 36px
+	height 25px
+	color red
+	fill red
+	cursor pointer
+
+.soonGroup
+	color orange
+	fill orange
+	position relative
+	width 36px
+	height 25px
+	cursor pointer
+	
+	.horArr
+		font-size 7px
+		position absolute
+		top 5.7px
+		left 17px
+	
+	.verArr
+		font-size 6px
+		position absolute
+		top 4px
+		left 17px
+	
+	.repeat
+		transform rotate(216deg)
+		font-size 17px 
+		
 
 @media(min-width 400px)
 	.carsCountTxt, .sharedCountTxt, .membershipCountTxt
@@ -154,7 +341,7 @@
 			.p-profileInfo
 				.profileName
 					font-size 18px
-					margin 10px 0
+					margin 8px 0
 					
 				.cameraIconHead
 					font-size 2em
@@ -186,4 +373,3 @@
 			.p-profileInfo
 				.profileName
 					margin-top 25px
-					

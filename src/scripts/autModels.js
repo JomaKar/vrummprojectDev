@@ -207,6 +207,7 @@ $(function(){
 						typeColl.forEach(function(typeItem, indexx){
 							var currentBox = $('div.modelBox' + yearUseType);
 
+
 							var model = `<div class="col-xs-12 col-sm-4 noPadding noMargin modelItem">
 				                            <img src="${typeItem.pic_url}" class="img-responsive carImg"/>
 				                            <div class="hoverInfo">
@@ -214,6 +215,7 @@ $(function(){
 				                                  <li class="mName">${typeItem.name}</li>
 				                                  <li class="vName">${typeItem.desde} - ${typeItem.hasta}</li>
 				                                  <li class="yModel">${typeItem.year}</li>
+				                                  <li class="hiddenItm modelId">${typeItem.model_id}</li>
 				                                </ul>
 				                            </div>
 				                        </div>`;
@@ -230,6 +232,40 @@ $(function(){
 
 		}
 
+		$(document).on('click', 'div.hoverInfo', function(){
+			var modelId = $(this).find('li.modelId').text();
+			getVersions(modelId);
+		});
+
+
+		function getVersions(modelId) {
+			 localStorage.setItem('modelId', modelId.toString());
+			 var device = sessionStorage.getItem('deviceId');
+			 var userId = sessionStorage.getItem('currentUserId');
+
+              if(device !== undefined && device !== null && modelId){
+              		if(userId !== undefined && userId !== null){
+              			var data = {'device': device, modelId: modelId, user: userId};
+              		}else{
+              			var data = {'device': device, modelId: modelId};
+              		}
+                		
+                data = JSON.stringify(data);
+
+                $.post('https://vrummapp.net/ws/v2/catalogo/getversiones',
+                  data).then(function(res){
+                    if(res.estado === 1){
+                      versionsArr = res.mensaje.rs;
+                      versionsArr = JSON.stringify(versionsArr);
+                      sessionStorage.setItem('versionsArr', versionsArr);
+                      window.location = 'modelo-versiones.html'
+                    }
+                  }).fail(function(err){
+                    console.log(err);
+                  });
+
+              }
+		}
 
 		function sizingModelItms() {
 			

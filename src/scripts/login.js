@@ -170,7 +170,8 @@ $(function(){
 					var currentUser = userE.val().toString();
 
 					var id = res.mensaje.rs;
-
+					getUserInfo(id);
+					id.toString();
 					sessionStorage.setItem('currentUser', currentUser);
 					sessionStorage.setItem('currentUserId', id);
 					sessionStorage.setItem('activeSession', 'yes');
@@ -207,6 +208,29 @@ $(function(){
 			 }).fail(function(err){
 		  		console.log(err);
 			});
+	}
+
+
+	function getUserInfo(id) {
+		var data = {idUsr: id};
+		data = JSON.stringify(data);
+
+		$.post('https://vrummapp.net/ws/v2/usuario/info', 
+				data
+			).then(function(res){
+
+				if(res.estado === 1){
+
+					var userInfo = res.mensaje.rs;
+					userInfo = JSON.stringify(userInfo);
+
+					sessionStorage.setItem('currentUserInfo', currentUser);
+					
+				}
+
+			 }).fail(function(err){
+	  			console.log(err);
+		});
 	}
 
 	$.fn.disNone = function(){

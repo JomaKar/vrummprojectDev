@@ -16,7 +16,6 @@ $(function(){
 
 
 	if(place === "/catalogo-marcas.html"){
-		console.log('hello from brands again')
 
 		var askInterval = setInterval(function(){
 		
