@@ -6,10 +6,13 @@ $(function(){
 
 	place = place.slice(lastSlash);
 
-
-	if(place === "/model-versiones.html"){
+	if(place === "/modelo-versiones.html"){
 
 		var brandName = sessionStorage.getItem('currentBrandName');
+
+		$(document).ready(function(){
+			startBrandInt()
+		});
 
 		var askInterval = setInterval(function(){
 		
@@ -29,11 +32,53 @@ $(function(){
 
 
 		function displayVersions(argument) {
-			con(argument)
+			var versionsArr = JSON.parse(argument);
+			con(versionsArr);
 		}
 
 
-	}
+		function startBrandInt() {
+			var existBrandImgCont = false;
+
+			var elInter = setInterval(function(){
+
+				if($('div.versionsBrandImg').length > 0){
+
+					brandImgContExist();
+				}
+			}, 10);
+
+			function brandImgContExist() {
+				existBrandImgCont = true;
+				if(existBrandImgCont){
+					clearInterval(elInter);
+					displayBrand();
+				}
+			}
+		}	
+     
+
+		function displayBrand() {
+			var versionsBrandImg = $('div.versionsBrandImg');
+			var modelNameSpan = $('span.modelName');
+			var modelPrcSpan = $('span.modelPrice');
+
+			var brandURL = sessionStorage.getItem('currentBrandImg');
+			var modelName = localStorage.getItem('modelName');
+			var modelPrice = localStorage.getItem('modelPrice');
+			
+			versionsBrandImg.css({
+				'background-image': brandURL
+			});
+
+			modelNameSpan.html(modelName);
+			modelPrcSpan.html(modelPrice);
+
+		}
+
+	}	
+
+
 });
 
 function con(argument) {

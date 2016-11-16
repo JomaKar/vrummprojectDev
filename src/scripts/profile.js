@@ -144,6 +144,9 @@ $(function(){
 					var whiteSpaceIdx = value.indexOf(' ');
 
 					value = value.slice(0, whiteSpaceIdx);
+
+				}else if(key === 'foto_perfil'){
+					con(value);
 				}
 
 				$.each(userObjKeys, function(index, val){

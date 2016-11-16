@@ -1,0 +1,45 @@
+@import 'colors.styl'
+
+
+.versionsInfoCont
+	background-color black
+
+.modelHeader
+	box-shadow inset 0 15px 15px -15px white
+	height 130px
+	
+	.modelHeaderRow
+		padding-top 23px
+		.versionsBrandImg
+			background-size 72px
+			margin auto 0
+			height 108px
+			background-position top
+			background-repeat no-repeat
+			
+		.modelDetail
+			margin auto 0
+			display flex
+			justify-content space-between
+			
+			.mInfoDetail
+				width 120px
+				
+				.modelName
+					color white
+					font-size 16px
+				
+				.modelPrice
+					color $regTextColor
+					font-size 13px
+				
+			.shareLogo
+				margin auto 0
+				font-size 20px	
+					
+			
+@media(min-width 1100px)
+	.modelHeader
+		.modelHeaderRow
+			.versionsBrandImg
+				background-size 90px	

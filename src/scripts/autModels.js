@@ -234,12 +234,16 @@ $(function(){
 
 		$(document).on('click', 'div.hoverInfo', function(){
 			var modelId = $(this).find('li.modelId').text();
-			getVersions(modelId);
+			var modelN = $(this).find('li.mName').text();
+			var modelP = $(this).find('li.vName').text();
+			getVersions(modelId, modelN, modelP);
 		});
 
 
-		function getVersions(modelId) {
+		function getVersions(modelId, modelName, modelPrice) {
 			 localStorage.setItem('modelId', modelId.toString());
+			 localStorage.setItem('modelName', modelName.toString());
+			 localStorage.setItem('modelPrice', modelPrice.toString());
 			 var device = sessionStorage.getItem('deviceId');
 			 var userId = sessionStorage.getItem('currentUserId');
 
@@ -255,7 +259,7 @@ $(function(){
                 $.post('https://vrummapp.net/ws/v2/catalogo/getversiones',
                   data).then(function(res){
                     if(res.estado === 1){
-                      versionsArr = res.mensaje.rs;
+                      var versionsArr = res.mensaje.rs;
                       versionsArr = JSON.stringify(versionsArr);
                       sessionStorage.setItem('versionsArr', versionsArr);
                       window.location = 'modelo-versiones.html'
