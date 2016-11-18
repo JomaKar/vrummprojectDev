@@ -12,6 +12,29 @@
 	padding-top 32px
 	border-bottom 1px solid white
 	
+	.backBtn
+		position absolute
+		font-size 27px
+		left 2%
+		top 74px
+		color $backBtn
+		cursor pointer
+		
+		&:hover + .backBtnMess
+			display block
+		
+	.backBtnMess
+		display none
+		position absolute
+		font-size 14px
+		background-color $carHoverMsg
+		padding 2px 5px
+		border 0.5px solid $carHoverMsgBrd
+		border-radius 8px
+		left 13%
+		top 63px
+		color white	
+	
 	.headerBrandImg
 		margin 0 auto
 		background-size 74%
@@ -73,12 +96,37 @@
 			.mDetails
 				list-style-type none
 
+@media(min-width 350px)
+	.innerHeaderBrand
+		.backBtnMess
+			left 11%
+
+
 @media(min-width 500px)
+	.innerHeaderBrand
+		.backBtnMess
+			left 9%
+			
 	.col-xs-12	
 		&.modelItem
 			width 50%
+			
+@media(min-width 650px)
+	.innerHeaderBrand
+		.backBtnMess
+			left 7%
 			
 @media(min-width 768px)
 	.col-sm-4	
 		&.modelItem
 			width 33.33333333%
+			
+@media(min-width 1000px)
+	.innerHeaderBrand
+		.backBtnMess
+			left 5%
+			
+@media(min-width 1500px)
+	.innerHeaderBrand
+		.backBtnMess
+			left 4%

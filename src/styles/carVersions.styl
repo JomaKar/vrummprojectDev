@@ -9,12 +9,13 @@
 		left 20%
 		display flex
 		justify-content center
-		overflow scroll
+		overflow-x auto
 		
 		.carThumbImgUnit
 			width 16%
 			margin auto 0
 			cursor pointer
+			flex-shrink 0
 			
 			.carThumb
 				filter grayscale(1)
@@ -45,7 +46,7 @@
 		border-bottom 1px solid $carHoverMsg
 		
 		.versionsBrandImg
-			background-size 95px
+			background-size 46px
 			margin auto 0
 			height 107px
 			background-position top
@@ -85,20 +86,22 @@
 		filter grayscale(1)
 
 	.versionDetail
-		font-size 14px
+		font-size 12px
 		display flex
 		justify-content space-between
-		margin-top 4%
+		margin-top 1%
 		color $regActiveBtn
+		padding 0 !important
 		
 		.versionPrice
 			color $regTextColor
 	
 	.goToDetailArrow
 		font-size 12px	
-		margin-top 4%
+		margin-top 1%
 		justify-content center
 		display flex
+		cursor pointer
 		
 	&.active
 		padding-left 1px
@@ -116,13 +119,54 @@
 		.goToDetailArrow
 			color $regActiveBtn
 		
+@media(min-width 370px)
+	.modelHeader
+		.modelHeaderRow
+			.versionsBrandImg
+				background-size 60px
+				
+	.versionDetailRow
+		.versionDetail
+			margin-top 2%
+			font-size 13px
+
+		.goToDetailArrow
+			margin-top 2%
+				
+@media(min-width 470px)
+	.modelHeader
+		.modelHeaderRow
+			.versionsBrandImg
+				background-size 80px
+				
+	.versionDetailRow
+		.versionDetail
+			margin-top 3%
+			font-size 14px
+
+		.goToDetailArrow
+			margin-top 3%
+				
+
+@media(min-width 600px)
+	.modelHeader
+		.modelHeaderRow
+			.versionsBrandImg
+				background-size 95px
+				
+	.versionDetailRow
+		.versionDetail
+			margin-top 4%
+
+		.goToDetailArrow
+			margin-top 4%
 
 
 @media(min-width 768px)
 	.modelHeader
 		.modelHeaderRow
 			.versionsBrandImg
-				background-size 80px
+				background-size 77px
 				
 	.versionDetailRow
 		.versionDetail

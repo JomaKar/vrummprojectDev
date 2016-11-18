@@ -148,8 +148,8 @@ $(function(){
 					});
 
 				});
-				con(itmsYearUse);
-				con(itmsYearUseType);
+				//con(itmsYearUse);
+				//con(itmsYearUseType);
 				displayModels(itmsDependingOnYear, itmsYearUse, itmsYearUseType);
 	
 			}else{
@@ -170,7 +170,8 @@ $(function(){
 					var yearUseFilter = `<div class="galleryHead col-xs-12 noPadding noMargin yearFilter${year + use}">
 											<span class="modelUse">${use}</span>
 											<span class="modelY">${year}</span>
-										</div>`;
+										</div>
+										<div class="col-xs-12 noPadding noMargin yearFilterCont${year + use}"></div>`;
 
 					modelsSpace.append(yearUseFilter);					
 
@@ -179,12 +180,12 @@ $(function(){
 
 			collYearUseType.forEach(function(yearColl, ind){
 				yearColl.forEach(function(useColl, indx){
-
+					
 					useColl.forEach(function(typeColl, index){
 						var year = typeColl[0].year;
 						var use =  typeColl[0].uso;
 						var yearUse = year + use;
-						var currentYearUseFilter = $('div.yearFilter' + yearUse);
+						var currentYearUseFilter = $('div.yearFilterCont' + yearUse);
 						var type = typeColl[0].tipo_catalogo;
 						var typeName = type;
 						type = type.replace(/ /g, '');
@@ -202,7 +203,7 @@ $(function(){
 						                    </div>
 						                </div>`;
 
-						currentYearUseFilter.after(typeFilter);
+						currentYearUseFilter.append(typeFilter);
 						
 						typeColl.forEach(function(typeItem, indexx){
 							var currentBox = $('div.modelBox' + yearUseType);
@@ -309,6 +310,12 @@ $(function(){
 			});
 
 		}
+
+		var backBtn = $('span.backBtn');
+
+		backBtn.click(function(){
+			window.history.back();
+		})
 
 
 	}

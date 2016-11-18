@@ -41,7 +41,6 @@ $(function(){
 		function manageVersions(argument) {
 			versionsArr = JSON.parse(argument);
 
-
 			currentVersion = versionsArr[0];
 
 			displayCarousel();
@@ -71,7 +70,7 @@ $(function(){
 			imgs.forEach(function(item, idx){
 				(idx === 0) ? classes = 'carThumb active' : classes = 'carThumb';
 
-				var imgPrototype = `<div class="carThumbImgUnit"><img src="${item}" class="${classes} img-responsive"></div>`;
+				var imgPrototype = `<div class="carThumbImgUnit"><img src="${item}" class="${classes} img${idx} img-responsive"></div>`;
 
 				imgsCont.append(imgPrototype);
 			});
@@ -102,7 +101,7 @@ $(function(){
 	                                    <span class="versionName">${versName}</span>
 	                                    <span class="versionPrice">$ ${verPrice}</span>
 	                                </div>
-	                                <div class="col-xs-1 goToDetailArrow">
+	                                <div class="col-xs-1 noPadding goToDetailArrow">
 	                                    <span class="glyphicon glyphicon-menu-right"></span>
 	                                </div>
 	                            </div>`;
@@ -112,14 +111,35 @@ $(function(){
 			});
 		}
 
+
 		$(document).on('click', 'div.versionDetailRow', function(){
 			var el = $(this);
+			var selVerName = $(this).find('span.versionName').text();
 			var elements = $('div.versionDetailRow');
+
+			sessionStorage.removeItem('versionStored');
 
 			elements.removeClass('active');
 
 			el.addClass('active');
 
+			var selectedVersObj = $.grep(versionsArr, function (itm, idx) {
+
+				var currObjName = itm.name.replace(/"/g, '');
+
+				return currObjName === selVerName;
+			});
+
+			currentVersion = selectedVersObj[0];
+
+			var versionStored = JSON.stringify(currentVersion);
+
+			sessionStorage.setItem('versionStored', versionStored);
+
+		});
+
+		$(document).on('click', 'div.goToDetailArrow', function(){
+			window.location = 'specific-version.html';
 		});
 
 		//start carousel mechanich
@@ -179,6 +199,10 @@ $(function(){
 				var activeImage = thumbs.filter(function(idx, el){
 					return $(el).attr('src') === nextCarouselImg;
 				});
+
+				activeImage = activeImage.filter(function(idx, el){
+					return !$(el).hasClass('active');
+				})
 
 				activateThumbnails(activeImage);
 

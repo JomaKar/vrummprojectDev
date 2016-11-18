@@ -26,7 +26,7 @@ var config = {
 	  	 './src/scripts/mailValidation.js', './src/scripts/autModels.js', 
 	  	 './src/scripts/login.js', './src/scripts/catalogBrands.js',
 	  	 './src/scripts/passModalDis.js', './src/scripts/profile.js', 
-	  	 './src/scripts/carVersions.js'],
+	  	 './src/scripts/carVersions.js', './src/scripts/specVersion.js'],
 	  	watch:'./src/scripts/**/*.js',
 	  	output:'./build/js'
 	},

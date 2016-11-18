@@ -27,7 +27,7 @@ $(function(){
 				$.post('https://vrummapp.net/ws/v2/usuario/validanickname', 
 					data
 				).then(function(res){ 
-					con(res)
+					//con(res)
 					if(res.estado === 2){
 						nickExist(res);
 					}else if(res.estado === 1){

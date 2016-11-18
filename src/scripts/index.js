@@ -347,17 +347,26 @@ $(function(){
 			if(res.estado === 1){
 				var currentUser = user.val().toString();
 
-				var id = res.mensaje.rs;
-				con(id);
-				//getUserInfo(id);
-				//id.toString();
+				var id = res.mensaje.usr.id;
 
-				/*sessionStorage.setItem('currentUser', currentUser);
+				con(id);
+
+				var userInfo = res.mensaje.usr;
+
+				userInfo = JSON.stringify(userInfo);
+
+				sessionStorage.setItem('currentUserInfo', userInfo);
+				
+				//getUserInfo(id);
+				
+				id.toString();
+
+				sessionStorage.setItem('currentUser', currentUser);
 				sessionStorage.setItem('currentUserId', id);
 				sessionStorage.setItem('activeSession', 'yes');
 
-				*/
-				window.location = '../index.html';
+				
+				window.location = 'perfil.html';
 			}
 
 		 }).fail(function(err){
@@ -367,7 +376,7 @@ $(function(){
 	}
 
 
-	function getUserInfo(id) {
+	/*function getUserInfo(id) {
 		var data = {idUsr: id};
 		data = JSON.stringify(data);
 
@@ -387,7 +396,7 @@ $(function(){
 			 }).fail(function(err){
 	  			console.log(err);
 		});
-	}
+	}*/
 
 
 });
