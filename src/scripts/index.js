@@ -356,7 +356,8 @@ $(function(){
 				sessionStorage.setItem('currentUserId', id);
 				sessionStorage.setItem('activeSession', 'yes');
 
-				window.location = 'perfil.html';*/
+				*/
+				window.location = '../index.html';
 			}
 
 		 }).fail(function(err){
