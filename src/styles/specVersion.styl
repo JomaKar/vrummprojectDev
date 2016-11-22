@@ -1,1 +1,76 @@
 @import 'colors.styl'
+
+.versionDetailCont
+	&.specVers
+		margin-top 20px
+
+.tabsList
+	display flex
+	overflow-x auto
+	overflow-y hidden
+	border-bottom hidden !important
+	width 100%
+	
+	li
+		border-bottom 1px solid $grayVersionsInfo
+		width 12.5%
+		overflow hidden
+		
+		&:hover, &:focus
+			background-color transparent !important
+			
+			a
+				border hidden
+				background-color transparent !important
+				color $regTextColor
+				border-bottom 1px solid $grayVersionsInfo
+				margin 0
+		
+		&.active
+			border-bottom hidden
+			background-color transparent !important
+			border 1px solid $grayVersionsInfo
+			
+			a 
+				border hidden !important
+				background-color transparent !important
+				color white !important
+				margin 0
+				
+				&:hover
+					border hidden
+					color white
+					margin 0
+			
+		a 
+			font-size 10px
+			padding 5px !important
+			color $regTextColor
+			margin 0
+			border-bottom 1px solid $grayVersionsInfo
+			text-align center
+				
+			&:hover
+				background-color transparent !important
+
+@media(min-width 560px)
+	.tabsList
+		li
+			a
+				font-size 13px
+
+.fichaCat
+	width 50%
+	float left
+	padding-left 15px
+
+.shareLogo
+	&.specVers
+		display flex
+		justify-content flex-end
+	
+	.compareGroup 
+		&.specificVersion
+			color white
+			font-size 14px
+			margin 0 10%	

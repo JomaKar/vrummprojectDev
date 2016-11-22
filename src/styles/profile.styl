@@ -149,8 +149,6 @@
 .garageImgCont
 	.sideInfoBar
 		position absolute
-		display flex
-		flex-wrap wrap
 		width 11%
 		min-width 36px
 		height auto
@@ -188,73 +186,83 @@
 			justify-content space-around
 			flex-direction column
 			
-			.compareGroup
-				width 20px
-				margin 0 auto
-				height 24px
-				position relative
-				cursor pointer
-				
-				.right, .left, .circle
-					position absolute
 					
-				.right
-					left 3px
-					top 0
-				.left
-					right 5px
-					top 6px
-				.circle
-					top 10px
-					right 0px
-					
-				.message
-					display none
-					position absolute
-					font-size 12px
-					background-color $carHoverMsg
-					padding 2px 5px
-					border 0.5px solid $carHoverMsgBrd
-					border-radius 8px
-					left 129%
-					top -4px
-					
-				&:hover
-					.message
-						display block
-					
-			.shareGroup
-				margin 0 auto
-				width 20px
-				height 24px
-				position relative
-				cursor pointer
-				
-				.arUp
-					position absolute
-					right 7px
-					
-				.sqEmp
-					position absolute
-					bottom 4px
-					right 4.5px
-					
-				.message
-					display none
-					position absolute
-					font-size 12px
-					background-color $carHoverMsg
-					padding 2px 5px
-					border 0.5px solid $carHoverMsgBrd
-					border-radius 8px
-					left 129%
-					top 0
-					
-				&:hover
-					.message
-						display block
-					
-			.toggleTrashGrp
+		.dots
+			margin-top 5px
+			cursor pointer	
+						
+			
+	.garageImg
+		width 100%
+	
+
+.compareGroup
+	width 20px
+	margin 0 auto
+	height 24px
+	position relative
+	cursor pointer
+	
+	.right, .left, .circle
+		position absolute
+		
+	.right
+		left 3px
+		top 0
+	.left
+		right 5px
+		top 6px
+	.circle
+		top 10px
+		right 0px
+		
+	.message
+		display none
+		position absolute
+		font-size 12px
+		background-color $carHoverMsg
+		padding 2px 5px
+		border 0.5px solid $carHoverMsgBrd
+		border-radius 8px
+		left 129%
+		top -4px
+		
+	&:hover
+		.message
+			display block
+		
+.shareGroup
+	margin 0 auto
+	width 20px
+	height 24px
+	position relative
+	cursor pointer
+	
+	.arUp
+		position absolute
+		right 7px
+		
+	.sqEmp
+		position absolute
+		bottom 4px
+		right 4.5px
+		
+	.message
+		display none
+		position absolute
+		font-size 12px
+		background-color $carHoverMsg
+		padding 2px 5px
+		border 0.5px solid $carHoverMsgBrd
+		border-radius 8px
+		left 129%
+		top 0
+		
+	&:hover
+		.message
+			display block
+		
+.toggleTrashGrp
 				width 20px
 				height 24px
 				margin 0 auto
@@ -281,15 +289,8 @@
 				&:hover
 					.message
 						display block
-					
-		.dots
-			margin-top 5px
-			cursor pointer	
-						
-			
-	.garageImg
-		width 100%
-	
+
+
 .calendarGroup
 	color aqua
 	fill aqua

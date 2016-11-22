@@ -12,6 +12,10 @@
 }
 
 
+.nav-tabs > li > a, .nav-tabs > li.active > a:focus, .nav-tabs > li.active > a:hover{
+	border: hidden;
+}
+
 input#fechaNacimiento::-webkit-input-placeholder{
 	font-size: 12px;
 	text-align: left;

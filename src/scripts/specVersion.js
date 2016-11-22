@@ -64,12 +64,37 @@ $(function(){
 
 		}
 
+		var ficha = '';
+
 		function throwInfo() {
+
 			var info = version.ficha_tecnica;
+
 			con(info);
+			var actualCat = info[0].ficha_tecnica;
+
+			
 			info.forEach(function(itm, idx){
-				var plainText = `<p>${itm.valor} : ${itm.dato}</p>`
-				versionDetailCont.append(plainText);
+
+				if(idx === 0){
+					var cat = `<div class="${itm.ficha_tecnica} fichaCat">
+									<h2>${itm.ficha_tecnica}</h2>
+								</div>`;
+					versionDetailCont.append(cat);
+					//console.log(actualCat, itm.ficha_tecnica);
+
+				}else if(itm.ficha_tecnica !== actualCat && !$.is(`div.${itm.ficha_tecnica}`)){
+					actualCat = itm.ficha_tecnica;
+					var cat = `<div class="${itm.ficha_tecnica} fichaCat">
+									<h2>${itm.ficha_tecnica}</h2>
+								</div>`;
+					versionDetailCont.append(cat);
+				}
+
+				if(itm.dato !== null && itm.dato !== undefined){
+					var plainText = `<p class="${itm.ficha_tecnica}">${itm.valor} : ${itm.dato}</p>`
+					versionDetailCont.find(`div.${itm.ficha_tecnica}`).append(plainText);
+				}
 			});
 		}
 

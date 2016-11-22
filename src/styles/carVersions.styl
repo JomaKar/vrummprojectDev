@@ -43,7 +43,7 @@
 	
 	.modelHeaderRow
 		padding-top 23px
-		border-bottom 1px solid $carHoverMsg
+		border-bottom 1px solid $brandRowBrd
 		
 		.versionsBrandImg
 			background-size 46px
@@ -67,15 +67,25 @@
 				
 				.modelPrice
 					color $regTextColor
-					font-size 13px
+					font-size 14px
 					text-align left
+					
+				.versionName
+					font-size 16px
+					color $regActiveBtn
+					text-align left
+					margin-top 10px
 				
 				.shareLogo
 					margin auto 0
 					font-size 20px
-					text-align right	
-
-
+					text-align right
+					padding-right 0px
+					height 10px
+					
+					span, svg
+						cursor pointer
+					
 
 .versionDetailRow
 	padding 13px 0
@@ -94,7 +104,7 @@
 		padding 0 !important
 		
 		.versionPrice
-			color $regTextColor
+			color $grayVersionsInfo
 	
 	.goToDetailArrow
 		font-size 12px	
@@ -167,6 +177,12 @@
 		.modelHeaderRow
 			.versionsBrandImg
 				background-size 77px
+				
+			.modelDetail
+				.mInfoDetail
+					.shareLogo
+						padding-right 75px
+					
 				
 	.versionDetailRow
 		.versionDetail
