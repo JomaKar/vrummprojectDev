@@ -11,10 +11,20 @@ $(function(){
 
 	if(place == '/specific-version.html'){
 		
+		//version info variables
 		var version = sessionStorage.getItem('versionStored');
+		var versions = sessionStorage.getItem('versionsArr');
+		versions = JSON.parse(versions);
+		version = JSON.parse(version);
+
+		//DOM variables
 		var theCarousel = $('div.versionsCarousel');
 		var versionDetailCont = $('div.versionDetailCont');
-		version = JSON.parse(version);
+		var versionsArrows = $('span.versionArrow');
+
+		//change variables
+		var versionChange = false;
+		var selectedVersion = {};
 
 
 
@@ -22,21 +32,35 @@ $(function(){
 			displayBrand();
 			sizeCarousel();
 			displayCarousel();
-			throwInfo();
+			selectVersion(null);
 
 		});
 
+		$(window).resize(function(){
+			sizeCarousel();
+		});
 
 		var imgs = [];
 		var currentVersionMainImg = '';
+
 		function displayCarousel() {
+
 			var imgsCont = $('div.thumbImgsCont');
 			
 			var arrowsCont = $('div.arrowsCont');
 
+			if(!versionChange){
 
+				($.isArray(version.pic_url)) ? imgs = version.pic_url : imgs[0] = version.pic_url;
 
-			($.type(version.pic_url) === 'array') ? imgs.concat(version.pic_url) : imgs.push(version.pic_url);
+			}else{
+
+				imgs = [];
+
+				($.isArray(selectedVersion.pic_url))  ? imgs = selectedVersion.pic_url : imgs[0] = selectedVersion.pic_url;
+
+			}
+
 
 			$(theCarousel).css({
 				'background-image': `url(${imgs[0]})`
@@ -46,31 +70,122 @@ $(function(){
 
 			var classes = '';
 
+			imgsCont.find('div.carThumbImgUnit').remove();
+
 			imgs.forEach(function(item, idx){
 				(idx === 0) ? classes = 'carThumb active' : classes = 'carThumb';
 
-				var imgPrototype = `<div class="carThumbImgUnit"><img src="${item}" class="${classes} img${idx} img-responsive"></div>`;
+				var imgPrototype = `<div class="carThumbImgUnit"><img src="${item}" class="${classes} img-responsive"></div>`;
 
 				imgsCont.append(imgPrototype);
 			});
 
-			con(imgs.length);
-
 			if(imgs.length <= 1){
-				con('why')
 
 				arrowsCont.hide();
 			}
 
 		}
 
-		var ficha = '';
 
-		function throwInfo() {
+		versionsArrows.on('click', function(){
+			var el = $(this);
+			versionChange = true;
 
-			var info = version.ficha_tecnica;
+			if(el.hasClass('left')){
+				selectVersion('left');
+			}else if(el.hasClass('right')){
+				selectVersion('right');
+			}
 
-			con(info);
+		});
+
+		//DOM variables
+
+		var spanNum = $('span.versionNum');
+		var spanTotal = $('span.versionTotal');
+
+		spanNum.text('1');
+
+		spanTotal.text(versions.length);
+
+		function selectVersion(dir){
+			var info = [];
+			var objIdx = -1;
+
+			if(!versionChange){
+
+				info =  version.ficha_tecnica;
+				throwInfo(info);
+
+			}else if(dir.length > 0 && versionChange){
+
+
+
+				$.map(versions, function(itm, idx){
+
+					if(selectedVersion.id !== undefined && selectedVersion.id !== null){
+
+						if(itm.id === selectedVersion.id){
+							objIdx = idx;
+						}
+
+					}else{
+
+						if(itm.id === version.id){
+							objIdx = idx;
+						}
+
+					}
+				});
+
+				var lastVersionIdx = versions.length - 1;
+
+				var numIdx; 
+
+				if(objIdx === 0) {
+					(dir === 'right') ? numIdx =  2 : numIdx = versions.length;
+
+				} else if(objIdx === lastVersionIdx){
+
+					(dir === 'right') ? numIdx = 1 : numIdx = objIdx;
+
+				}else{
+
+					(dir === 'right') ? numIdx = parseInt(spanNum.text()) + 1 : numIdx = parseInt(spanNum.text()) - 1;
+				}
+				
+				spanNum.text(numIdx);
+
+				if(objIdx === 0){
+
+					(dir === 'left') ? selectedVersion = versions[lastVersionIdx] : selectedVersion = versions[objIdx + 1];
+
+				}else if(objIdx === lastVersionIdx){
+
+					(dir === 'left') ? selectedVersion = versions[objIdx - 1] : selectedVersion = versions[0];
+
+				}else{
+
+					(dir === 'left') ? selectedVersion = versions[objIdx - 1] : selectedVersion = versions[objIdx + 1];
+				
+				}
+
+				info = selectedVersion.ficha_tecnica;
+
+				throwInfo(info);
+				displayBrand();
+				displayCarousel();
+
+			}
+			
+		}
+
+
+		function throwInfo(info) {
+			$('div.fichaTecnicaDetail').empty();
+			$('div.fichaCat').empty();
+
 			var actualCat = info[0].ficha_tecnica;
 
 			
@@ -83,7 +198,7 @@ $(function(){
 					versionDetailCont.append(cat);
 					//console.log(actualCat, itm.ficha_tecnica);
 
-				}else if(itm.ficha_tecnica !== actualCat && !$.is(`div.${itm.ficha_tecnica}`)){
+				}else if(itm.ficha_tecnica !== actualCat && !versionDetailCont.find(`div.${itm.ficha_tecnica}`).length){
 					actualCat = itm.ficha_tecnica;
 					var cat = `<div class="${itm.ficha_tecnica} fichaCat">
 									<h2>${itm.ficha_tecnica}</h2>
@@ -107,8 +222,22 @@ $(function(){
 
 			var brandURL = sessionStorage.getItem('currentBrandImg');
 			var modelName = localStorage.getItem('modelName');
-			var modelPrice = version.starting_price;
-			var versionName = version.name;
+			
+			var modelPrice = '',
+			versionName = '';
+
+			if(!versionChange){
+				
+				modelPrice = version.starting_price;
+				versionName = version.name;
+
+			}else{
+
+				modelPrice = selectedVersion.starting_price;
+				versionName = selectedVersion.name;
+
+			}
+
 			
 			versionsBrandImg.css({
 				'background-image': brandURL

@@ -7,6 +7,7 @@ $(function(){
 	var versionsArr = [];
 	var theCarousel = $('div.versionsCarousel');
 	var infoContainer = $('div.versionDetailCont');
+	var idSpan = $('span.currentVersionId');
 
 	var lastSlash = place.lastIndexOf('/');
 
@@ -49,6 +50,7 @@ $(function(){
 		}
 
 		var imgs = [];
+		var currentVersionId;
 		function displayCarousel() {
 			var imgsCont = $('div.thumbImgsCont');
 			
@@ -56,21 +58,24 @@ $(function(){
 
 			$.map(versionsArr, function(objItem, idx){
 
-				($.type(objItem.pic_url) === 'array') ? imgs.concat(objItem.pic_url) : imgs.push(objItem.pic_url);
+				($.isArray(objItem.pic_url)) ? imgs.concat({pict: objItem.pic_url, id: objItem.id}) : imgs.push({pict: objItem.pic_url, id: objItem.id});
 
 			});
 
 			$(theCarousel).css({
-				'background-image': `url(${imgs[0]})`
+				'background-image': `url(${imgs[0].pict})`
 			});
 
-			currentVersionMainImg = imgs[0];
+			currentVersionId = imgs[0].id;
+			idSpan.text(currentVersionId);
+
+			currentVersionMainImg = imgs[0].pict;
 
 			var classes = '';
 			imgs.forEach(function(item, idx){
 				(idx === 0) ? classes = 'carThumb active' : classes = 'carThumb';
 
-				var imgPrototype = `<div class="carThumbImgUnit"><img src="${item}" class="${classes} img${idx} img-responsive"></div>`;
+				var imgPrototype = `<div class="carThumbImgUnit"><span class="thumbIdSpan hiddenItm">${item.id}</span><img src="${item.pict}" class="${classes} img${idx} thumbImg img-responsive"></div>`;
 
 				imgsCont.append(imgPrototype);
 			});
@@ -82,24 +87,26 @@ $(function(){
 		}
 
 		function displayVersionsInfo() {
-			var img = '';
+			var img = {};
 			var versionRow = '';
 			var versionRowLine = '';
 			$.each(versionsArr, function(idx, objItm){
 
 				var versName = objItm.name;
 				var verPrice = objItm.starting_price;
-				($.type(objItm.pic_url) === 'array') ? img = objItm.pic_url[0] : img = objItm.pic_url;
+				var verId = objItm.id;
+				($.isArray(objItm.pic_url)) ? img = {pict: objItm.pic_url[0], id: objItm.id} : img = {pict: objItm.pic_url, id: objItm.id};
 
-				(img === currentVersionMainImg) ? versionRowLine = `<div class="row-fluid childHeight versionDetailRow active">` : versionRowLine = `<div class="row-fluid childHeight versionDetailRow">`;
+				(img.id === currentVersionId) ? versionRowLine = `<div class="row-fluid childHeight versionDetailRow active">` : versionRowLine = `<div class="row-fluid childHeight versionDetailRow">`;
 			
 				versionRow = `${versionRowLine}
 	                                <div class="versionImg col-xs-3 col-sm-2">
-	                                    <img src="${img}" class="img-responsive">
+	                                    <img src="${img.pict}" class="img-responsive">
 	                                </div>
 	                                <div class="col-xs-8 col-sm-9 versionDetail">
 	                                    <span class="versionName">${versName}</span>
 	                                    <span class="versionPrice">$ ${verPrice}</span>
+	                                    <span class="versionId hiddenItm">${verId}</span>
 	                                </div>
 	                                <div class="col-xs-1 noPadding goToDetailArrow">
 	                                    <span class="glyphicon glyphicon-menu-right"></span>
@@ -114,8 +121,63 @@ $(function(){
 
 		$(document).on('click', 'div.versionDetailRow', function(){
 			var el = $(this);
-			var selVerName = $(this).find('span.versionName').text();
+			
+			activatingInfoTag(el);
+
+			if($.isArray(currentVersion.pic_url)){
+
+				//change carousel img
+
+				$(theCarousel).css({
+					'background-image': `url(${currentVersion.pic_url[0]})`
+				});
+
+				//change thumbnails img
+
+				$('img.thumbImg').removeClass('active');
+
+				var nextThumbSpan = $('span.thumbIdSpan').filter(function(idx, item){
+					var spanTxt = item.text();
+					if(spanTxt == currentVersion.id){return item};
+				});
+
+				//add 'active' class to correct thumbnail image
+				nextThumbSpan.first().next('img.thumbImg').addClass('active');
+
+				//change id to carousel spanId
+				idSpan.text(nextThumbSpan.text());
+
+			}else{
+
+				//change carousel img
+
+				$(theCarousel).css({
+					'background-image': `url(${currentVersion.pic_url})`
+				});
+
+				//change thumbnails img
+
+				$('img.thumbImg').removeClass('active');
+
+				//find the versionTag's id span
+
+				var nextThumbSpan = $('span.thumbIdSpan').filter(function(idx, item){
+					var spanTxt = $(item).text();
+					if(spanTxt == currentVersion.id){return item};
+				});
+
+				//add 'active' class to correct thumbnail image
+				nextThumbSpan.next('img.thumbImg').addClass('active');
+
+				//change id to carousel spanId
+				idSpan.text(nextThumbSpan.text());
+			}
+
+		});
+
+		function activatingInfoTag(el) {
 			var elements = $('div.versionDetailRow');
+			var selVerName = $(el).find('span.versionName').text();
 
 			sessionStorage.removeItem('versionStored');
 
@@ -135,8 +197,7 @@ $(function(){
 			var versionStored = JSON.stringify(currentVersion);
 
 			sessionStorage.setItem('versionStored', versionStored);
-
-		});
+		}
 
 		$(document).on('click', 'div.goToDetailArrow', function(){
 			window.location = 'specific-version.html';
@@ -145,8 +206,10 @@ $(function(){
 		//start carousel mechanich
 
 		var carouselDirection = '';
-		var nextCarouselImg = '';
+		var nextCarouselImg = '',
+		nextCarouselSpanId = '';
 		var currentCarouselImg = '';
+		var currentCarouselIdSpan = '';
 
 
 		$(document).on('click', 'div.arrowsCont span', function(){
@@ -155,12 +218,13 @@ $(function(){
 			(el.hasClass('leftArr')) ? carouselDirection = 'left' : carouselDirection = 'right';
 
 			currentCarouselImg = theCarousel.css('background-image');
+			currentCarouselIdSpan = theCarousel.find('span.currentVersionId').text();
 			var idxFQuote = currentCarouselImg.indexOf('"') + 1;
 			var idxLQuote = currentCarouselImg.lastIndexOf('"');
 
 			currentCarouselImg = currentCarouselImg.substring(idxFQuote, idxLQuote);
 
-			carouselMechanich(null);
+			carouselMechanich(null, null);
 
 		});
 
@@ -168,31 +232,76 @@ $(function(){
 
 			var imgSelectedUrl = $(this).find('img').attr('src');
 			var imgSelected = $(this).find('img');
-			carouselMechanich(imgSelectedUrl);
+			var spanThmbId = $(this).find('span.thumbIdSpan').text();
+
+			carouselMechanich(imgSelectedUrl, spanThmbId);
 
 			activateThumbnails(imgSelected);
 
 		});
 
 		function activateThumbnails(imgSel) {
+
 			var imgsCollection = $('div.carThumbImgUnit').find('img.carThumb');
 			imgsCollection.removeClass('active');
 			imgSel.addClass('active');
 		}
 
+		var indexOfCurrImg = -1;
 
-		function carouselMechanich(img) {
+		function carouselMechanich(img, num) {
 
 			if(img === null){
-				var indexOfCurrImg = imgs.indexOf(currentCarouselImg);
+
+				$.each(imgs, function(idex, itm){
+					if(itm.pict === currentCarouselImg){
+						indexOfCurrImg = idex;
+					}
+				});
 
 				if(carouselDirection === 'left'){
-					(indexOfCurrImg === 0) ? nextCarouselImg = imgs[imgs.length - 1] : nextCarouselImg = imgs[indexOfCurrImg - 1];
+					//if is the first image in the array of images
+					if(indexOfCurrImg === 0){
+						//the next image is gonna be the last image in the array of images
+						nextCarouselImg = imgs[imgs.length - 1].pict;
+						//the id of the carousel is gonna be the last image's id in the array of images
+						nextCarouselSpanId = imgs[imgs.length - 1].id;
+
+					//if its not the first image
+					}else{ 
+						//the next image is gonna be the previous image in the array of images
+						nextCarouselImg = imgs[indexOfCurrImg - 1].pict; 
+						//the id of the carousel is gonna be the previous image's id in the array of images
+						nextCarouselSpanId = imgs[indexOfCurrImg - 1].id;
+					}
+
 				}else if(carouselDirection === 'right'){
-					(indexOfCurrImg === (imgs.length - 1)) ? nextCarouselImg = imgs[0] : nextCarouselImg = imgs[indexOfCurrImg + 1]
+					//if is the last image in the array of images
+					if(indexOfCurrImg === (imgs.length - 1)){
+						//the next image is gonna be the first image in the array of images
+						nextCarouselImg = imgs[0].pict;
+						//the id of the carousel is gonna be the first image's id in the array of images
+						nextCarouselSpanId = imgs[0].id;
+
+					//if its not the last image	
+					} else {
+						//the next image is gonna be the next image in the array of images
+						nextCarouselImg = imgs[indexOfCurrImg + 1].pict;
+						//the id of the carousel is gonna be the next image's id in the array of images
+						nextCarouselSpanId = imgs[indexOfCurrImg + 1].id;
+					}
 				}
 
 				theCarousel.css({'background-image': `url(${nextCarouselImg})`});
+				idSpan.text(nextCarouselSpanId);
+
+				var el = $('div.versionDetailRow').filter(function(idx, itm){
+					var spaId = $(this).find('span.versionId').text();
+					if(spaId === nextCarouselSpanId) { return itm;}
+				});
+
+
+				activatingInfoTag(el);
 
 				var thumbs = $('div.carThumbImgUnit').find('img.carThumb');
 
@@ -208,7 +317,15 @@ $(function(){
 
 			}else{
 				theCarousel.css({'background-image': `url(${img})`});
+				idSpan.text(num);
 
+				var el = $('div.versionDetailRow').filter(function(idx, itm){
+					var spaId = $(itm).find('span.versionId').text();
+					if(spaId === num) { return itm;}
+				});
+
+
+				activatingInfoTag(el);
 			}
 
 		}

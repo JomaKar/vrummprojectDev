@@ -4,6 +4,29 @@
 	&.specVers
 		margin-top 20px
 
+
+.compareVersionCont
+	margin-top 3px
+	padding-top 4px
+	height 29px
+	width 100%
+	display flex
+	justify-content space-between
+	background-color $grayVersionsInfo
+	
+	.versionArrow
+		font-size 20px
+		color black
+		width 20px
+		height 20px
+		cursor pointer
+		
+	.versionRecognizerGroup
+		width 30%
+		color $regActiveBtn
+		font-size 12px
+		text-align center
+
 .tabsList
 	display flex
 	overflow-x auto
@@ -53,14 +76,16 @@
 			&:hover
 				background-color transparent !important
 
-@media(min-width 560px)
+@media(min-width 600px)
 	.tabsList
 		li
 			a
 				font-size 13px
 
 .fichaCat
-	width 50%
+	width 48%
+	margin-left 1%
+	display none
 	float left
 	padding-left 15px
 
@@ -74,3 +99,7 @@
 			color white
 			font-size 14px
 			margin 0 10%	
+			
+.fichaTecnicaDetail
+	padding-left 2%
+	

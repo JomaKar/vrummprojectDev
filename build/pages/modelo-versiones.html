@@ -60,7 +60,7 @@
             $(this).scrollTop(0);
           });
 
-          window.onbeforeunload = function() { sessionStorage.removeItem('versionsArr') };
+          //window.onbeforeunload = function() { sessionStorage.removeItem('versionsArr') };
 
       });
 
@@ -101,6 +101,7 @@
             <div class="row-fluid childHeight noPadding noMargin versionsSpace">              
                 <!-- <p class="startingText gallery versionsStartTxt">Cargando las versiones del modelo solicitado...</p> -->
                 <div class="versionsCarousel backImg col-xs-12 noPadding">
+                    <span class="currentVersionId hiddenItm"></span>
                     
                     <div class="arrowsCont">
                         <span class="glyphicon glyphicon-menu-left leftArr"></span>

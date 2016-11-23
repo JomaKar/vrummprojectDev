@@ -30,23 +30,7 @@
             $(this).scrollTop(0);
           });
 
-          document.onmouseover = function() {
-               //User's mouse is inside the page.
-                window.innerDocClick = true;
-            }
-
-            document.onmouseleave = function() {
-                //User's mouse has left the page.
-                window.innerDocClick = false;
-            }
-
-            window.onhashchange = function() {
-                if (window.innerDocClick) {
-                    console.log('whatever')
-                } else {
-                    window.onbeforeunload = function() { sessionStorage.removeItem('versionStored') };
-                }
-            }
+         //window.onbeforeunload = function() { sessionStorage.removeItem('versionStored') };
 
       });
 
@@ -132,45 +116,52 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-xs-12 compareVersionCont">
+                            <span class="versionArrow left glyphicon glyphicon-menu-left"></span>
+                            <div class="versionRecognizerGroup">
+                                Versión <span class="versionNum"></span> de <span class="versionTotal"></span>
+                            </div>
+                            <span class="versionArrow right glyphicon glyphicon-menu-right"></span>
+                        </div>
                         <div class="versionDetailCont specVers col-xs-12 noPadding">
                              <ul class="nav nav-tabs tabsList" role="tablist">
-                                <li role="presentation" class="active">
-                                  <a href="#mechanic" aria-controls="mechanic" role="tab" data-toggle="tab">Mecánica</a>
-                                </li>
-                                <li role="presentation">
-                                  <a href="#Exterior" aria-controls="Exterior" role="tab" data-toggle="tab">Exterior</a>
-                                </li>
-                                <li role="presentation">
-                                  <a href="#Interior" aria-controls="Interior" role="tab" data-toggle="tab">Interior</a>
-                                </li>
-                                <li role="presentation">
-                                  <a href="#technology" aria-controls="technology" role="tab" data-toggle="tab">Tecnología</a>
-                                </li>
-                                <li role="presentation">
-                                  <a href="#security" aria-controls="security" role="tab" data-toggle="tab">Seguridad</a>
-                                </li>
-                                <li role="presentation">
-                                  <a href="#relevant" aria-controls="relevant" role="tab" data-toggle="tab">Destacados</a>
-                                </li>
-                                <li role="presentation">
-                                  <a href="#qualifications" aria-controls="qualifications" role="tab" data-toggle="tab">Calificaciones</a>
-                                </li>
-                                <li role="presentation">
-                                  <a href="#colors" aria-controls="colors" role="tab" data-toggle="tab">Colores</a>
-                                </li>
-                            </ul>
+                                  <li role="presentation" class="active">
+                                    <a href="#mechanic" aria-controls="mechanic" role="tab" data-toggle="tab">Mecánica</a>
+                                  </li>
+                                  <li role="presentation">
+                                    <a href="#Exterior" aria-controls="Exterior" role="tab" data-toggle="tab">Exterior</a>
+                                  </li>
+                                  <li role="presentation">
+                                    <a href="#Interior" aria-controls="Interior" role="tab" data-toggle="tab">Interior</a>
+                                  </li>
+                                  <li role="presentation">
+                                    <a href="#technology" aria-controls="technology" role="tab" data-toggle="tab">Tecnología</a>
+                                  </li>
+                                  <li role="presentation">
+                                    <a href="#security" aria-controls="security" role="tab" data-toggle="tab">Seguridad</a>
+                                  </li>
+                                  <li role="presentation">
+                                    <a href="#relevant" aria-controls="relevant" role="tab" data-toggle="tab">Destacados</a>
+                                  </li>
+                                  <li role="presentation">
+                                    <a href="#qualifications" aria-controls="qualifications" role="tab" data-toggle="tab">Calificaciones</a>
+                                  </li>
+                                  <li role="presentation">
+                                    <a href="#colors" aria-controls="colors" role="tab" data-toggle="tab">Colores</a>
+                                  </li>
+                              </ul>
 
-                            <!-- Tab panes -->
-                            <div class="tab-content">
-                              <div role="tabpanel" class="tab-pane fichaTecnicaDetail Mecánica active" id="mechanic">mechanic</div>
-                              <div role="tabpanel" class="tab-pane fichaTecnicaDetail Exterior" id="Exterior">Exterior</div>
-                              <div role="tabpanel" class="tab-pane fichaTecnicaDetail Interior" id="Interior">Interior</div>
-                              <div role="tabpanel" class="tab-pane fichaTecnicaDetail Tecnología" id="technology">technology</div>
-                              <div role="tabpanel" class="tab-pane fichaTecnicaDetail Seguridad" id="security">security</div>
-                              <div role="tabpanel" class="tab-pane fichaTecnicaDetail Destacados" id="relevant">relevant</div>
-                              <div role="tabpanel" class="tab-pane fichaTecnicaDetail Calificación" id="qualifications">qualifications</div>
-                              <div role="tabpanel" class="tab-pane fichaTecnicaDetail" id="colors">colors</div>
-                            </div>
+                              <!-- Tab panes -->
+                              <div class="tab-content">
+                                  <div role="tabpanel" class="tab-pane fichaTecnicaDetail Mecánica active" id="mechanic">mechanic</div>
+                                  <div role="tabpanel" class="tab-pane fichaTecnicaDetail Exterior" id="Exterior">Exterior</div>
+                                  <div role="tabpanel" class="tab-pane fichaTecnicaDetail Interior" id="Interior">Interior</div>
+                                  <div role="tabpanel" class="tab-pane fichaTecnicaDetail Tecnología" id="technology">technology</div>
+                                  <div role="tabpanel" class="tab-pane fichaTecnicaDetail Seguridad" id="security">security</div>
+                                  <div role="tabpanel" class="tab-pane fichaTecnicaDetail Destacado" id="relevant">relevant</div>
+                                  <div role="tabpanel" class="tab-pane fichaTecnicaDetail Calificación" id="qualifications">qualifications</div>
+                                  <div role="tabpanel" class="tab-pane fichaTecnicaDetail" id="colors">colors</div>
+                              </div>
 
                           </div> 
                         </div>
