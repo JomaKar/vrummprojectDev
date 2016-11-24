@@ -111,17 +111,17 @@ $(function(){
 
 			});
 
-			var mailGood = sessionStorage.getItem('mailGood');
+			//var mailGood = sessionStorage.getItem('mailGood');
 
-			if(mailGood === 'yes'){
-				sendLogin(values);
+			sendLogin(values);
+			/*if(mailGood === 'yes'){
 			}else{
 			
 				removePrev();
 				var wrongOne = "<p id='nicknameText' class='badText'>Te falto algún dato o escribiste algo mal</p>";
 				registrarbtn.before(wrongOne);
 
-			}
+			}*/
 
 		}else{
 			recoverPassEnd();
@@ -132,10 +132,12 @@ $(function(){
 
 			params = JSON.stringify(params);
 
-			var mailGood = sessionStorage.getItem('mailGood');
+			//var mailGood = sessionStorage.getItem('mailGood');
 
-			if(mailGood === 'yes'){
-				recoverPassSend(params, null);
+			recoverPassSend(params, null);
+
+			/*if(mailGood === 'yes'){
+
 			}else{
 				if(mailTxt.length > 0){
 					setTimeout(function(){
@@ -149,7 +151,7 @@ $(function(){
 					}, 300);
 				}
 
-			}
+			}*/
 
 		}
 
@@ -274,11 +276,11 @@ $(function(){
 		resendPassMail.click(function(){
 			params = JSON.stringify(params);
 
-			var mailGood = sessionStorage.getItem('mailGood');
+			//var mailGood = sessionStorage.getItem('mailGood');
 
-			if(mailGood === 'yes'){
-				recoverPassSend(params,'etw');
-			}
+			recoverPassSend(params,'etw');
+			/*if(mailGood === 'yes'){
+			}*/
 		});
 	}
 

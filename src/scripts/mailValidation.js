@@ -184,7 +184,7 @@ $(function(){
 
 	nickInput.validateMail(nickInput, 'r');
 
-	loginMailInput.validateMail(loginMailInput, 'l');
+	//loginMailInput.validateMail(loginMailInput, 'l');
 
 
 

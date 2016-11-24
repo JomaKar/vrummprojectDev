@@ -15,8 +15,9 @@ $(function(){
 		nameSpace = $('h4.fullName'),
 		carsNumber = $('span.carsNumb'),
 		dateSpace = $('span.memDateNumb'),
-		domDataElements = [aliasSpan, dateSpace, nameSpace, carsNumber],
-		userObjKeys = ['alias', 'created_at', 'full_name', 'total_garage'];
+		photoDiv = $('div.p-profilePhoto'),
+		domDataElements = [aliasSpan, dateSpace, nameSpace, carsNumber, photoDiv],
+		userObjKeys = ['alias', 'created_at', 'full_name', 'total_garage', 'foto_perfil'];
 
 
 		var askInterval = setInterval(function(){
@@ -120,13 +121,16 @@ $(function(){
 			if(userArr !== null && userArr !== undefined && userArr !== 'nothing stored'){
 				clearInterval(askInterval);
 				user = JSON.parse(userArr);
-				if(user !== false){
+				//con(user);
+				if(user.length > 0){
 					displayUserInfo(user[0]);
 				}else{
 					con('no user');
 				}
 		    }	
 		}
+
+		var imageOk = false;
 
 		function displayUserInfo(userObj){
 
@@ -146,7 +150,13 @@ $(function(){
 					value = value.slice(0, whiteSpaceIdx);
 
 				}else if(key === 'foto_perfil'){
-					con(value);
+
+					if(value !== null){
+						imageOk = true;
+
+						value = `data:image/png;base64,${value}`;
+
+					}
 				}
 
 				$.each(userObjKeys, function(index, val){
@@ -154,7 +164,14 @@ $(function(){
 
 						var el = domDataElements[index];
 
-						$(el).html(value);
+						if(val === 'foto_perfil' && imageOk){
+
+							$(el).css({'background-image': `url(${value})`});
+
+						}else{
+							$(el).html(value);
+						}
+
 					}
 				});
 

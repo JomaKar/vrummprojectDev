@@ -19,6 +19,7 @@ $(function(){
 	posFrList = $('ul.posibleFriendsList'),
 	noFriendMsg = $('div.errorFriendNick'),
 	registrarbtn = $('button.registrarbtn');
+	var divImgCont = $('div#r-inpFileImgCont');
 
 	linkLogin.click(function(){
 
@@ -30,7 +31,12 @@ $(function(){
 		$(this).scrollTop(0);
 		browserFingerprint();
 		getGeolocalization();
+		//setImgDataAttr();
 	});
+
+	$(window).resize(function(){
+		//setImgDataAttr();
+	})
 
 	function whereIam() {
 		var place = window.location.pathname;
@@ -58,6 +64,38 @@ $(function(){
 		}
 
 		
+	}
+
+	var newWidth = 0;
+
+	function setImgDataAttr(){
+		var place = window.location.pathname;
+
+		var lastSlash = place.lastIndexOf('/');
+
+		place = place.slice(lastSlash);
+		
+		if(place === "/registro.html"){
+			 
+			 var wid = divImgCont.width();
+
+			 if(newWidth === 0){
+
+			 	divImgCont.attr('data-width', wid);
+
+			 }
+
+			 if(newWidth !== wid && newWidth !== 0){
+
+			 	divImgCont.attr('data-width', wid);
+			 	 console.log(wid);
+			 }
+
+			 setTimeout(function(){
+			 	newWidth = wid;
+			 }, 3)
+
+		}
 	}
 
 	function getDeviceIDStarting(){
@@ -171,16 +209,6 @@ $(function(){
 		
 	}
 
-	function assignPhotoValue(val){
-		if(photoAsk === 0){
-			photoToReturn = val;
-			photoAsk++;
-			return;
-		}
-
-		return photoToReturn;
-	}
-
 	function getGeolocalization(){
 		var loc = sessionStorage.getItem('location');
 
@@ -232,7 +260,8 @@ $(function(){
 		e.preventDefault();
 		var data = $(this).serializeArray();
 		var value = refInput.val();
-		
+
+
 		if(value.length > 0 && value !== 'Sin invitación'){
 			var exist = checkFriend(value);
 			
@@ -252,24 +281,27 @@ $(function(){
 
 	});
 
-	var photo;
+	$(document).on('click', 'div.ok', function(){
 
-	$('#image_file').on('change', function(){
+		setTimeout(function(){
 
-		if($(this)[0].files.length > 0){
-			console.log(typeof $(this)[0].files, $(this)[0].files);
+			if(divImgCont.find('img').length){
+				var dataImg = divImgCont.find('img').attr('src').replace(/^data:image\/(png|jpg);base64,/, "");
+				assignPhotoValue(dataImg);
+			}
 
-			photo = $(this)[0].files[0];
+		}, 200);
 
-			var pict = $(this)[0].files[0].name;
-			
-			assignPhotoValue(pict);
-
-		}else{
-			console.log('no hay archivos')
-		}
-		
 	});
+
+	function assignPhotoValue(val){
+		if(val !== null){
+			photoToReturn = val;
+			return;
+		}
+
+		return photoToReturn;
+	}
 
 
 	function dataManagement(infoReg){
@@ -280,7 +312,7 @@ $(function(){
 		var uuidString =  uuid; //arr.join('-');
 		var device = {'device': uuidString}, 
 		localization = currentLocation(), 
-		photography = assignPhotoValue();
+		photography = assignPhotoValue(null);
 		
 
 		if(localization === undefined) {
@@ -289,10 +321,10 @@ $(function(){
 				localization = {'geoloc': localization};
 		}
 
-		if(photography === undefined) {
-				photography = {'photo': 'profileDafault.png'};
+		if(photography === undefined || photography === null) {
+				photography = {'foto': 'profileDafault.png'};
 			}else{
-				photography = {'photo': photography};
+				photography = {'foto': photography};
 		}
 
 	
@@ -337,8 +369,10 @@ $(function(){
 
 	}
 
+	var userInfo = [];
+
 	function sendForm(val){
-		
+		sessionStorage.setItem('inforToReg', val);
 		$.post('https://vrummapp.net/ws/v2/usuario/registro', 
 			val
 		).then(function(res){ 
@@ -351,7 +385,7 @@ $(function(){
 
 				con(id);
 
-				var userInfo = res.mensaje.usr;
+				userInfo[0] = res.mensaje.usr;
 
 				userInfo = JSON.stringify(userInfo);
 
@@ -374,29 +408,6 @@ $(function(){
 		});
 		
 	}
-
-
-	/*function getUserInfo(id) {
-		var data = {idUsr: id};
-		data = JSON.stringify(data);
-
-		$.post('https://vrummapp.net/ws/v2/usuario/info', 
-				data
-			).then(function(res){
-
-				if(res.estado === 1){
-
-					var userInfo = res.mensaje.rs;
-					userInfo = JSON.stringify(userInfo);
-
-					sessionStorage.setItem('currentUserInfo', userInfo);
-					
-				}
-
-			 }).fail(function(err){
-	  			console.log(err);
-		});
-	}*/
 
 
 });
