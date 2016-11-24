@@ -216,6 +216,11 @@ $(function(){
 	function getUserInfo(id) {
 		var data = {idUsr: id};
 		data = JSON.stringify(data);
+		var devicId = sessionStorage.getItem('deviceId');
+
+		var dataForGarage = {idUsr: id, device: devicId};
+
+		dataForGarage = JSON.stringify(dataForGarage);
 
 		$.post('https://vrummapp.net/ws/v2/usuario/info', 
 				data
@@ -228,6 +233,25 @@ $(function(){
 
 					sessionStorage.setItem('currentUserInfo', currentUser);
 					
+				}
+
+			 }).fail(function(err){
+	  			console.log(err);
+		});
+
+		$.post('https://vrummapp.net/ws/v2/garage/listar', 
+				dataForGarage
+			).then(function(res){
+
+				if(res.estado === 1){
+
+					var userGarage = res.mensaje.rs;
+					userGarage = JSON.stringify(userGarage);
+
+					sessionStorage.setItem('currentUserGarage', userGarage);
+					
+				}else{
+					sessionStorage.setItem('currentUserGarage', 'nothing stored');
 				}
 
 			 }).fail(function(err){

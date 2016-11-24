@@ -23,6 +23,7 @@
           var session = window.sessionStorage.getItem('activeSession');
           var userInfo = sessionStorage.getItem('currentUserInfo');
           var userId = sessionStorage.getItem('currentUserId');
+          var usrGarage = sessionStorage.getItem('currentUserGarage');
 
           if(session !== 'yes'){
             window.location = '../index.html';
@@ -34,6 +35,12 @@
               }else{
                   window.location = '../index.html';
               }
+          }
+
+          if(usrGarage  === null || usrGarage === undefined || usrGarage === 'nothing stored'){
+              if(userId !== null && userId !== undefined){    
+               getUserGarage(userId);
+             }
           }
 
           function getUserInfo(id) {
@@ -56,10 +63,41 @@
                }).fail(function(err){
                   console.log(err);
             });
+
           }
 
 
-          window.onbeforeunload = function() { sessionStorage.removeItem('currentUserInfo') };
+          function getUserGarage(id) {
+
+            var devicId = sessionStorage.getItem('deviceId');
+
+            var dataForGarage = {idUsr: id, device: devicId};
+
+            dataForGarage = JSON.stringify(dataForGarage);
+
+              $.post('https://vrummapp.net/ws/v2/garage/listar', 
+                dataForGarage
+              ).then(function(res){
+
+                if(res.estado === 1){
+
+                  var userGarage = res.mensaje.rs;
+                  userGarage = JSON.stringify(userGarage);
+
+                  sessionStorage.setItem('currentUserGarage', userGarage);
+                  
+                }else{
+                  sessionStorage.setItem('currentUserGarage', 'nothing stored');
+                }
+
+               }).fail(function(err){
+                  console.log(err);
+            });
+
+          }
+
+
+          //window.onbeforeunload = function() { sessionStorage.removeItem('currentUserInfo') };
 
       });
 
@@ -163,6 +201,8 @@
                 <div class="col-xs-12 noPadding noMargin garageGridCont">
                     <div class="row-fluid noPadding noMargin childHeight garageGrid">
                         <!-- <p class="startingText gallery modelsStartTxt">Cargando modelos de la marca solicitada...</p> -->
+
+
                         <div class="col-xs-12 noPadding col-sm-6 col-md-4 garageImgCont love">
                             <div class="sideInfoBar">
                                 <div class="userCarCatCont">
@@ -214,6 +254,8 @@
                             </div>
                             <img  src="http://198.12.157.96/contenido/vrm/th_2051.jpg" class="noMargin garageImg img-responsive" border="0"/>
                         </div>
+
+
                         <div class="col-xs-12 noPadding col-sm-6 col-md-4 garageImgCont love">
                             <div class="sideInfoBar">
                                 <div class="userCarCatCont">

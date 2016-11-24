@@ -56,12 +56,13 @@ $(function(){
 			 }
 		}else if(place === "/catalogo-marcas.html"){
 			getDeviceIDStarting();
-		}else{
+		}
+		/*else{
 
 			sessionStorage.removeItem('activeSession');
 			sessionStorage.removeItem('currentUser');
 
-		}
+		}*/
 
 		
 	}
