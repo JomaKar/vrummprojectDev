@@ -174,7 +174,9 @@ $(function(){
 					var id = res.mensaje.rs;
 					getUserInfo(id);
 					id.toString();
+					sessionStorage.removeItem('currentUser');
 					sessionStorage.setItem('currentUser', currentUser);
+					sessionStorage.removeItem('currentUserId');
 					sessionStorage.setItem('currentUserId', id);
 					sessionStorage.setItem('activeSession', 'yes');
 
@@ -230,7 +232,7 @@ $(function(){
 
 					var userInfo = res.mensaje.rs;
 					userInfo = JSON.stringify(userInfo);
-
+					sessionStorage.removeItem('currentUserInfo');
 					sessionStorage.setItem('currentUserInfo', currentUser);
 					
 				}

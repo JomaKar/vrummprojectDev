@@ -97,7 +97,11 @@
           }
 
 
-          //window.onbeforeunload = function() { sessionStorage.removeItem('currentUserInfo') };
+          window.onbeforeunload = function() { 
+            sessionStorage.removeItem('currentUserGarage');
+            sessionStorage.removeItem('currentUserInfo');
+
+        };
 
       });
 
@@ -119,7 +123,7 @@
           <a class="navbar-brand noPadding backImg iconLogo" href="#"></a>
         </div>
 
-        <div id="navbar" class="collapse navbar-collapse">
+        <div id="navbar" class="collapse navbar-collapse superTop">
           <ul class="nav navbar-nav navMenuList">
             <li class="active"><a href="#">Descargar app </a></li>
             <li class="hidden-xs menuItmSign"><span>|</span></li>
@@ -138,7 +142,8 @@
 
       <div class="p-profileInfoCont row-fluid childHeight noPadding noMargin">
           <div class="p-profilePhoto noPadding col-xs-offset-1 col-xs-4 col-sm-2 backImg">
-              <span class="glyphicon glyphicon-camera profileImgCameraIcon"></span>
+              <span class="hiddenItm">hola</span>
+              <span class="glyphicon glyphicon-camera profImgCameraIcon"></span>
           </div> 
           <div class="p-profileInfo col-xs-7 col-sm-8 col-md-7">
               <h4 class="profileName fullName">MiNombre Completo Men</h4>
@@ -181,9 +186,9 @@
                       <div class="filterDivCont NorightP NoleftP">
                           <select name="filter" id="filterSelect">
                               <option value="garageImgCont">Todos</option>
-                              <option value="now">Soon</option>
-                              <option value="soon">Some day</option>
-                              <option value="love">Dream</option>
+                              <option value="soonday">Soon</option>
+                              <option value="someday">Some day</option>
+                              <option value="dream">Dream</option>
                           </select>
                           <span class="glyphicon glyphicon-triangle-bottom selectCaret"></span>
                       </div>    
@@ -200,446 +205,15 @@
             <div class="row-fluid childHeight noPadding noMargin modelsSpace">
                 <div class="col-xs-12 noPadding noMargin garageGridCont">
                     <div class="row-fluid noPadding noMargin childHeight garageGrid">
-                        <!-- <p class="startingText gallery modelsStartTxt">Cargando modelos de la marca solicitada...</p> -->
-
-
-                        <div class="col-xs-12 noPadding col-sm-6 col-md-4 garageImgCont love">
-                            <div class="sideInfoBar">
-                                <div class="userCarCatCont">
-                                    <div class="selectionContainer">
-                                        <div class="selectedCat">
-                                            <div class="calendarGroup soon">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21" class="undefined">
-                                                      <path d="M16.2 2.2v0.6 0.6 0 0.4c0 0.9-0.8 1.7-1.7 1.7s-1.7-0.7-1.7-1.7V3.4 2.8 2.2H8.1v0.6 0.6 0.4c0 0.9-0.8 1.7-1.7 1.7 -0.9 0-1.7-0.7-1.7-1.7V3.4v0V2.8v0V2.2C3.2 2.3 2 3.4 2 4.8v0.3 2.5 8.6C2 17.7 3.3 19 4.9 19h11.2c1.6 0 2.9-1.3 2.9-2.9V7.5 5.1 4.8C19 3.4 17.7 2.2 16.2 2.2zM17.7 16.1c0 0.9-0.7 1.6-1.6 1.6H4.9c-0.9 0-1.6-0.7-1.6-1.6V7.5h14.5V16.1zM6.4 4.5c0.4 0 0.7-0.3 0.7-0.7V3.4 2.8 2.2 1.7C7.2 1.3 6.8 1 6.4 1 6 1 5.7 1.3 5.7 1.7v0.5 0.6 0.6 0.4C5.7 4.2 6 4.5 6.4 4.5zM14.5 4.5c0.4 0 0.7-0.3 0.7-0.7V3.4 2.8 2.2 1.7c0-0.4-0.3-0.7-0.7-0.7 -0.4 0-0.7 0.3-0.7 0.7v0.5 0.6 0.6 0.4C13.8 4.2 14.1 4.5 14.5 4.5zM8.4 16.1c0.8 0 1.4-0.2 1.9-0.7 0.4-0.5 0.6-1 0.6-1.6 0-0.6-0.2-1-0.5-1.3 -0.1-0.1-0.2-0.2-0.3-0.2 -0.1-0.1-0.2-0.2 0-0.3 0.1-0.1 0.2-0.1 0.2-0.2 0.2-0.3 0.4-0.6 0.4-1.1 0-0.6-0.2-1.1-0.6-1.4C9.6 9 9.1 8.8 8.4 8.8 8 8.8 7.7 8.9 7.4 9S7 9.2 6.8 9.3c-0.2 0.2-0.4 0.5-0.5 0.8 -0.1 0.2-0.1 0.5-0.2 0.7 0 0.2 0.1 0.3 0.3 0.3h0.7c0.2 0 0.3-0.1 0.3-0.3 0-0.2 0.1-0.4 0.2-0.5C7.8 10.1 8 10 8.3 10 8.6 10 8.8 10 9 10.2c0.2 0.2 0.2 0.4 0.2 0.7 0 0.4-0.2 0.7-0.5 0.8 -0.1 0.1-0.3 0.1-0.6 0.1 -0.2 0-0.3 0.2-0.3 0.3v0.4c0 0.2 0.1 0.3 0.3 0.3 0.3 0 0.5 0.1 0.7 0.1 0.4 0.2 0.6 0.5 0.6 0.9 0 0.4-0.1 0.6-0.3 0.8C8.9 14.9 8.7 15 8.4 15c-0.4 0-0.8-0.2-0.9-0.5 -0.1-0.1-0.1-0.2-0.1-0.4 0-0.2-0.2-0.3-0.3-0.3H6.3c-0.2 0-0.3 0.1-0.3 0.3 0 0.4 0.2 0.8 0.3 1.1C6.7 15.8 7.4 16.1 8.4 16.1zM12.3 11.1h1.1c0.2 0 0.3 0.1 0.3 0.3v4.3c0 0.2 0.1 0.3 0.3 0.3h0.8c0.2 0 0.3-0.1 0.3-0.3V9.2c0-0.2-0.1-0.3-0.3-0.3h-0.5c-0.2 0-0.3 0.1-0.3 0.1 0 0 0 0.1 0 0.1 -0.1 0.2-0.2 0.4-0.3 0.5 -0.2 0.2-0.4 0.3-0.7 0.4 -0.1 0-0.3 0.1-0.6 0.1 -0.2 0-0.3 0.2-0.3 0.3v0.3C12 10.9 12.1 11.1 12.3 11.1z" />
-                                                </svg>
-                                            </div>
-                                        </div>
-                                        <div class="notSelectedCat">
-                                            <div class="heartGroup love">
-                                                <span class="userCarCat fa fa-heart"></span>
-                                            </div>
-                                            <div class="soonGroup now">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21">
-                                                        <path d="M10.4 2c-3.7 0-6.8 2.3-8 5.5l2.2 1c0.8-2.4 3.1-4.1 5.8-4.1 3.4 0 6.1 2.7 6.1 6.1s-2.7 6.1-6.1 6.1c-2.4 0-4.5-1.4-5.5-3.4l1.8-0.7L2.2 9.7l-1.2 5 1.6-0.7C4 17 7 19 10.4 19c4.7 0 8.6-3.8 8.6-8.5S15.2 2 10.4 2z"/>
-                                                        <rect x="9" y="6" width="2" height="5"/>
-                                                        <rect x="11" y="10" transform="matrix(0.6002 -0.7999 0.7999 0.6002 -5.2003 14.5968)" width="2" height="5"/>
-                                                </svg>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="toggleableIcons">
-                                    <div class="compareGroup">
-                                        <span class="fa fa-long-arrow-right right"></span>
-                                        <span class="fa fa-long-arrow-left left"></span>
-                                        <span class="fa fa-plus-circle circle"></span>
-                                        <span class="message">Agrega al comparador</span>
-                                    </div>
-                                    <div class="shareGroup">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21">
-                                          <g>
-                                                <path d="M17.8 6.2h-2.2c-0.4 0-0.8 0.4-0.8 0.8s0.4 0.8 0.8 0.8h1.4v10.7H4.2v-10.7h1.7c0.4 0 0.8-0.4 0.8-0.8s-0.4-0.8-0.9-0.8h-2.4c-0.5 0-0.8 0.4-0.8 0.8v12.3c0 0.4 0.3 0.7 0.8 0.7h14.5c0.4 0 0.8-0.3 0.8-0.7v-12.3C18.6 6.6 18.3 6.2 17.8 6.2zM9.4 3.9l0.3-0.1v10.2c0 0.4 0.4 0.8 0.8 0.8s0.8-0.4 0.8-0.8v-10.6l0.8 0.5c0.1 0.1 0.3 0.2 0.5 0.2 0.2 0 0.4-0.1 0.6-0.3 0.3-0.3 0.3-0.8-0.1-1.1l-2-1.5c-0.3-0.2-0.7-0.3-1 0 -0.1 0.1-1.8 1.5-1.8 1.5 -0.3 0.3-0.3 0.8 0 1.1C8.6 4.2 9.1 4.2 9.4 3.9z" />
-                                          </g>
-                                        </svg>
-                                        <!-- <span class="fa fa-long-arrow-up arUp"></span>
-                                        <span class="fa fa-square-o sqEmp"></span> -->
-                                        <span class="message">Compartir</span>
-                                    </div>
-                                    <div class="toggleTrashGrp">
-                                        <span class="fa fa-trash trash"></span>
-                                        <span class="message">Eliminar</span>
-                                    </div>
-                                </div>
-                                <span class="fa fa-ellipsis-h dots"></span>
-                            </div>
-                            <img  src="http://198.12.157.96/contenido/vrm/th_2051.jpg" class="noMargin garageImg img-responsive" border="0"/>
+                        <p class="startingText gallery usrGarageLoadingTxt">Cargando modelos de la marca solicitada...</p>
+                        <p class="startingText gallery usrGarageInitialTxt hiddenItm">Aún no tienes autos en tu garage, añade uno nuevo...</p>
+                        <div class="col-xs-12 modelItem col-sm-6 col-md-4 addGarageBtnCon">
+                            <a href="catalogo-marcas.html" class="addGarageBtn">
+                                <span class="fa fa-plus-square addGarageIcon"></span>
+                                <p class="addGarageTxt">Añade autos</p>
+                            </a>
                         </div>
 
-
-                        <div class="col-xs-12 noPadding col-sm-6 col-md-4 garageImgCont love">
-                            <div class="sideInfoBar">
-                                <div class="userCarCatCont">
-                                    <div class="selectionContainer">
-                                        <div class="selectedCat">
-                                            <div class="calendarGroup soon">
-                                                <!-- <span class="userCarCat fa fa-calendar"></span> -->
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21" class="undefined">
-                                                      <path d="M16.2 2.2v0.6 0.6 0 0.4c0 0.9-0.8 1.7-1.7 1.7s-1.7-0.7-1.7-1.7V3.4 2.8 2.2H8.1v0.6 0.6 0.4c0 0.9-0.8 1.7-1.7 1.7 -0.9 0-1.7-0.7-1.7-1.7V3.4v0V2.8v0V2.2C3.2 2.3 2 3.4 2 4.8v0.3 2.5 8.6C2 17.7 3.3 19 4.9 19h11.2c1.6 0 2.9-1.3 2.9-2.9V7.5 5.1 4.8C19 3.4 17.7 2.2 16.2 2.2zM17.7 16.1c0 0.9-0.7 1.6-1.6 1.6H4.9c-0.9 0-1.6-0.7-1.6-1.6V7.5h14.5V16.1zM6.4 4.5c0.4 0 0.7-0.3 0.7-0.7V3.4 2.8 2.2 1.7C7.2 1.3 6.8 1 6.4 1 6 1 5.7 1.3 5.7 1.7v0.5 0.6 0.6 0.4C5.7 4.2 6 4.5 6.4 4.5zM14.5 4.5c0.4 0 0.7-0.3 0.7-0.7V3.4 2.8 2.2 1.7c0-0.4-0.3-0.7-0.7-0.7 -0.4 0-0.7 0.3-0.7 0.7v0.5 0.6 0.6 0.4C13.8 4.2 14.1 4.5 14.5 4.5zM8.4 16.1c0.8 0 1.4-0.2 1.9-0.7 0.4-0.5 0.6-1 0.6-1.6 0-0.6-0.2-1-0.5-1.3 -0.1-0.1-0.2-0.2-0.3-0.2 -0.1-0.1-0.2-0.2 0-0.3 0.1-0.1 0.2-0.1 0.2-0.2 0.2-0.3 0.4-0.6 0.4-1.1 0-0.6-0.2-1.1-0.6-1.4C9.6 9 9.1 8.8 8.4 8.8 8 8.8 7.7 8.9 7.4 9S7 9.2 6.8 9.3c-0.2 0.2-0.4 0.5-0.5 0.8 -0.1 0.2-0.1 0.5-0.2 0.7 0 0.2 0.1 0.3 0.3 0.3h0.7c0.2 0 0.3-0.1 0.3-0.3 0-0.2 0.1-0.4 0.2-0.5C7.8 10.1 8 10 8.3 10 8.6 10 8.8 10 9 10.2c0.2 0.2 0.2 0.4 0.2 0.7 0 0.4-0.2 0.7-0.5 0.8 -0.1 0.1-0.3 0.1-0.6 0.1 -0.2 0-0.3 0.2-0.3 0.3v0.4c0 0.2 0.1 0.3 0.3 0.3 0.3 0 0.5 0.1 0.7 0.1 0.4 0.2 0.6 0.5 0.6 0.9 0 0.4-0.1 0.6-0.3 0.8C8.9 14.9 8.7 15 8.4 15c-0.4 0-0.8-0.2-0.9-0.5 -0.1-0.1-0.1-0.2-0.1-0.4 0-0.2-0.2-0.3-0.3-0.3H6.3c-0.2 0-0.3 0.1-0.3 0.3 0 0.4 0.2 0.8 0.3 1.1C6.7 15.8 7.4 16.1 8.4 16.1zM12.3 11.1h1.1c0.2 0 0.3 0.1 0.3 0.3v4.3c0 0.2 0.1 0.3 0.3 0.3h0.8c0.2 0 0.3-0.1 0.3-0.3V9.2c0-0.2-0.1-0.3-0.3-0.3h-0.5c-0.2 0-0.3 0.1-0.3 0.1 0 0 0 0.1 0 0.1 -0.1 0.2-0.2 0.4-0.3 0.5 -0.2 0.2-0.4 0.3-0.7 0.4 -0.1 0-0.3 0.1-0.6 0.1 -0.2 0-0.3 0.2-0.3 0.3v0.3C12 10.9 12.1 11.1 12.3 11.1z" />
-                                                </svg>
-                                            </div>
-                                        </div>
-                                        <div class="notSelectedCat">
-                                            <div class="heartGroup love">
-                                                <span class="userCarCat fa fa-heart"></span>
-                                            </div>
-                                            <div class="soonGroup now">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21">
-                                                        <path d="M10.4 2c-3.7 0-6.8 2.3-8 5.5l2.2 1c0.8-2.4 3.1-4.1 5.8-4.1 3.4 0 6.1 2.7 6.1 6.1s-2.7 6.1-6.1 6.1c-2.4 0-4.5-1.4-5.5-3.4l1.8-0.7L2.2 9.7l-1.2 5 1.6-0.7C4 17 7 19 10.4 19c4.7 0 8.6-3.8 8.6-8.5S15.2 2 10.4 2z"/>
-                                                        <rect x="9" y="6" width="2" height="5"/>
-                                                        <rect x="11" y="10" transform="matrix(0.6002 -0.7999 0.7999 0.6002 -5.2003 14.5968)" width="2" height="5"/>
-                                                </svg>
-                                                 <!-- <span class="fa fa-long-arrow-left horArr"></span>
-                                                 <span class="fa fa-long-arrow-down verArr"></span>
-                                                 <span class="fa fa-repeat repeat"></span> -->
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="toggleableIcons">
-                                    <div class="compareGroup">
-                                        <!-- <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21">
-                                          <g>
-                                            <polygon points="16.3 6.6 10.6 3.6 10.6 5.6 0.5 5.6 0.5 7.6 10.6 7.6 10.6 9.6 " class="b"/>
-                                          </g>
-                                          <g>
-                                            <polygon points="6.2 11.2 6.2 9.2 0.5 12.2 6.2 15.2 6.2 13.2 16.3 13.2 16.3 11.2 " class="b"/>
-                                          </g><circle cx="16" cy="15" r="5" fill="#FFF"/>
-                                          <path d="M15.5 12.4h0.8v2.8h2.8v0.8h-2.8v2.8h-0.8v-2.8h-2.8v-0.8h2.8V12.4z"/>
-                                        </svg> -->
-                                        <span class="fa fa-long-arrow-right right"></span>
-                                        <span class="fa fa-long-arrow-left left"></span>
-                                        <span class="fa fa-plus-circle circle"></span>
-                                        <span class="message">Agrega al comparador</span>
-                                    </div>
-                                    <div class="shareGroup">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21">
-                                          <g>
-                                                <path d="M17.8 6.2h-2.2c-0.4 0-0.8 0.4-0.8 0.8s0.4 0.8 0.8 0.8h1.4v10.7H4.2v-10.7h1.7c0.4 0 0.8-0.4 0.8-0.8s-0.4-0.8-0.9-0.8h-2.4c-0.5 0-0.8 0.4-0.8 0.8v12.3c0 0.4 0.3 0.7 0.8 0.7h14.5c0.4 0 0.8-0.3 0.8-0.7v-12.3C18.6 6.6 18.3 6.2 17.8 6.2zM9.4 3.9l0.3-0.1v10.2c0 0.4 0.4 0.8 0.8 0.8s0.8-0.4 0.8-0.8v-10.6l0.8 0.5c0.1 0.1 0.3 0.2 0.5 0.2 0.2 0 0.4-0.1 0.6-0.3 0.3-0.3 0.3-0.8-0.1-1.1l-2-1.5c-0.3-0.2-0.7-0.3-1 0 -0.1 0.1-1.8 1.5-1.8 1.5 -0.3 0.3-0.3 0.8 0 1.1C8.6 4.2 9.1 4.2 9.4 3.9z" />
-                                          </g>
-                                        </svg>
-                                        <!-- <span class="fa fa-long-arrow-up arUp"></span>
-                                        <span class="fa fa-square-o sqEmp"></span> -->
-                                        <span class="message">Compartir</span>
-                                    </div>
-                                    <div class="toggleTrashGrp">
-                                        <span class="fa fa-trash trash"></span>
-                                        <span class="message">Eliminar</span>
-                                    </div>
-                                </div>
-                                <span class="fa fa-ellipsis-h dots"></span>
-                            </div>
-                            <img  src="http://198.12.157.96/contenido/vrm/th_4956.jpg" class="noMargin garageImg img-responsive" border="0"/>
-                        </div>
-                        <div class="col-xs-12 noPadding col-sm-6 col-md-4 garageImgCont love">
-                            <div class="sideInfoBar">
-                                <div class="userCarCatCont">
-                                    <div class="selectionContainer">
-                                        <div class="selectedCat">
-                                            <div class="calendarGroup soon">
-                                                <!-- <span class="userCarCat fa fa-calendar"></span> -->
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21" class="undefined">
-                                                      <path d="M16.2 2.2v0.6 0.6 0 0.4c0 0.9-0.8 1.7-1.7 1.7s-1.7-0.7-1.7-1.7V3.4 2.8 2.2H8.1v0.6 0.6 0.4c0 0.9-0.8 1.7-1.7 1.7 -0.9 0-1.7-0.7-1.7-1.7V3.4v0V2.8v0V2.2C3.2 2.3 2 3.4 2 4.8v0.3 2.5 8.6C2 17.7 3.3 19 4.9 19h11.2c1.6 0 2.9-1.3 2.9-2.9V7.5 5.1 4.8C19 3.4 17.7 2.2 16.2 2.2zM17.7 16.1c0 0.9-0.7 1.6-1.6 1.6H4.9c-0.9 0-1.6-0.7-1.6-1.6V7.5h14.5V16.1zM6.4 4.5c0.4 0 0.7-0.3 0.7-0.7V3.4 2.8 2.2 1.7C7.2 1.3 6.8 1 6.4 1 6 1 5.7 1.3 5.7 1.7v0.5 0.6 0.6 0.4C5.7 4.2 6 4.5 6.4 4.5zM14.5 4.5c0.4 0 0.7-0.3 0.7-0.7V3.4 2.8 2.2 1.7c0-0.4-0.3-0.7-0.7-0.7 -0.4 0-0.7 0.3-0.7 0.7v0.5 0.6 0.6 0.4C13.8 4.2 14.1 4.5 14.5 4.5zM8.4 16.1c0.8 0 1.4-0.2 1.9-0.7 0.4-0.5 0.6-1 0.6-1.6 0-0.6-0.2-1-0.5-1.3 -0.1-0.1-0.2-0.2-0.3-0.2 -0.1-0.1-0.2-0.2 0-0.3 0.1-0.1 0.2-0.1 0.2-0.2 0.2-0.3 0.4-0.6 0.4-1.1 0-0.6-0.2-1.1-0.6-1.4C9.6 9 9.1 8.8 8.4 8.8 8 8.8 7.7 8.9 7.4 9S7 9.2 6.8 9.3c-0.2 0.2-0.4 0.5-0.5 0.8 -0.1 0.2-0.1 0.5-0.2 0.7 0 0.2 0.1 0.3 0.3 0.3h0.7c0.2 0 0.3-0.1 0.3-0.3 0-0.2 0.1-0.4 0.2-0.5C7.8 10.1 8 10 8.3 10 8.6 10 8.8 10 9 10.2c0.2 0.2 0.2 0.4 0.2 0.7 0 0.4-0.2 0.7-0.5 0.8 -0.1 0.1-0.3 0.1-0.6 0.1 -0.2 0-0.3 0.2-0.3 0.3v0.4c0 0.2 0.1 0.3 0.3 0.3 0.3 0 0.5 0.1 0.7 0.1 0.4 0.2 0.6 0.5 0.6 0.9 0 0.4-0.1 0.6-0.3 0.8C8.9 14.9 8.7 15 8.4 15c-0.4 0-0.8-0.2-0.9-0.5 -0.1-0.1-0.1-0.2-0.1-0.4 0-0.2-0.2-0.3-0.3-0.3H6.3c-0.2 0-0.3 0.1-0.3 0.3 0 0.4 0.2 0.8 0.3 1.1C6.7 15.8 7.4 16.1 8.4 16.1zM12.3 11.1h1.1c0.2 0 0.3 0.1 0.3 0.3v4.3c0 0.2 0.1 0.3 0.3 0.3h0.8c0.2 0 0.3-0.1 0.3-0.3V9.2c0-0.2-0.1-0.3-0.3-0.3h-0.5c-0.2 0-0.3 0.1-0.3 0.1 0 0 0 0.1 0 0.1 -0.1 0.2-0.2 0.4-0.3 0.5 -0.2 0.2-0.4 0.3-0.7 0.4 -0.1 0-0.3 0.1-0.6 0.1 -0.2 0-0.3 0.2-0.3 0.3v0.3C12 10.9 12.1 11.1 12.3 11.1z" />
-                                                </svg>
-                                            </div>
-                                        </div>
-                                        <div class="notSelectedCat">
-                                            <div class="heartGroup love">
-                                                <span class="userCarCat fa fa-heart"></span>
-                                            </div>
-                                            <div class="soonGroup now">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21">
-                                                        <path d="M10.4 2c-3.7 0-6.8 2.3-8 5.5l2.2 1c0.8-2.4 3.1-4.1 5.8-4.1 3.4 0 6.1 2.7 6.1 6.1s-2.7 6.1-6.1 6.1c-2.4 0-4.5-1.4-5.5-3.4l1.8-0.7L2.2 9.7l-1.2 5 1.6-0.7C4 17 7 19 10.4 19c4.7 0 8.6-3.8 8.6-8.5S15.2 2 10.4 2z"/>
-                                                        <rect x="9" y="6" width="2" height="5"/>
-                                                        <rect x="11" y="10" transform="matrix(0.6002 -0.7999 0.7999 0.6002 -5.2003 14.5968)" width="2" height="5"/>
-                                                </svg>
-                                                 <!-- <span class="fa fa-long-arrow-left horArr"></span>
-                                                 <span class="fa fa-long-arrow-down verArr"></span>
-                                                 <span class="fa fa-repeat repeat"></span> -->
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="toggleableIcons">
-                                    <div class="compareGroup">
-                                        <!-- <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21">
-                                          <g>
-                                            <polygon points="16.3 6.6 10.6 3.6 10.6 5.6 0.5 5.6 0.5 7.6 10.6 7.6 10.6 9.6 " class="b"/>
-                                          </g>
-                                          <g>
-                                            <polygon points="6.2 11.2 6.2 9.2 0.5 12.2 6.2 15.2 6.2 13.2 16.3 13.2 16.3 11.2 " class="b"/>
-                                          </g><circle cx="16" cy="15" r="5" fill="#FFF"/>
-                                          <path d="M15.5 12.4h0.8v2.8h2.8v0.8h-2.8v2.8h-0.8v-2.8h-2.8v-0.8h2.8V12.4z"/>
-                                        </svg> -->
-                                        <span class="fa fa-long-arrow-right right"></span>
-                                        <span class="fa fa-long-arrow-left left"></span>
-                                        <span class="fa fa-plus-circle circle"></span>
-                                        <span class="message">Agrega al comparador</span>
-                                    </div>
-                                    <div class="shareGroup">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21">
-                                          <g>
-                                                <path d="M17.8 6.2h-2.2c-0.4 0-0.8 0.4-0.8 0.8s0.4 0.8 0.8 0.8h1.4v10.7H4.2v-10.7h1.7c0.4 0 0.8-0.4 0.8-0.8s-0.4-0.8-0.9-0.8h-2.4c-0.5 0-0.8 0.4-0.8 0.8v12.3c0 0.4 0.3 0.7 0.8 0.7h14.5c0.4 0 0.8-0.3 0.8-0.7v-12.3C18.6 6.6 18.3 6.2 17.8 6.2zM9.4 3.9l0.3-0.1v10.2c0 0.4 0.4 0.8 0.8 0.8s0.8-0.4 0.8-0.8v-10.6l0.8 0.5c0.1 0.1 0.3 0.2 0.5 0.2 0.2 0 0.4-0.1 0.6-0.3 0.3-0.3 0.3-0.8-0.1-1.1l-2-1.5c-0.3-0.2-0.7-0.3-1 0 -0.1 0.1-1.8 1.5-1.8 1.5 -0.3 0.3-0.3 0.8 0 1.1C8.6 4.2 9.1 4.2 9.4 3.9z" />
-                                          </g>
-                                        </svg>
-                                        <!-- <span class="fa fa-long-arrow-up arUp"></span>
-                                        <span class="fa fa-square-o sqEmp"></span> -->
-                                        <span class="message">Compartir</span>
-                                    </div>
-                                    <div class="toggleTrashGrp">
-                                        <span class="fa fa-trash trash"></span>
-                                        <span class="message">Eliminar</span>
-                                    </div>
-                                </div>
-                                <span class="fa fa-ellipsis-h dots"></span>
-                            </div>
-                            <img  src="http://198.12.157.96/contenido/vrm/th_2361.jpg" class="noMargin garageImg img-responsive" border="0"/>
-                        </div>
-                        <div class="col-xs-12 noPadding col-sm-6 col-md-4 garageImgCont soon">
-                            <div class="sideInfoBar">
-                                <div class="userCarCatCont">
-                                    <div class="selectionContainer">
-                                        <div class="selectedCat">
-                                            <div class="calendarGroup soon">
-                                                <!-- <span class="userCarCat fa fa-calendar"></span> -->
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21" class="undefined">
-                                                      <path d="M16.2 2.2v0.6 0.6 0 0.4c0 0.9-0.8 1.7-1.7 1.7s-1.7-0.7-1.7-1.7V3.4 2.8 2.2H8.1v0.6 0.6 0.4c0 0.9-0.8 1.7-1.7 1.7 -0.9 0-1.7-0.7-1.7-1.7V3.4v0V2.8v0V2.2C3.2 2.3 2 3.4 2 4.8v0.3 2.5 8.6C2 17.7 3.3 19 4.9 19h11.2c1.6 0 2.9-1.3 2.9-2.9V7.5 5.1 4.8C19 3.4 17.7 2.2 16.2 2.2zM17.7 16.1c0 0.9-0.7 1.6-1.6 1.6H4.9c-0.9 0-1.6-0.7-1.6-1.6V7.5h14.5V16.1zM6.4 4.5c0.4 0 0.7-0.3 0.7-0.7V3.4 2.8 2.2 1.7C7.2 1.3 6.8 1 6.4 1 6 1 5.7 1.3 5.7 1.7v0.5 0.6 0.6 0.4C5.7 4.2 6 4.5 6.4 4.5zM14.5 4.5c0.4 0 0.7-0.3 0.7-0.7V3.4 2.8 2.2 1.7c0-0.4-0.3-0.7-0.7-0.7 -0.4 0-0.7 0.3-0.7 0.7v0.5 0.6 0.6 0.4C13.8 4.2 14.1 4.5 14.5 4.5zM8.4 16.1c0.8 0 1.4-0.2 1.9-0.7 0.4-0.5 0.6-1 0.6-1.6 0-0.6-0.2-1-0.5-1.3 -0.1-0.1-0.2-0.2-0.3-0.2 -0.1-0.1-0.2-0.2 0-0.3 0.1-0.1 0.2-0.1 0.2-0.2 0.2-0.3 0.4-0.6 0.4-1.1 0-0.6-0.2-1.1-0.6-1.4C9.6 9 9.1 8.8 8.4 8.8 8 8.8 7.7 8.9 7.4 9S7 9.2 6.8 9.3c-0.2 0.2-0.4 0.5-0.5 0.8 -0.1 0.2-0.1 0.5-0.2 0.7 0 0.2 0.1 0.3 0.3 0.3h0.7c0.2 0 0.3-0.1 0.3-0.3 0-0.2 0.1-0.4 0.2-0.5C7.8 10.1 8 10 8.3 10 8.6 10 8.8 10 9 10.2c0.2 0.2 0.2 0.4 0.2 0.7 0 0.4-0.2 0.7-0.5 0.8 -0.1 0.1-0.3 0.1-0.6 0.1 -0.2 0-0.3 0.2-0.3 0.3v0.4c0 0.2 0.1 0.3 0.3 0.3 0.3 0 0.5 0.1 0.7 0.1 0.4 0.2 0.6 0.5 0.6 0.9 0 0.4-0.1 0.6-0.3 0.8C8.9 14.9 8.7 15 8.4 15c-0.4 0-0.8-0.2-0.9-0.5 -0.1-0.1-0.1-0.2-0.1-0.4 0-0.2-0.2-0.3-0.3-0.3H6.3c-0.2 0-0.3 0.1-0.3 0.3 0 0.4 0.2 0.8 0.3 1.1C6.7 15.8 7.4 16.1 8.4 16.1zM12.3 11.1h1.1c0.2 0 0.3 0.1 0.3 0.3v4.3c0 0.2 0.1 0.3 0.3 0.3h0.8c0.2 0 0.3-0.1 0.3-0.3V9.2c0-0.2-0.1-0.3-0.3-0.3h-0.5c-0.2 0-0.3 0.1-0.3 0.1 0 0 0 0.1 0 0.1 -0.1 0.2-0.2 0.4-0.3 0.5 -0.2 0.2-0.4 0.3-0.7 0.4 -0.1 0-0.3 0.1-0.6 0.1 -0.2 0-0.3 0.2-0.3 0.3v0.3C12 10.9 12.1 11.1 12.3 11.1z" />
-                                                </svg>
-                                            </div>
-                                        </div>
-                                        <div class="notSelectedCat">
-                                            <div class="heartGroup love">
-                                                <span class="userCarCat fa fa-heart"></span>
-                                            </div>
-                                            <div class="soonGroup now">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21">
-                                                        <path d="M10.4 2c-3.7 0-6.8 2.3-8 5.5l2.2 1c0.8-2.4 3.1-4.1 5.8-4.1 3.4 0 6.1 2.7 6.1 6.1s-2.7 6.1-6.1 6.1c-2.4 0-4.5-1.4-5.5-3.4l1.8-0.7L2.2 9.7l-1.2 5 1.6-0.7C4 17 7 19 10.4 19c4.7 0 8.6-3.8 8.6-8.5S15.2 2 10.4 2z"/>
-                                                        <rect x="9" y="6" width="2" height="5"/>
-                                                        <rect x="11" y="10" transform="matrix(0.6002 -0.7999 0.7999 0.6002 -5.2003 14.5968)" width="2" height="5"/>
-                                                </svg>
-                                                 <!-- <span class="fa fa-long-arrow-left horArr"></span>
-                                                 <span class="fa fa-long-arrow-down verArr"></span>
-                                                 <span class="fa fa-repeat repeat"></span> -->
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="toggleableIcons">
-                                    <div class="compareGroup">
-                                        <!-- <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21">
-                                          <g>
-                                            <polygon points="16.3 6.6 10.6 3.6 10.6 5.6 0.5 5.6 0.5 7.6 10.6 7.6 10.6 9.6 " class="b"/>
-                                          </g>
-                                          <g>
-                                            <polygon points="6.2 11.2 6.2 9.2 0.5 12.2 6.2 15.2 6.2 13.2 16.3 13.2 16.3 11.2 " class="b"/>
-                                          </g><circle cx="16" cy="15" r="5" fill="#FFF"/>
-                                          <path d="M15.5 12.4h0.8v2.8h2.8v0.8h-2.8v2.8h-0.8v-2.8h-2.8v-0.8h2.8V12.4z"/>
-                                        </svg> -->
-                                        <span class="fa fa-long-arrow-right right"></span>
-                                        <span class="fa fa-long-arrow-left left"></span>
-                                        <span class="fa fa-plus-circle circle"></span>
-                                        <span class="message">Agrega al comparador</span>
-                                    </div>
-                                    <div class="shareGroup">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21">
-                                          <g>
-                                                <path d="M17.8 6.2h-2.2c-0.4 0-0.8 0.4-0.8 0.8s0.4 0.8 0.8 0.8h1.4v10.7H4.2v-10.7h1.7c0.4 0 0.8-0.4 0.8-0.8s-0.4-0.8-0.9-0.8h-2.4c-0.5 0-0.8 0.4-0.8 0.8v12.3c0 0.4 0.3 0.7 0.8 0.7h14.5c0.4 0 0.8-0.3 0.8-0.7v-12.3C18.6 6.6 18.3 6.2 17.8 6.2zM9.4 3.9l0.3-0.1v10.2c0 0.4 0.4 0.8 0.8 0.8s0.8-0.4 0.8-0.8v-10.6l0.8 0.5c0.1 0.1 0.3 0.2 0.5 0.2 0.2 0 0.4-0.1 0.6-0.3 0.3-0.3 0.3-0.8-0.1-1.1l-2-1.5c-0.3-0.2-0.7-0.3-1 0 -0.1 0.1-1.8 1.5-1.8 1.5 -0.3 0.3-0.3 0.8 0 1.1C8.6 4.2 9.1 4.2 9.4 3.9z" />
-                                          </g>
-                                        </svg>
-                                        <!-- <span class="fa fa-long-arrow-up arUp"></span>
-                                        <span class="fa fa-square-o sqEmp"></span> -->
-                                        <span class="message">Compartir</span>
-                                    </div>
-                                    <div class="toggleTrashGrp">
-                                        <span class="fa fa-trash trash"></span>
-                                        <span class="message">Eliminar</span>
-                                    </div>
-                                </div>
-                                <span class="fa fa-ellipsis-h dots"></span>
-                            </div>
-                            <img  src="http://198.12.157.96/contenido/vrm/th_2054.jpg" class="noMargin garageImg img-responsive" border="0"/>
-                        </div>
-                        <div class="col-xs-12 noPadding col-sm-6 col-md-4 garageImgCont soon">
-                            <div class="sideInfoBar">
-                                <div class="userCarCatCont">
-                                    <div class="selectionContainer">
-                                        <div class="selectedCat">
-                                            <div class="calendarGroup soon">
-                                                <!-- <span class="userCarCat fa fa-calendar"></span> -->
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21" class="undefined">
-                                                      <path d="M16.2 2.2v0.6 0.6 0 0.4c0 0.9-0.8 1.7-1.7 1.7s-1.7-0.7-1.7-1.7V3.4 2.8 2.2H8.1v0.6 0.6 0.4c0 0.9-0.8 1.7-1.7 1.7 -0.9 0-1.7-0.7-1.7-1.7V3.4v0V2.8v0V2.2C3.2 2.3 2 3.4 2 4.8v0.3 2.5 8.6C2 17.7 3.3 19 4.9 19h11.2c1.6 0 2.9-1.3 2.9-2.9V7.5 5.1 4.8C19 3.4 17.7 2.2 16.2 2.2zM17.7 16.1c0 0.9-0.7 1.6-1.6 1.6H4.9c-0.9 0-1.6-0.7-1.6-1.6V7.5h14.5V16.1zM6.4 4.5c0.4 0 0.7-0.3 0.7-0.7V3.4 2.8 2.2 1.7C7.2 1.3 6.8 1 6.4 1 6 1 5.7 1.3 5.7 1.7v0.5 0.6 0.6 0.4C5.7 4.2 6 4.5 6.4 4.5zM14.5 4.5c0.4 0 0.7-0.3 0.7-0.7V3.4 2.8 2.2 1.7c0-0.4-0.3-0.7-0.7-0.7 -0.4 0-0.7 0.3-0.7 0.7v0.5 0.6 0.6 0.4C13.8 4.2 14.1 4.5 14.5 4.5zM8.4 16.1c0.8 0 1.4-0.2 1.9-0.7 0.4-0.5 0.6-1 0.6-1.6 0-0.6-0.2-1-0.5-1.3 -0.1-0.1-0.2-0.2-0.3-0.2 -0.1-0.1-0.2-0.2 0-0.3 0.1-0.1 0.2-0.1 0.2-0.2 0.2-0.3 0.4-0.6 0.4-1.1 0-0.6-0.2-1.1-0.6-1.4C9.6 9 9.1 8.8 8.4 8.8 8 8.8 7.7 8.9 7.4 9S7 9.2 6.8 9.3c-0.2 0.2-0.4 0.5-0.5 0.8 -0.1 0.2-0.1 0.5-0.2 0.7 0 0.2 0.1 0.3 0.3 0.3h0.7c0.2 0 0.3-0.1 0.3-0.3 0-0.2 0.1-0.4 0.2-0.5C7.8 10.1 8 10 8.3 10 8.6 10 8.8 10 9 10.2c0.2 0.2 0.2 0.4 0.2 0.7 0 0.4-0.2 0.7-0.5 0.8 -0.1 0.1-0.3 0.1-0.6 0.1 -0.2 0-0.3 0.2-0.3 0.3v0.4c0 0.2 0.1 0.3 0.3 0.3 0.3 0 0.5 0.1 0.7 0.1 0.4 0.2 0.6 0.5 0.6 0.9 0 0.4-0.1 0.6-0.3 0.8C8.9 14.9 8.7 15 8.4 15c-0.4 0-0.8-0.2-0.9-0.5 -0.1-0.1-0.1-0.2-0.1-0.4 0-0.2-0.2-0.3-0.3-0.3H6.3c-0.2 0-0.3 0.1-0.3 0.3 0 0.4 0.2 0.8 0.3 1.1C6.7 15.8 7.4 16.1 8.4 16.1zM12.3 11.1h1.1c0.2 0 0.3 0.1 0.3 0.3v4.3c0 0.2 0.1 0.3 0.3 0.3h0.8c0.2 0 0.3-0.1 0.3-0.3V9.2c0-0.2-0.1-0.3-0.3-0.3h-0.5c-0.2 0-0.3 0.1-0.3 0.1 0 0 0 0.1 0 0.1 -0.1 0.2-0.2 0.4-0.3 0.5 -0.2 0.2-0.4 0.3-0.7 0.4 -0.1 0-0.3 0.1-0.6 0.1 -0.2 0-0.3 0.2-0.3 0.3v0.3C12 10.9 12.1 11.1 12.3 11.1z" />
-                                                </svg>
-                                            </div>
-                                        </div>
-                                        <div class="notSelectedCat">
-                                            <div class="heartGroup love">
-                                                <span class="userCarCat fa fa-heart"></span>
-                                            </div>
-                                            <div class="soonGroup now">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21">
-                                                        <path d="M10.4 2c-3.7 0-6.8 2.3-8 5.5l2.2 1c0.8-2.4 3.1-4.1 5.8-4.1 3.4 0 6.1 2.7 6.1 6.1s-2.7 6.1-6.1 6.1c-2.4 0-4.5-1.4-5.5-3.4l1.8-0.7L2.2 9.7l-1.2 5 1.6-0.7C4 17 7 19 10.4 19c4.7 0 8.6-3.8 8.6-8.5S15.2 2 10.4 2z"/>
-                                                        <rect x="9" y="6" width="2" height="5"/>
-                                                        <rect x="11" y="10" transform="matrix(0.6002 -0.7999 0.7999 0.6002 -5.2003 14.5968)" width="2" height="5"/>
-                                                </svg>
-                                                 <!-- <span class="fa fa-long-arrow-left horArr"></span>
-                                                 <span class="fa fa-long-arrow-down verArr"></span>
-                                                 <span class="fa fa-repeat repeat"></span> -->
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="toggleableIcons">
-                                    <div class="compareGroup">
-                                        <!-- <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21">
-                                          <g>
-                                            <polygon points="16.3 6.6 10.6 3.6 10.6 5.6 0.5 5.6 0.5 7.6 10.6 7.6 10.6 9.6 " class="b"/>
-                                          </g>
-                                          <g>
-                                            <polygon points="6.2 11.2 6.2 9.2 0.5 12.2 6.2 15.2 6.2 13.2 16.3 13.2 16.3 11.2 " class="b"/>
-                                          </g><circle cx="16" cy="15" r="5" fill="#FFF"/>
-                                          <path d="M15.5 12.4h0.8v2.8h2.8v0.8h-2.8v2.8h-0.8v-2.8h-2.8v-0.8h2.8V12.4z"/>
-                                        </svg> -->
-                                        <span class="fa fa-long-arrow-right right"></span>
-                                        <span class="fa fa-long-arrow-left left"></span>
-                                        <span class="fa fa-plus-circle circle"></span>
-                                        <span class="message">Agrega al comparador</span>
-                                    </div>
-                                    <div class="shareGroup">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21">
-                                          <g>
-                                                <path d="M17.8 6.2h-2.2c-0.4 0-0.8 0.4-0.8 0.8s0.4 0.8 0.8 0.8h1.4v10.7H4.2v-10.7h1.7c0.4 0 0.8-0.4 0.8-0.8s-0.4-0.8-0.9-0.8h-2.4c-0.5 0-0.8 0.4-0.8 0.8v12.3c0 0.4 0.3 0.7 0.8 0.7h14.5c0.4 0 0.8-0.3 0.8-0.7v-12.3C18.6 6.6 18.3 6.2 17.8 6.2zM9.4 3.9l0.3-0.1v10.2c0 0.4 0.4 0.8 0.8 0.8s0.8-0.4 0.8-0.8v-10.6l0.8 0.5c0.1 0.1 0.3 0.2 0.5 0.2 0.2 0 0.4-0.1 0.6-0.3 0.3-0.3 0.3-0.8-0.1-1.1l-2-1.5c-0.3-0.2-0.7-0.3-1 0 -0.1 0.1-1.8 1.5-1.8 1.5 -0.3 0.3-0.3 0.8 0 1.1C8.6 4.2 9.1 4.2 9.4 3.9z" />
-                                          </g>
-                                        </svg>
-                                        <!-- <span class="fa fa-long-arrow-up arUp"></span>
-                                        <span class="fa fa-square-o sqEmp"></span> -->
-                                        <span class="message">Compartir</span>
-                                    </div>
-                                    <div class="toggleTrashGrp">
-                                        <span class="fa fa-trash trash"></span>
-                                        <span class="message">Eliminar</span>
-                                    </div>
-                                </div>
-                                <span class="fa fa-ellipsis-h dots"></span>
-                            </div>
-                            <img  src="http://198.12.157.96/contenido/vrm/th_2055.jpg" class="noMargin garageImg img-responsive" border="0"/>
-                        </div>
-                        <div class="col-xs-12 noPadding col-sm-6 col-md-4 garageImgCont now">
-                            <div class="sideInfoBar">
-                                <div class="userCarCatCont">
-                                    <div class="selectionContainer">
-                                        <div class="selectedCat">
-                                            <div class="calendarGroup soon">
-                                                <!-- <span class="userCarCat fa fa-calendar"></span> -->
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21" class="undefined">
-                                                      <path d="M16.2 2.2v0.6 0.6 0 0.4c0 0.9-0.8 1.7-1.7 1.7s-1.7-0.7-1.7-1.7V3.4 2.8 2.2H8.1v0.6 0.6 0.4c0 0.9-0.8 1.7-1.7 1.7 -0.9 0-1.7-0.7-1.7-1.7V3.4v0V2.8v0V2.2C3.2 2.3 2 3.4 2 4.8v0.3 2.5 8.6C2 17.7 3.3 19 4.9 19h11.2c1.6 0 2.9-1.3 2.9-2.9V7.5 5.1 4.8C19 3.4 17.7 2.2 16.2 2.2zM17.7 16.1c0 0.9-0.7 1.6-1.6 1.6H4.9c-0.9 0-1.6-0.7-1.6-1.6V7.5h14.5V16.1zM6.4 4.5c0.4 0 0.7-0.3 0.7-0.7V3.4 2.8 2.2 1.7C7.2 1.3 6.8 1 6.4 1 6 1 5.7 1.3 5.7 1.7v0.5 0.6 0.6 0.4C5.7 4.2 6 4.5 6.4 4.5zM14.5 4.5c0.4 0 0.7-0.3 0.7-0.7V3.4 2.8 2.2 1.7c0-0.4-0.3-0.7-0.7-0.7 -0.4 0-0.7 0.3-0.7 0.7v0.5 0.6 0.6 0.4C13.8 4.2 14.1 4.5 14.5 4.5zM8.4 16.1c0.8 0 1.4-0.2 1.9-0.7 0.4-0.5 0.6-1 0.6-1.6 0-0.6-0.2-1-0.5-1.3 -0.1-0.1-0.2-0.2-0.3-0.2 -0.1-0.1-0.2-0.2 0-0.3 0.1-0.1 0.2-0.1 0.2-0.2 0.2-0.3 0.4-0.6 0.4-1.1 0-0.6-0.2-1.1-0.6-1.4C9.6 9 9.1 8.8 8.4 8.8 8 8.8 7.7 8.9 7.4 9S7 9.2 6.8 9.3c-0.2 0.2-0.4 0.5-0.5 0.8 -0.1 0.2-0.1 0.5-0.2 0.7 0 0.2 0.1 0.3 0.3 0.3h0.7c0.2 0 0.3-0.1 0.3-0.3 0-0.2 0.1-0.4 0.2-0.5C7.8 10.1 8 10 8.3 10 8.6 10 8.8 10 9 10.2c0.2 0.2 0.2 0.4 0.2 0.7 0 0.4-0.2 0.7-0.5 0.8 -0.1 0.1-0.3 0.1-0.6 0.1 -0.2 0-0.3 0.2-0.3 0.3v0.4c0 0.2 0.1 0.3 0.3 0.3 0.3 0 0.5 0.1 0.7 0.1 0.4 0.2 0.6 0.5 0.6 0.9 0 0.4-0.1 0.6-0.3 0.8C8.9 14.9 8.7 15 8.4 15c-0.4 0-0.8-0.2-0.9-0.5 -0.1-0.1-0.1-0.2-0.1-0.4 0-0.2-0.2-0.3-0.3-0.3H6.3c-0.2 0-0.3 0.1-0.3 0.3 0 0.4 0.2 0.8 0.3 1.1C6.7 15.8 7.4 16.1 8.4 16.1zM12.3 11.1h1.1c0.2 0 0.3 0.1 0.3 0.3v4.3c0 0.2 0.1 0.3 0.3 0.3h0.8c0.2 0 0.3-0.1 0.3-0.3V9.2c0-0.2-0.1-0.3-0.3-0.3h-0.5c-0.2 0-0.3 0.1-0.3 0.1 0 0 0 0.1 0 0.1 -0.1 0.2-0.2 0.4-0.3 0.5 -0.2 0.2-0.4 0.3-0.7 0.4 -0.1 0-0.3 0.1-0.6 0.1 -0.2 0-0.3 0.2-0.3 0.3v0.3C12 10.9 12.1 11.1 12.3 11.1z" />
-                                                </svg>
-                                            </div>
-                                        </div>
-                                        <div class="notSelectedCat">
-                                            <div class="heartGroup love">
-                                                <span class="userCarCat fa fa-heart"></span>
-                                            </div>
-                                            <div class="soonGroup now">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21">
-                                                        <path d="M10.4 2c-3.7 0-6.8 2.3-8 5.5l2.2 1c0.8-2.4 3.1-4.1 5.8-4.1 3.4 0 6.1 2.7 6.1 6.1s-2.7 6.1-6.1 6.1c-2.4 0-4.5-1.4-5.5-3.4l1.8-0.7L2.2 9.7l-1.2 5 1.6-0.7C4 17 7 19 10.4 19c4.7 0 8.6-3.8 8.6-8.5S15.2 2 10.4 2z"/>
-                                                        <rect x="9" y="6" width="2" height="5"/>
-                                                        <rect x="11" y="10" transform="matrix(0.6002 -0.7999 0.7999 0.6002 -5.2003 14.5968)" width="2" height="5"/>
-                                                </svg>
-                                                 <!-- <span class="fa fa-long-arrow-left horArr"></span>
-                                                 <span class="fa fa-long-arrow-down verArr"></span>
-                                                 <span class="fa fa-repeat repeat"></span> -->
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="toggleableIcons">
-                                    <div class="compareGroup">
-                                        <!-- <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21">
-                                          <g>
-                                            <polygon points="16.3 6.6 10.6 3.6 10.6 5.6 0.5 5.6 0.5 7.6 10.6 7.6 10.6 9.6 " class="b"/>
-                                          </g>
-                                          <g>
-                                            <polygon points="6.2 11.2 6.2 9.2 0.5 12.2 6.2 15.2 6.2 13.2 16.3 13.2 16.3 11.2 " class="b"/>
-                                          </g><circle cx="16" cy="15" r="5" fill="#FFF"/>
-                                          <path d="M15.5 12.4h0.8v2.8h2.8v0.8h-2.8v2.8h-0.8v-2.8h-2.8v-0.8h2.8V12.4z"/>
-                                        </svg> -->
-                                        <span class="fa fa-long-arrow-right right"></span>
-                                        <span class="fa fa-long-arrow-left left"></span>
-                                        <span class="fa fa-plus-circle circle"></span>
-                                        <span class="message">Agrega al comparador</span>
-                                    </div>
-                                    <div class="shareGroup">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21">
-                                          <g>
-                                                <path d="M17.8 6.2h-2.2c-0.4 0-0.8 0.4-0.8 0.8s0.4 0.8 0.8 0.8h1.4v10.7H4.2v-10.7h1.7c0.4 0 0.8-0.4 0.8-0.8s-0.4-0.8-0.9-0.8h-2.4c-0.5 0-0.8 0.4-0.8 0.8v12.3c0 0.4 0.3 0.7 0.8 0.7h14.5c0.4 0 0.8-0.3 0.8-0.7v-12.3C18.6 6.6 18.3 6.2 17.8 6.2zM9.4 3.9l0.3-0.1v10.2c0 0.4 0.4 0.8 0.8 0.8s0.8-0.4 0.8-0.8v-10.6l0.8 0.5c0.1 0.1 0.3 0.2 0.5 0.2 0.2 0 0.4-0.1 0.6-0.3 0.3-0.3 0.3-0.8-0.1-1.1l-2-1.5c-0.3-0.2-0.7-0.3-1 0 -0.1 0.1-1.8 1.5-1.8 1.5 -0.3 0.3-0.3 0.8 0 1.1C8.6 4.2 9.1 4.2 9.4 3.9z" />
-                                          </g>
-                                        </svg>
-                                        <!-- <span class="fa fa-long-arrow-up arUp"></span>
-                                        <span class="fa fa-square-o sqEmp"></span> -->
-                                        <span class="message">Compartir</span>
-                                    </div>
-                                    <div class="toggleTrashGrp">
-                                        <span class="fa fa-trash trash"></span>
-                                        <span class="message">Eliminar</span>
-                                    </div>
-                                </div>
-                                <span class="fa fa-ellipsis-h dots"></span>
-                            </div>
-                            <img  src="http://198.12.157.96/contenido/vrm/th_2056.jpg" class="noMargin garageImg img-responsive" border="0"/>
-                        </div>
-                        <div class="col-xs-12 noPadding col-sm-6 col-md-4 garageImgCont now">
-                            <div class="sideInfoBar">
-                                <div class="userCarCatCont">
-                                    <div class="selectionContainer">
-                                        <div class="selectedCat">
-                                            <div class="calendarGroup soon">
-                                                <!-- <span class="userCarCat fa fa-calendar"></span> -->
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21" class="undefined">
-                                                      <path d="M16.2 2.2v0.6 0.6 0 0.4c0 0.9-0.8 1.7-1.7 1.7s-1.7-0.7-1.7-1.7V3.4 2.8 2.2H8.1v0.6 0.6 0.4c0 0.9-0.8 1.7-1.7 1.7 -0.9 0-1.7-0.7-1.7-1.7V3.4v0V2.8v0V2.2C3.2 2.3 2 3.4 2 4.8v0.3 2.5 8.6C2 17.7 3.3 19 4.9 19h11.2c1.6 0 2.9-1.3 2.9-2.9V7.5 5.1 4.8C19 3.4 17.7 2.2 16.2 2.2zM17.7 16.1c0 0.9-0.7 1.6-1.6 1.6H4.9c-0.9 0-1.6-0.7-1.6-1.6V7.5h14.5V16.1zM6.4 4.5c0.4 0 0.7-0.3 0.7-0.7V3.4 2.8 2.2 1.7C7.2 1.3 6.8 1 6.4 1 6 1 5.7 1.3 5.7 1.7v0.5 0.6 0.6 0.4C5.7 4.2 6 4.5 6.4 4.5zM14.5 4.5c0.4 0 0.7-0.3 0.7-0.7V3.4 2.8 2.2 1.7c0-0.4-0.3-0.7-0.7-0.7 -0.4 0-0.7 0.3-0.7 0.7v0.5 0.6 0.6 0.4C13.8 4.2 14.1 4.5 14.5 4.5zM8.4 16.1c0.8 0 1.4-0.2 1.9-0.7 0.4-0.5 0.6-1 0.6-1.6 0-0.6-0.2-1-0.5-1.3 -0.1-0.1-0.2-0.2-0.3-0.2 -0.1-0.1-0.2-0.2 0-0.3 0.1-0.1 0.2-0.1 0.2-0.2 0.2-0.3 0.4-0.6 0.4-1.1 0-0.6-0.2-1.1-0.6-1.4C9.6 9 9.1 8.8 8.4 8.8 8 8.8 7.7 8.9 7.4 9S7 9.2 6.8 9.3c-0.2 0.2-0.4 0.5-0.5 0.8 -0.1 0.2-0.1 0.5-0.2 0.7 0 0.2 0.1 0.3 0.3 0.3h0.7c0.2 0 0.3-0.1 0.3-0.3 0-0.2 0.1-0.4 0.2-0.5C7.8 10.1 8 10 8.3 10 8.6 10 8.8 10 9 10.2c0.2 0.2 0.2 0.4 0.2 0.7 0 0.4-0.2 0.7-0.5 0.8 -0.1 0.1-0.3 0.1-0.6 0.1 -0.2 0-0.3 0.2-0.3 0.3v0.4c0 0.2 0.1 0.3 0.3 0.3 0.3 0 0.5 0.1 0.7 0.1 0.4 0.2 0.6 0.5 0.6 0.9 0 0.4-0.1 0.6-0.3 0.8C8.9 14.9 8.7 15 8.4 15c-0.4 0-0.8-0.2-0.9-0.5 -0.1-0.1-0.1-0.2-0.1-0.4 0-0.2-0.2-0.3-0.3-0.3H6.3c-0.2 0-0.3 0.1-0.3 0.3 0 0.4 0.2 0.8 0.3 1.1C6.7 15.8 7.4 16.1 8.4 16.1zM12.3 11.1h1.1c0.2 0 0.3 0.1 0.3 0.3v4.3c0 0.2 0.1 0.3 0.3 0.3h0.8c0.2 0 0.3-0.1 0.3-0.3V9.2c0-0.2-0.1-0.3-0.3-0.3h-0.5c-0.2 0-0.3 0.1-0.3 0.1 0 0 0 0.1 0 0.1 -0.1 0.2-0.2 0.4-0.3 0.5 -0.2 0.2-0.4 0.3-0.7 0.4 -0.1 0-0.3 0.1-0.6 0.1 -0.2 0-0.3 0.2-0.3 0.3v0.3C12 10.9 12.1 11.1 12.3 11.1z" />
-                                                </svg>
-                                            </div>
-                                        </div>
-                                        <div class="notSelectedCat">
-                                            <div class="heartGroup love">
-                                                <span class="userCarCat fa fa-heart"></span>
-                                            </div>
-                                            <div class="soonGroup now">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21">
-                                                        <path d="M10.4 2c-3.7 0-6.8 2.3-8 5.5l2.2 1c0.8-2.4 3.1-4.1 5.8-4.1 3.4 0 6.1 2.7 6.1 6.1s-2.7 6.1-6.1 6.1c-2.4 0-4.5-1.4-5.5-3.4l1.8-0.7L2.2 9.7l-1.2 5 1.6-0.7C4 17 7 19 10.4 19c4.7 0 8.6-3.8 8.6-8.5S15.2 2 10.4 2z"/>
-                                                        <rect x="9" y="6" width="2" height="5"/>
-                                                        <rect x="11" y="10" transform="matrix(0.6002 -0.7999 0.7999 0.6002 -5.2003 14.5968)" width="2" height="5"/>
-                                                </svg>
-                                                 <!-- <span class="fa fa-long-arrow-left horArr"></span>
-                                                 <span class="fa fa-long-arrow-down verArr"></span>
-                                                 <span class="fa fa-repeat repeat"></span> -->
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="toggleableIcons">
-                                    <div class="compareGroup">
-                                        <!-- <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21">
-                                          <g>
-                                            <polygon points="16.3 6.6 10.6 3.6 10.6 5.6 0.5 5.6 0.5 7.6 10.6 7.6 10.6 9.6 " class="b"/>
-                                          </g>
-                                          <g>
-                                            <polygon points="6.2 11.2 6.2 9.2 0.5 12.2 6.2 15.2 6.2 13.2 16.3 13.2 16.3 11.2 " class="b"/>
-                                          </g><circle cx="16" cy="15" r="5" fill="#FFF"/>
-                                          <path d="M15.5 12.4h0.8v2.8h2.8v0.8h-2.8v2.8h-0.8v-2.8h-2.8v-0.8h2.8V12.4z"/>
-                                        </svg> -->
-                                        <span class="fa fa-long-arrow-right right"></span>
-                                        <span class="fa fa-long-arrow-left left"></span>
-                                        <span class="fa fa-plus-circle circle"></span>
-                                        <span class="message">Agrega al comparador</span>
-                                    </div>
-                                    <div class="shareGroup">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21">
-                                          <g>
-                                                <path d="M17.8 6.2h-2.2c-0.4 0-0.8 0.4-0.8 0.8s0.4 0.8 0.8 0.8h1.4v10.7H4.2v-10.7h1.7c0.4 0 0.8-0.4 0.8-0.8s-0.4-0.8-0.9-0.8h-2.4c-0.5 0-0.8 0.4-0.8 0.8v12.3c0 0.4 0.3 0.7 0.8 0.7h14.5c0.4 0 0.8-0.3 0.8-0.7v-12.3C18.6 6.6 18.3 6.2 17.8 6.2zM9.4 3.9l0.3-0.1v10.2c0 0.4 0.4 0.8 0.8 0.8s0.8-0.4 0.8-0.8v-10.6l0.8 0.5c0.1 0.1 0.3 0.2 0.5 0.2 0.2 0 0.4-0.1 0.6-0.3 0.3-0.3 0.3-0.8-0.1-1.1l-2-1.5c-0.3-0.2-0.7-0.3-1 0 -0.1 0.1-1.8 1.5-1.8 1.5 -0.3 0.3-0.3 0.8 0 1.1C8.6 4.2 9.1 4.2 9.4 3.9z" />
-                                          </g>
-                                        </svg>
-                                        <!-- <span class="fa fa-long-arrow-up arUp"></span>
-                                        <span class="fa fa-square-o sqEmp"></span> -->
-                                        <span class="message">Compartir</span>
-                                    </div>
-                                    <div class="toggleTrashGrp">
-                                        <span class="fa fa-trash trash"></span>
-                                        <span class="message">Eliminar</span>
-                                    </div>
-                                </div>
-                                <span class="fa fa-ellipsis-h dots"></span>
-                            </div>
-                            <img  src="http://198.12.157.96/contenido/vrm/th_2057.jpg" class="noMargin garageImg img-responsive" border="0"/>
-                        </div>
                     </div>
                 </div>        
             </div>
