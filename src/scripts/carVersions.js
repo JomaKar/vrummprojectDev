@@ -119,60 +119,12 @@ $(function(){
 			});
 		}
 
+		//when clicking in version info tag under carousel
 
 		$(document).on('click', 'div.versionDetailRow', function(){
 			var el = $(this);
 			
 			activatingInfoTag(el);
-
-			if($.isArray(currentVersion.pic_web)){
-
-				//change carousel img
-
-				$(theCarousel).css({
-					'background-image': `url(${currentVersion.pic_web[0]})`
-				});
-
-				//change thumbnails img
-
-				$('img.thumbImg').removeClass('active');
-
-				var nextThumbSpan = $('span.thumbIdSpan').filter(function(idx, item){
-					var spanTxt = item.text();
-					if(spanTxt == currentVersion.id){return item};
-				});
-
-				//add 'active' class to correct thumbnail image
-				nextThumbSpan.first().next('img.thumbImg').addClass('active');
-
-				//change id to carousel spanId
-				idSpan.text(nextThumbSpan.text());
-
-			}else{
-
-				//change carousel img
-
-				$(theCarousel).css({
-					'background-image': `url(${currentVersion.pic_web})`
-				});
-
-				//change thumbnails img
-
-				$('img.thumbImg').removeClass('active');
-
-				//find the versionTag's id span
-
-				var nextThumbSpan = $('span.thumbIdSpan').filter(function(idx, item){
-					var spanTxt = $(item).text();
-					if(spanTxt == currentVersion.id){return item};
-				});
-
-				//add 'active' class to correct thumbnail image
-				nextThumbSpan.next('img.thumbImg').addClass('active');
-
-				//change id to carousel spanId
-				idSpan.text(nextThumbSpan.text());
-			}
 
 		});
 
@@ -212,6 +164,7 @@ $(function(){
 		var currentCarouselImg = '';
 		var currentCarouselIdSpan = '';
 
+		//when clicking on carousel's left-right arrows
 
 		$(document).on('click', 'div.arrowsCont span', function(){
 			var el = $(this);
@@ -223,11 +176,15 @@ $(function(){
 			var idxFQuote = currentCarouselImg.indexOf('"') + 1;
 			var idxLQuote = currentCarouselImg.lastIndexOf('"');
 
+			//defining the actual image visible in carousel
+
 			currentCarouselImg = currentCarouselImg.substring(idxFQuote, idxLQuote);
 
 			carouselMechanich(null, null);
 
 		});
+
+		//when clicking in the thumbnails under the carousel
 
 		$(document).on('click', 'div.carThumbImgUnit', function(){
 
@@ -302,7 +259,7 @@ $(function(){
 				});
 
 
-				activatingInfoTag(el);
+				//activatingInfoTag(el);
 
 				var thumbs = $('div.carThumbImgUnit').find('img.carThumb');
 
@@ -326,7 +283,7 @@ $(function(){
 				});
 
 
-				activatingInfoTag(el);
+				//activatingInfoTag(el);
 			}
 
 		}
