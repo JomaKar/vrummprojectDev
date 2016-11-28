@@ -58,7 +58,7 @@ $(function(){
 
 			$.map(versionsArr, function(objItem, idx){
 
-				($.isArray(objItem.pic_url)) ? imgs.concat({pict: objItem.pic_url, id: objItem.id}) : imgs.push({pict: objItem.pic_url, id: objItem.id});
+				($.isArray(objItem.pic_web)) ? imgs.concat({pict: objItem.pic_web, id: objItem.id}) : imgs.push({pict: objItem.pic_web, id: objItem.id});
 
 			});
 
@@ -90,12 +90,13 @@ $(function(){
 			var img = {};
 			var versionRow = '';
 			var versionRowLine = '';
+			con(versionsArr);
 			$.each(versionsArr, function(idx, objItm){
 
 				var versName = objItm.name;
 				var verPrice = objItm.starting_price;
 				var verId = objItm.id;
-				($.isArray(objItm.pic_url)) ? img = {pict: objItm.pic_url[0], id: objItm.id} : img = {pict: objItm.pic_url, id: objItm.id};
+				($.isArray(objItm.pic_web)) ? img = {pict: objItm.pic_web[0], id: objItm.id} : img = {pict: objItm.pic_web, id: objItm.id};
 
 				(img.id === currentVersionId) ? versionRowLine = `<div class="row-fluid childHeight versionDetailRow active">` : versionRowLine = `<div class="row-fluid childHeight versionDetailRow">`;
 			
@@ -124,12 +125,12 @@ $(function(){
 			
 			activatingInfoTag(el);
 
-			if($.isArray(currentVersion.pic_url)){
+			if($.isArray(currentVersion.pic_web)){
 
 				//change carousel img
 
 				$(theCarousel).css({
-					'background-image': `url(${currentVersion.pic_url[0]})`
+					'background-image': `url(${currentVersion.pic_web[0]})`
 				});
 
 				//change thumbnails img
@@ -152,7 +153,7 @@ $(function(){
 				//change carousel img
 
 				$(theCarousel).css({
-					'background-image': `url(${currentVersion.pic_url})`
+					'background-image': `url(${currentVersion.pic_web})`
 				});
 
 				//change thumbnails img
@@ -369,7 +370,13 @@ $(function(){
 			
 			var widthImg = theCarousel.width();
 
-			var height = widthImg * 0.6309;
+			var imgProportionalHeight = 0.6309;
+			var exceededProportionalHeight = 0.1075502;
+
+			var totalProportionalHeight = imgProportionalHeight + exceededProportionalHeight;
+
+			var height = widthImg * totalProportionalHeight;
+
 
 			theCarousel.height(height);
 		}

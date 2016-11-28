@@ -2,9 +2,13 @@
 
 .versionsCarousel
 	position relative
+	background-repeat no-repeat
+	background-size 100%
+	background-color black
+	
 	.thumbImgsCont
 		position absolute
-		bottom 5%
+		bottom 3%
 		width 60%
 		left 20%
 		display flex
@@ -33,6 +37,13 @@
 		
 		.leftArr, .rightArr
 			cursor pointer
+			
+
+@media(min-width 768px)
+	.versionsCarousel
+		.arrowsCont
+			width 120%
+			margin-left -10%
 
 .versionsInfoCont
 	background-color black

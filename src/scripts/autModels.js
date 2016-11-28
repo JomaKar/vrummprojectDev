@@ -314,7 +314,7 @@ $(function(){
 		var backBtn = $('span.backBtn');
 
 		backBtn.click(function(){
-			window.history.back();
+			window.location = 'catalogo-marcas.html';
 		})
 
 

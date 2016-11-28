@@ -51,13 +51,13 @@ $(function(){
 
 			if(!versionChange){
 
-				($.isArray(version.pic_url)) ? imgs = version.pic_url : imgs[0] = version.pic_url;
+				($.isArray(version.pic_web)) ? imgs = version.pic_web : imgs[0] = version.pic_web;
 
 			}else{
 
 				imgs = [];
 
-				($.isArray(selectedVersion.pic_url))  ? imgs = selectedVersion.pic_url : imgs[0] = selectedVersion.pic_url;
+				($.isArray(selectedVersion.pic_web))  ? imgs = selectedVersion.pic_web : imgs[0] = selectedVersion.pic_web;
 
 			}
 
