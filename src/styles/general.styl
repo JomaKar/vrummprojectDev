@@ -33,8 +33,27 @@ body
 	width 100vw
 	height 40px !important
 	min-height 40px !important
+	box-sizing content-box
+	background-color $navbarBack !important
+	
+	&.noBacKBtn
+		div
+			.navbarBackBtn
+				display none
+				
+	&.withSuperTop
+		div
+			#navbar
+				top -11px
 	
 	div
+		.navbarBackBtn
+			position absolute
+			left 12px
+			top 8px
+			font-size 22px
+			cursor pointer
+
 		.navbar-header
 			height 40px
 			margin-left 45px
@@ -63,6 +82,19 @@ body
 						line-height 10px !important
 						border-right 1px solid white
 						font-size 14px
+						
+					&:last-of-type
+						a
+							border-right hidden
+							
+@media(min-width 768px)
+	.myNavBar
+		div
+			.navbarBackBtn
+				left -40px
+				
+			.navbar-header
+				margin-left 0px
 			
 .iconLogo
 	background-image url('../img/h_logo-l.png')
@@ -175,5 +207,6 @@ body
 	font-size 12px
 	text-align left
 		
-
+.mainFooter
+	background-color black
 			

@@ -8,6 +8,9 @@ $(function(){
 
 
 	if(place === "/brand-modelo.html"){
+
+
+
 		$(document).ready(function(){
 			displayBrand();
 		});

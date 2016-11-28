@@ -20,6 +20,8 @@ $(function(){
 	noFriendMsg = $('div.errorFriendNick'),
 	registrarbtn = $('button.registrarbtn');
 	var divImgCont = $('div#r-inpFileImgCont');
+	var myNavBar = $('nav.myNavBar');
+	var mainFooter = $('div.mainFooter');
 
 	linkLogin.click(function(){
 
@@ -44,6 +46,7 @@ $(function(){
 		var lastSlash = place.lastIndexOf('/');
 
 		place = place.slice(lastSlash);
+
 		
 		if(place === "/perfil.html"){
 
@@ -54,17 +57,48 @@ $(function(){
 			 if(currUsrName !== null && currUsrName !== undefined){
 			 	$('.fullName').html(currUsrName);
 			 }
+
+			 $(document).ready(function(){
+			 	myNavBar.load('../templates/navbar.html');
+			 	addFooter('never');
+			 });
+
+
 		}else if(place === "/catalogo-marcas.html"){
 			getDeviceIDStarting();
+			$(document).ready(function(){
+				myNavBar.load('../templates/navbar.html');
+				addFooter(null);
+			});
+
 		}
-		/*else{
+		else if(place !== "/index.html" && place !== "/registro.html"){
 
-			sessionStorage.removeItem('activeSession');
-			sessionStorage.removeItem('currentUser');
+			$(document).ready(function(){
+				myNavBar.load('../templates/navbar.html');
+				addFooter(null);
+			});
 
-		}*/
+
+		}else{
+
+
+			$(document).ready(function(){
+				addFooter('never');
+			});
+		}
 
 		
+	}
+
+	function addFooter(flag) {
+
+		var session = sessionStorage.getItem('activeSession');
+		if(flag === null){
+			(session === 'yes') ? mainFooter.load('../templates/footerIn.html') : mainFooter.load('../templates/footerOut.html');
+		}else if(flag === 'never'){
+			mainFooter.load('../templates/footerIn.html')
+		}
 	}
 
 	var newWidth = 0;
