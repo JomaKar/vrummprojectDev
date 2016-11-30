@@ -1,3 +1,5 @@
+import {con} from './consoling.js';
+
 $(function(){
 	var refInput = $('input#referido'),
 	posFrList = $('ul.posibleFriendsList'), 
@@ -70,11 +72,7 @@ $(function(){
 		if(nick !== undefined){
 			refInput.val(nick);
 		}
-	})
-
-	function con(val){
-		console.log(val);
-	}
+	});
 
 
 	function invitationSender(val){

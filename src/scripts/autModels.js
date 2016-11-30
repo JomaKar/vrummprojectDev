@@ -1,13 +1,12 @@
+import {navigating, myLocation} from './locating.js';
+
+
 $(function(){
-	var place = window.location.pathname;
+	
 	var brands = [];
 
-	var lastSlash = place.lastIndexOf('/');
 
-	place = place.slice(lastSlash);
-
-
-	if(place === "/brand-modelo.html"){
+	if(myLocation === "/web/catalogo/brand-modelo.html" || myLocation === "/web/catalogo/brand-modelo"){
 
 
 
@@ -266,7 +265,7 @@ $(function(){
                       var versionsArr = res.mensaje.rs;
                       versionsArr = JSON.stringify(versionsArr);
                       sessionStorage.setItem('versionsArr', versionsArr);
-                      window.location = 'modelo-versiones.html'
+                      navigating('catalogo/modelo-versiones');
                     }
                   }).fail(function(err){
                     console.log(err);
@@ -317,7 +316,7 @@ $(function(){
 		var backBtn = $('span.backBtn');
 
 		backBtn.click(function(){
-			window.location = 'catalogo-marcas.html';
+			navigating('catalogo');
 		})
 
 

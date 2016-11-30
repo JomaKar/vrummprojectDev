@@ -1,4 +1,5 @@
 import {backing} from './backPage.js';
+import {myLocation, strongRoot, totalRoot, navigating} from './locating.js';
 
 $(function(){
 
@@ -28,7 +29,7 @@ $(function(){
 
 	linkLogin.click(function(){
 
-		window.location = '../index.html'
+		navigating('home');
 
 	});
 
@@ -41,21 +42,20 @@ $(function(){
 
 	$(window).resize(function(){
 		//setImgDataAttr();
-	})
+	});
 
-
-	var place = window.location.pathname;
-	var lastSlash = place.lastIndexOf('/');
-	place = place.slice(lastSlash);
+	con(myLocation);
+	con(strongRoot);
+	con(totalRoot);
 
 
 	$(document).on('click', 'span.navbarBackBtn', function(){
-		backing(place);
+		backing(myLocation);
 	});
 
 	function whereIam() {
 
-		if(place === "/perfil.html"){
+		if(myLocation === "/web/perfil/" || myLocation === "/web/perfil/index" || myLocation === "/web/perfil/index.html"){
 
 			 getDeviceIDStarting();
 
@@ -71,15 +71,9 @@ $(function(){
 			 });
 
 
-		}else if(place === "/catalogo-marcas.html"){
-			getDeviceIDStarting();
-			$(document).ready(function(){
-				myNavBar.load('../templates/navbar.html');
-				addFooter(null);
-			});
-
 		}
-		else if(place !== "/index.html" && place !== "/registro.html"){
+		else if(myLocation !== "/web/" && myLocation !== "/web/registro/" && myLocation !== "/web/index" && myLocation !== "/web/registro/index" && myLocation !== "/web/index.html" && myLocation !== "/web/registro/index.html"){
+			getDeviceIDStarting();
 
 			$(document).ready(function(){
 				myNavBar.load('../templates/navbar.html');
@@ -104,20 +98,23 @@ $(function(){
 		if(flag === null){
 			(session === 'yes') ? mainFooter.load('../templates/footerIn.html') : mainFooter.load('../templates/footerOut.html');
 		}else if(flag === 'never'){
-			mainFooter.load('../templates/footerIn.html')
+
+			if(myLocation !== "/web/" && myLocation !== "/web/index" && myLocation !== "/web/index.html"){
+
+				mainFooter.load('../templates/footerIn.html');
+			}else{
+				mainFooter.load('./templates/footerIndex.html');
+			}
+
 		}
 	}
 
 	var newWidth = 0;
 
 	function setImgDataAttr(){
-		var place = window.location.pathname;
 
-		var lastSlash = place.lastIndexOf('/');
-
-		place = place.slice(lastSlash);
 		
-		if(place === "/registro.html"){
+		if(myLocation === "/registro/" || myLocation === "/registro/index" || myLocation === "/registro/index.html"){
 			 
 			 var wid = divImgCont.width();
 
@@ -364,7 +361,7 @@ $(function(){
 		}
 
 		if(photography === undefined || photography === null) {
-				photography = {'foto': 'profileDafault.png'};
+				photography = {'foto': ''};
 			}else{
 				photography = {'foto': photography};
 		}
@@ -442,7 +439,7 @@ $(function(){
 				sessionStorage.setItem('activeSession', 'yes');
 
 				
-				window.location = 'perfil.html';
+				navigating('perfil');
 			}
 
 		 }).fail(function(err){

@@ -1,3 +1,5 @@
+import {navigating} from './locating.js';
+
 $(function(){
 
 	var loginForm = $('#login');
@@ -32,11 +34,8 @@ $(function(){
 	
 
 	linkReg.click(function(){
-
 		askForBrands();
-		window.location = 'pages/registro.html';
-
-
+		navigating('registro');
 	});
 
 	closeModal.click(function(){
@@ -62,7 +61,7 @@ $(function(){
 	}
 
 	linkBrand.click(function(){
-		window.location = 'pages/catalogo-marcas.html'
+		navigating('catalogo');
 	})
 
 	function recover(){
@@ -181,7 +180,8 @@ $(function(){
 					sessionStorage.setItem('activeSession', 'yes');
 
 
-					window.location = 'pages/perfil.html';
+					navigating('perfil');
+
 				}else{
 
 					showSubmitError(res);

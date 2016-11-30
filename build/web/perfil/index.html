@@ -25,15 +25,28 @@
           var userId = sessionStorage.getItem('currentUserId');
           var usrGarage = sessionStorage.getItem('currentUserGarage');
 
+
+          var strongLocation = window.location.pathname;
+          var findWebIdx = strongLocation.search('/web');
+          var webRoot = strongLocation.slice(findWebIdx);
+          var strongRoot = strongLocation.slice(0, findWebIdx);
+
+          function navigating(placeToGo){
+
+              if(placeToGo === 'home') { window.location = strongRoot + '/web/'}else{ window.location = strongRoot + '/web/' + placeToGo;}
+
+          }
+
+
           if(session !== 'yes'){
-            window.location = '../index.html';
+            navigating('home');
           }
 
           if(userInfo === null || userInfo === undefined){
               if(userId !== null && userId !== undefined){
                   getUserInfo(userId);
               }else{
-                  window.location = '../index.html';
+                  navigating('home');
               }
           }
 
@@ -191,10 +204,16 @@
                         <p class="startingText gallery usrGarageLoadingTxt">Cargando modelos de la marca solicitada...</p>
                         <p class="startingText gallery usrGarageInitialTxt hiddenItm">Aún no tienes autos en tu garage, añade uno nuevo...</p>
                         <div class="col-xs-12 modelItem col-sm-6 col-md-4 addGarageBtnCon">
-                            <a href="catalogo-marcas.html" class="addGarageBtn">
+                            <!-- just development-->
+                            <a href="/vrumm/build/web/catalogo/" class="addGarageBtn">
                                 <span class="fa fa-plus-square addGarageIcon"></span>
                                 <p class="addGarageTxt">Añade autos</p>
                             </a>
+                            <!-- just production-->
+                            <!-- <a href="/web/catalogo/" class="addGarageBtn">
+                                <span class="fa fa-plus-square addGarageIcon"></span>
+                                <p class="addGarageTxt">Añade autos</p>
+                            </a> -->
                         </div>
 
                     </div>

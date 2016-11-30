@@ -1,3 +1,5 @@
+import {con} from './consoling.js';
+
 $(function(){
 
 	var nickInput = $('input#alias');
@@ -71,10 +73,4 @@ $(function(){
 	}
 
 	nickInput.nicknameValidation(nickInput);
-
-
-	function con(val){
-		console.log(val);
-	}
-
-})
+});

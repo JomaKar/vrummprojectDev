@@ -1,3 +1,5 @@
+import {con} from './consoling.js';
+
 $(function(){
 
 
@@ -186,9 +188,4 @@ $(function(){
 
 	//loginMailInput.validateMail(loginMailInput, 'l');
 
-
-
-	function con(val){
-		console.log(val);
-	}
-})
+});

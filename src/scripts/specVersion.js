@@ -1,15 +1,12 @@
 import {con} from './consoling.js';
+import {navigating, myLocation} from './locating.js';
+
 
 $(function(){
 
-	var place = window.location.pathname;
-
-	var lastSlash = place.lastIndexOf('/');
-
-	place = place.slice(lastSlash);
 
 
-	if(place == '/specific-version.html'){
+	if(myLocation == '/web/catalogo/specific-version.html' || myLocation == '/web/catalogo/specific-version'){
 		
 		//version info variables
 		var version = sessionStorage.getItem('versionStored');

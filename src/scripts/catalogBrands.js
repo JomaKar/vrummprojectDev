@@ -1,21 +1,18 @@
+import {navigating, myLocation} from './locating.js';
+
 $(function(){
 
-	var place = window.location.pathname,
-	brands = [],
+	var brands = [],
 	rowsCont = $('div.brandsSpace'),
 	linkRegCat = $('button#goToReg-Cat'),
 	initialRow = $('div.firstRow');
 
-	var lastSlash = place.lastIndexOf('/');
-
-	place = place.slice(lastSlash);
-
 	linkRegCat.click(function(){
-		window.location = 'registro.html';
+		navigating('registro');
 	})
 
 
-	if(place === "/catalogo-marcas.html"){
+	if(myLocation === "/web/catalogo/index.html" || myLocation === "/web/catalogo/index" || myLocation === "/web/catalogo/"){
 
 		var askInterval = setInterval(function(){
 		
@@ -132,13 +129,13 @@ $(function(){
 				}
 				
 				askForModels(id);
-				window.location = 'brand-modelo.html';
+				navigating('catalogo/brand-modelo');
 				
 			}else{
 				sessionStorage.setItem('currentBrandAutos', 'nothing stored');
 			}
 
-		})
+		});
 
 		function askForModels(id) {
 			var theid = parseInt(id),

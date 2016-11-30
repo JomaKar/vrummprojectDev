@@ -1,5 +1,6 @@
+import {navigating, myLocation} from './locating.js';
+
 $(function(){
-	var place = window.location.pathname;
 	var versions = [];
 	var currentVersion = {};
 	var currentVersionImgs = [];
@@ -9,11 +10,8 @@ $(function(){
 	var infoContainer = $('div.versionDetailCont');
 	var idSpan = $('span.currentVersionId');
 
-	var lastSlash = place.lastIndexOf('/');
 
-	place = place.slice(lastSlash);
-
-	if(place === "/modelo-versiones.html"){
+	if(myLocation === "/web/catalogo/modelo-versiones.html" || myLocation === "/web/catalogo/modelo-versiones"){
 
 		var brandName = sessionStorage.getItem('currentBrandName');
 
@@ -153,7 +151,7 @@ $(function(){
 		}
 
 		$(document).on('click', 'div.goToDetailArrow', function(){
-			window.location = 'specific-version.html';
+			navigating('catalogo/specific-version');
 		});
 
 		//start carousel mechanich

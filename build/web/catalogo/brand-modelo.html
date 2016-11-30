@@ -20,8 +20,19 @@
           modelsStored = sessionStorage.getItem('modelsArr'),
           models = [];
 
+          var strongLocation = window.location.pathname;
+          var findWebIdx = strongLocation.search('/web');
+          var webRoot = strongLocation.slice(findWebIdx);
+          var strongRoot = strongLocation.slice(0, findWebIdx);
+
+          function navigating(placeToGo){
+
+              if(placeToGo === 'home') { window.location = strongRoot + '/web/'}else{ window.location = strongRoot + '/web/' + placeToGo;}
+
+          }
+
           if(brandsModels === null || brandsModels === undefined || brandsModels === 'nothing store'){
-            window.location = 'catalogo-marcas.html';
+            navigating('catalogo');
           
           }else if(modelsStored === null || modelsStored === undefined){
             getModelsInfo(brandsModels);

@@ -1,3 +1,5 @@
+import {con} from './consoling.js';
+
 $(function(){
 	//profile elements
 	var header = $('header.p-header');
@@ -150,10 +152,6 @@ $(function(){
 				carsCounter.removeClass('noPadding').addClass('dblleftP NorightP');
 
 			}
-		}
-
-		function con(argument) {
-			console.log(argument);
 		}
 
 		function upDown975() {

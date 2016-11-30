@@ -15,10 +15,10 @@ var config = {
 	styles: {
 		main: './src/styles/main.styl',
 		watch: ['./src/styles/**/*.styl', './src/styles/**/*.css', './src/styles/*.styl'],
-		output: './build/web/css'
+		output: './build/css'
 	},
 	html: {
-		watch: ['./build/web/*.html', './build/web/**/**.html']
+		watch: ['./build/*.html', './build/pages/**.html']
 	},
 	scripts: {
 	  	main: ['./src/scripts/index.js', './src/scripts/generalLook.js',
@@ -28,22 +28,22 @@ var config = {
 	  	 './src/scripts/passModalDis.js', './src/scripts/profile.js', 
 	  	 './src/scripts/carVersions.js', './src/scripts/specVersion.js'],
 	  	watch:'./src/scripts/**/*.js',
-	  	output:'./build/web/js'
+	  	output:'./build/js'
 	},
     images:{
-	  	watch:['./build/web/img/*.png', './build/web/img/*.jpg', './build/web/img/*.jpeg'],
+	  	watch:['./build/img/*.png', './build/img/*.jpg', './build/img/*.jpeg'],
 	  	output: './dist/img'
     }
 }
 
-/*gulp.task('server', function() {
+gulp.task('server', function() {
   gulp.src('./build')
     .pipe(webserver({
       host: '127.0.0.1',
       port: 8008,
       livereload: true
     }));
-});*/
+});
 
 gulp.task('images', function(){
 	gulp.src(config.images.watch)
@@ -62,7 +62,7 @@ gulp.task('build:css', function() {
 });
 
 gulp.task('inline', function(){
-	gulp.src('./build/web/index.html')
+	gulp.src('./build/index.html')
 	.pipe(smoosher())
 	.pipe(gulp.dest('./dist'));
 });
@@ -85,5 +85,5 @@ gulp.task('watch', function() {
 
 gulp.task('build', ['build:css', 'build:js', 'images','inline']);
 
-gulp.task('default', ['watch', 'build']);
+gulp.task('default', ['server', 'watch', 'build']);
 

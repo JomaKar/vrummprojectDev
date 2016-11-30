@@ -1,13 +1,10 @@
+import {navigating, myLocation} from './locating.js';
+import {con} from './consoling.js';
+
 $(function(){
 
+	if(myLocation === "/web/perfil/" || myLocation === "/web/perfil/index" || myLocation === "/web/perfil/index.html"){
 
-	var place = window.location.pathname;
-
-	var lastSlash = place.lastIndexOf('/');
-
-	place = place.slice(lastSlash);
-
-	if(place === '/perfil.html'){
 		var filterSelect = $('select#filterSelect'),
 		garageGrid = $('div.garageGrid'),
 		user = [],
@@ -268,7 +265,7 @@ $(function(){
 
         	//totally from stackoverflow
         	$(filterSelect).trigger('click');
-        })
+        });
 
 		var imageOk = false;
 
@@ -461,7 +458,3 @@ $(function(){
 	}
 
 });
-
-function con(val){
-	console.log(val);
-}
