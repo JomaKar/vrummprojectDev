@@ -15,7 +15,7 @@ export function backing(currPage) {
 		destiny: ''
 	},
 	{
-		name: 'perfil.html',
+		name: '/perfil.html',
 		parent: '/index.html',
 		destiny: '/index.html'
 	},
@@ -41,7 +41,7 @@ export function backing(currPage) {
 	}];
 
 
-	var lastPageArr = $.grep(treePages, function(idx, item){
+	var lastPageArr = $.grep(treePages, function(item, index){
 
 		return item.name === currPage;
 
@@ -50,11 +50,57 @@ export function backing(currPage) {
 
 	var lastPage = lastPageArr[0];
 
+	console.log(currPage, lastPageArr);
+
+	
 	if($.isArray(lastPage.parent)){
-		referred(lastPage.parent);
+		
+		//check the page from the user come from
+
+		var lastPageUrl = document.referred;
+
+		if(lastPageUrl !== undefined){
+
+			//check if the user come from the webapp or from the web
+			//first getting its host
+
+			var lastPageHostIdx = lastPageUrl.indexOf('/');
+			var lastPageHost = lastPageUrl.slice(0, lastPageHostIdx - 1);
+			var wasInApp = cameFromInside(lastPageHost);
+
+
+			//if it came from inside the app we return him to the last page using window history
+			if(wasInApp){
+				//if it was in the app already
+				window.location = window.history.back();
+
+			//else, we give priority returning the user to 
+			}else{
+
+
+				backIt(lastPage.parent);
+				
+			}
+
+		}else{
+
+			backIt(lastPage.parent);
+
+		}
+
+
 	}else{
 
-		window.location = lastPage.parent;
+		if(lastPage.parent !== '/index.html'){
+
+										
+			window.location = `/pages${lastPage.parent}`;
+
+		}else{
+
+			window.location = lastPage.parent;
+		}
+
 
 
 	}
@@ -62,39 +108,19 @@ export function backing(currPage) {
 
 }
 
-//averigual de que item estamos hablando
-//checar si document.referred es igual a uno de los parent si se trata de un array
-//conservar datos en la url
-//qué si viene de otra página
+function backIt(pos) {
+	$.map(pos, function(item, idex){
+		if(item !== '/index.html' && item !== '/registro.html'){
 
+								
+			window.location = `/pages${pos[idex]}`;
 
-function referred(posParents) {
-
-	//check the page from the user come from
-
-	var lastPageUrl = document.referred;
-
-
-	//check if the user come from the webapp or from the web
-	//first getting its host
-	var lastPageHostIdx = lastPageUrl.indexOf('/');
-	var lastPageHost = lastPageUrl.slice(0, lastPageHostIdx - 1);
-	var wasInApp = cameFromInside(lastPageHost);
-
-	var lastSlash = lastPageUrl.lastIndexOf('/');
-
-	var place = lastPageUrl.slice(lastSlash);
-
-	var indexOfQuery = place.indexOf('?');
-
-	if(indexOfQuery !== -1){
-		place = place.slice(0, indexOfQuery - 1);
-	}
-
+		}
+	});
 }
 
 
 function cameFromInside(lastHost){
 	var actualHost = window.location.host;
-	(lastHost === actualHost) return true : return false;
+	return (lastHost === actualHost) ?  true :  false;
 }

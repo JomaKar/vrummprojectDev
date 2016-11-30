@@ -213,6 +213,38 @@ $(function(){
 			});
 		}
 
+		//startAlberto
+
+		function addToGarage(type) {
+
+			var userId = sessionStorage.getItem('currentUserId');
+	        var deviceId = sessionStorage.getItem('deviceId');
+	        var versionId = ( versionChange )? selectedVersion.id : version.id;
+
+	        var dataForGarage = { 'device': deviceId, 'user': userId, 'version': versionId, 'tipo': type };
+
+	        dataForGarage = JSON.stringify(dataForGarage);
+
+	        $.post('https://vrummapp.net/ws/v2/garage/agregar',
+	        	dataForGarage
+	        ).then(function(data){
+
+	            if(data.estado === 1){
+	            	$('#success-modal').modal()
+	            	$('#btnAddToGarage img').attr('src', '../img/ic_OKGarage@2x.png');
+	            }
+	        });
+	           
+	    }
+	    
+	    $('.addToGarage a').on('click', function(e) {
+	    	e.preventDefault();
+	    	var tipo = $(this).data('type');
+	    	addToGarage(tipo);
+	    });
+
+		//endAlberto
+
 
 		function displayBrand() {
 			var versionsBrandImg = $('div.versionsBrandImg');

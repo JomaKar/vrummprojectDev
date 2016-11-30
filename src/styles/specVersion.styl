@@ -1,9 +1,72 @@
 @import 'colors.styl'
 
+
+//madeAlberto
+
+.modelHeaderRow
+	&.specVers
+		overflow visible
+
+.addToGarageGroup
+	position relative
+
+	.message
+		display none
+		position absolute
+		font-size 12px
+		background-color $carHoverMsg
+		padding 2px 5px
+		border 0.5px solid $carHoverMsgBrd
+		border-radius 8px
+		left 115%
+		top -4px
+		color #fff
+		width 70px
+		z-index 999
+		
+	&:hover
+		.message
+			display block
+
 .versionDetailCont
 	&.specVers
 		margin-top 20px
+		
+.modal-header-success
+	color #FFF
+	padding 9px 15px
+	border-bottom 1px solid #eee
+	background-color #000
+	border-top-left-radius 5px
+	border-top-right-radius 5px
 
+.addToGarage
+	top 20px
+	padding 2px 2px 0 2px
+	padding 0
+
+.addToGarage
+	a
+		color #fff !important
+		margin-bottom 2px
+		text-indent 20px
+		margin-bottom 0
+
+		&:hover
+			opacity .8
+
+
+#addSoon
+	background #34d075 url(../img/ic_MiGarage_soon-boton@1x.png) 10px center no-repeat
+
+#addSomeday
+	background #00c5c6 url(../img/ic_MiGarage_someday-boton@1x.png) 10px center no-repeat
+
+#addDream
+	background #d44643 url(../img/ic_MiGarage_dream-boton@1x.png) 10px center no-repeat
+
+
+//madeChema
 
 .compareVersionCont
 	margin-top 3px

@@ -308,6 +308,8 @@ $(function(){
 
 							$(el).css({'background-image': `url(${value})`});
 
+						}else if(val === 'foto_perfil' && !imageOk){
+							$(el).css({'background-image': 'url(../img/profileDafault.png)'});
 						}else{
 							$(el).html(value);
 						}

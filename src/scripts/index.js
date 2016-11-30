@@ -1,3 +1,5 @@
+import {backing} from './backPage.js';
+
 $(function(){
 
 	whereIam();
@@ -22,6 +24,7 @@ $(function(){
 	var divImgCont = $('div#r-inpFileImgCont');
 	var myNavBar = $('nav.myNavBar');
 	var mainFooter = $('div.mainFooter');
+	
 
 	linkLogin.click(function(){
 
@@ -40,14 +43,18 @@ $(function(){
 		//setImgDataAttr();
 	})
 
+
+	var place = window.location.pathname;
+	var lastSlash = place.lastIndexOf('/');
+	place = place.slice(lastSlash);
+
+
+	$(document).on('click', 'span.navbarBackBtn', function(){
+		backing(place);
+	});
+
 	function whereIam() {
-		var place = window.location.pathname;
 
-		var lastSlash = place.lastIndexOf('/');
-
-		place = place.slice(lastSlash);
-
-		
 		if(place === "/perfil.html"){
 
 			 getDeviceIDStarting();

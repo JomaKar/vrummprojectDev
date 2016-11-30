@@ -10,6 +10,7 @@ $(function(){
 	shareCounter = $('div.garageShareCounter'),
 	membershipDateCounter = $('div.membershipDateCounter'),
 	garageImgCont = $('div.garageImgCont'),
+	profileName = $('h4.profileName'),
 
 	//registration elements
 	passCont = $('#inputPassword').closest('div.col-md-6'),
@@ -116,16 +117,38 @@ $(function(){
 				top: -(posVal + 6) + 'px'
 			});
 
-			if(docWidth > 420 && docWidth < 767.5){
-				profileImg.removeClass('col-xs-4').addClass('col-xs-3');
-				profileInfo.removeClass('col-xs-7').addClass('col-xs-8');
-				carsCounter.removeClass('col-xs-offset-5').addClass('col-xs-offset-4');
-				membershipDateCounter.removeClass('col-xs-offset-1').addClass('col-xs-offset-2');
+			if(docWidth > 420 && docWidth < 750.5){
+
+				profileImg.removeClass('col-xs-4').addClass('col-xs-3 NorightM halfML');
+				profileName.removeClass('NotopM');
+				profileInfo.removeClass('col-xs-7 NorightP').addClass('col-xs-8');
+				carsCounter.removeClass('col-xs-offset-4 noPadding').addClass('col-xs-offset-3 NorightP');
+				membershipDateCounter.removeClass('col-xs-offset-2').addClass('col-xs-offset-3');
+
 			}else if(docWidth < 420){
+				
 				profileImg.removeClass('col-xs-3').addClass('col-xs-4');
 				profileInfo.addClass('col-xs-7').removeClass('col-xs-8');
-				carsCounter.addClass('col-xs-offset-5').removeClass('col-xs-offset-4');
-				membershipDateCounter.addClass('col-xs-offset-1').removeClass('col-xs-offset-2');
+				carsCounter.addClass('col-xs-offset-4').removeClass('col-xs-offset-3');
+				membershipDateCounter.addClass('col-xs-offset-2').removeClass('col-xs-offset-3');
+
+			}else if(docWidth > 750.5 && docWidth < 975){
+
+				profileImg.removeClass('NorightM halfML');
+				profileName.addClass('NotopM');
+				profileInfo.addClass('NorightP');
+
+				carsCounter.removeClass('dblleftP NorightP').addClass('noPadding');
+
+
+			}else if(docWidth >= 975){
+
+				profileImg.removeClass('NorightM halfML');
+				profileName.addClass('NotopM');
+				profileInfo.addClass('NorightP');
+
+				carsCounter.removeClass('noPadding').addClass('dblleftP NorightP');
+
 			}
 		}
 
@@ -215,11 +238,7 @@ $(function(){
 
 
 					if(wWidth < 1472){
-						sideImageCont.removeClass('col-lg-offset-2 col-lg-4')
-						.addClass('col-lg-offset-1 col-lg-5');
-					}else if(wWidth > 1472){
-						sideImageCont.removeClass('col-lg-offset-1 col-lg-5')
-						.addClass('col-lg-offset-2 col-lg-4')
+						sideImageCont.addClass('col-lg-offset-1 col-lg-5');
 					}
 
 
