@@ -1,4 +1,6 @@
-import {navigating, myLocation} from './locating.js';
+import {navigating, myLocation} from './commonFunc/locating.js';
+import {con} from './commonFunc/consoling.js';
+import {sendPostToGo, sendPostToGet} from './commonFunc/httpProcesor.js';
 
 $(function(){
 
@@ -129,7 +131,6 @@ $(function(){
 				}
 				
 				askForModels(id);
-				navigating('catalogo/brand-modelo');
 				
 			}else{
 				sessionStorage.setItem('currentBrandAutos', 'nothing stored');
@@ -145,26 +146,13 @@ $(function(){
 			if(device !== undefined && device !== null && theid){
 				var data = {'device': device, brandId: theid};
 				data = JSON.stringify(data);
-				con(data);
-
-				$.post('https://vrummapp.net/ws/v2/catalogo/getmodelos',
-					data).then(function(res){
-						con(res);
-						if(res.estado === 1){
-							modelsArr = res.mensaje.rs;
-							modelsArr = JSON.stringify(modelsArr);
-							sessionStorage.setItem('modelsArr', modelsArr);
-						}
-					}).fail(function(err){con(err)});
 
 			}
+
+			sendPostToGo('catalogo/getmodelos', data, 'mdls');
 		}
 
 
 	}
 
 });
-
-function con(argument) {
-	console.log(argument);
-}

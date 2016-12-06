@@ -1,4 +1,6 @@
-import {navigating, myLocation} from './locating.js';
+import {navigating, myLocation} from './commonFunc/locating.js';
+import {con} from './commonFunc/consoling.js';
+import {sendPostToGo, sendPostToGet} from './commonFunc/httpProcesor.js';
 
 $(function(){
 	var versions = [];
@@ -23,40 +25,57 @@ $(function(){
 		var askInterval = setInterval(function(){
 		
 			var versionsStored = sessionStorage.getItem('versionsArr');
-			checkVersions(versionsStored);
+			checkVersions(versionsStored, null);
+
+		}, 5);
+
+		var askPhotosInterval = setInterval(function(){
+		
+			var versionsPhotosStored = sessionStorage.getItem('versionsPhotos');
+			checkVersions(null, versionsPhotosStored);
 
 		}, 5);
 
 
-		function checkVersions(argument) {
+	    var thumbImgsCont = $('div.thumbImgsCont');
+
+
+		function checkVersions(argument, pict) {
 			if(argument !== null && argument !== undefined && argument !== 'nothing stored'){
 				clearInterval(askInterval);
 				versions = argument;
 				manageVersions(versions);
+		    }
+		    if(pict !== null && pict !== undefined && pict !== 'nothing stored'){
+				clearInterval(askPhotosInterval);
+				var photos = pict;
+				displayCarousel(photos);
 		    }	
 		}
+
+
 
 
 		function manageVersions(argument) {
 			versionsArr = JSON.parse(argument);
 
 			currentVersion = versionsArr[0];
-
-			displayCarousel();
 			displayVersionsInfo();
 						
 		}
 
 		var imgs = [];
 		var currentVersionId;
-		function displayCarousel() {
+
+		function displayCarousel(picts) {
 			var imgsCont = $('div.thumbImgsCont');
-			
 			var arrowsCont = $('div.arrowsCont');
 
-			$.map(versionsArr, function(objItem, idx){
+			var pictures = JSON.parse(picts);
 
-				($.isArray(objItem.pic_web)) ? imgs.concat({pict: objItem.pic_web, id: objItem.id}) : imgs.push({pict: objItem.pic_web, id: objItem.id});
+			$.map(pictures.galeria, function(arrItem, idx){
+
+				imgs.push({pict: arrItem.pic_url, id: idx});
 
 			});
 
@@ -88,7 +107,7 @@ $(function(){
 			var img = {};
 			var versionRow = '';
 			var versionRowLine = '';
-			con(versionsArr);
+			//con(versionsArr);
 			$.each(versionsArr, function(idx, objItm){
 
 				var versName = objItm.name;
@@ -96,7 +115,7 @@ $(function(){
 				var verId = objItm.id;
 				($.isArray(objItm.pic_web)) ? img = {pict: objItm.pic_web[0], id: objItm.id} : img = {pict: objItm.pic_web, id: objItm.id};
 
-				(img.id === currentVersionId) ? versionRowLine = `<div class="row-fluid childHeight versionDetailRow active">` : versionRowLine = `<div class="row-fluid childHeight versionDetailRow">`;
+				(idx === 0) ? versionRowLine = `<div class="row-fluid childHeight versionDetailRow active">` : versionRowLine = `<div class="row-fluid childHeight versionDetailRow">`;
 			
 				versionRow = `${versionRowLine}
 	                                <div class="versionImg col-xs-3 col-sm-2">
@@ -151,8 +170,9 @@ $(function(){
 		}
 
 		$(document).on('click', 'div.goToDetailArrow', function(){
-			navigating('catalogo/specific-version');
+			sendPostToGo(currentVersion, null, 'specVer');
 		});
+
 
 		//start carousel mechanich
 
@@ -208,9 +228,8 @@ $(function(){
 		function carouselMechanich(img, num) {
 
 			if(img === null){
-
 				$.each(imgs, function(idex, itm){
-					if(itm.pict === currentCarouselImg){
+					if(itm.id === parseInt(currentCarouselIdSpan)){
 						indexOfCurrImg = idex;
 					}
 				});
@@ -251,23 +270,16 @@ $(function(){
 				theCarousel.css({'background-image': `url(${nextCarouselImg})`});
 				idSpan.text(nextCarouselSpanId);
 
-				var el = $('div.versionDetailRow').filter(function(idx, itm){
-					var spaId = $(this).find('span.versionId').text();
-					if(spaId === nextCarouselSpanId) { return itm;}
-				});
+				var thumbs = $('div.carThumbImgUnit').find('span.thumbIdSpan');
 
-
-				//activatingInfoTag(el);
-
-				var thumbs = $('div.carThumbImgUnit').find('img.carThumb');
 
 				var activeImage = thumbs.filter(function(idx, el){
-					return $(el).attr('src') === nextCarouselImg;
+					 if (parseInt($(el).text()) === nextCarouselSpanId){
+					 	return el;
+					 }
 				});
 
-				activeImage = activeImage.filter(function(idx, el){
-					return !$(el).hasClass('active');
-				})
+				activeImage = activeImage.next('img.carThumb');
 
 				activateThumbnails(activeImage);
 
@@ -320,13 +332,37 @@ $(function(){
 
 		}
 
-
+		var exceededProportionalHeight = 0;
 		function sizeCarousel() {
 			
 			var widthImg = theCarousel.width();
+			var windWidth = $(window).width();
+
+			if(thumbImgsCont.find('div.carThumbImgUnit').length >= 7){
+				
+				thumbImgsCont.css({
+					bottom: '2%',
+					'justify-content': 'initial'
+				});
+
+				if(windWidth <= 310){
+					exceededProportionalHeight = 0.17;
+				}else if(windWidth > 310 && windWidth <= 410){
+					exceededProportionalHeight = 0.15;
+				}else if(windWidth > 410 && windWidth <= 510){
+					exceededProportionalHeight = 0.135;
+				}else if(windWidth > 510){
+					exceededProportionalHeight = 0.12;
+				}
+				
+			}else{
+
+				exceededProportionalHeight = 0.1075502;
+			}
+
 
 			var imgProportionalHeight = 0.6309;
-			var exceededProportionalHeight = 0.1075502;
+
 
 			var totalProportionalHeight = imgProportionalHeight + exceededProportionalHeight;
 
@@ -355,12 +391,10 @@ $(function(){
 			modelPrcSpan.text(modelPrice);
 
 		}
+	
+	}
 
-	}	
+
 
 
 });
-
-function con(argument) {
-	console.log(argument);
-}

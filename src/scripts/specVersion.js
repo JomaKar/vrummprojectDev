@@ -1,5 +1,5 @@
-import {con} from './consoling.js';
-import {navigating, myLocation} from './locating.js';
+import {con} from './commonFunc/consoling.js';
+import {navigating, myLocation} from './commonFunc/locating.js';
 
 
 $(function(){

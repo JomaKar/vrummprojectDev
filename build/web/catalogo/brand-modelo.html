@@ -11,6 +11,7 @@
 
     <!-- Bootstrap -->
     <link href="../css/lib/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/lib/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/main.css">
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <script src="../js/lib/jquery-3.1.1.min.js"></script>
@@ -41,7 +42,7 @@
 
           function getModelsInfo(id){
 
-              id = parseInt(id),
+              var id = parseInt(id),
               modelsArr = [];
               var device = sessionStorage.getItem('deviceId');
 
@@ -78,14 +79,14 @@
   
 
   <body class="noPadding">
-    <nav class="navbar navbar-inverse myNavBar noBacKBtn">
+    <nav class="navbar navbar-inverse myNavBar">
       
     </nav>
 
     <div class="innerHeaderBrand">
         <div class=" col-sm-offset-1 col-md-offset-2 col-xs-12 noMoreGrow">
-            <span class="glyphicon glyphicon-menu-left backBtn"></span>
-            <span class="backBtnMess">Volver a <br> marcas</span>
+            <span class="glyphicon glyphicon-menu-left backBtn hiddenItm"></span>
+            <span class="backBtnMess hiddenItm">Volver a <br> marcas</span>
         </div>
         <div class="headerBrandImg backImg backSz centerBackImg"></div>
     </div>

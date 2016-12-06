@@ -1,4 +1,4 @@
-import {con} from './consoling.js';
+import {con} from './commonFunc/consoling.js';
 
 $(function(){
 	//profile elements

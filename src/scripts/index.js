@@ -1,9 +1,9 @@
-import {backing} from './backPage.js';
-import {myLocation, strongRoot, totalRoot, navigating} from './locating.js';
+import {backing} from './commonFunc/backPage.js';
+import {myLocation, strongRoot, totalRoot, navigating} from './commonFunc/locating.js';
+import {navInfo} from './commonFunc/activeSessionNav.js';
+import {sendPostToGo, sendPostToGet} from './commonFunc/httpProcesor.js';
 
 $(function(){
-
-	whereIam();
 
 	var fakeUUID = 0, 
 	geoloc, locationAsk = 0,
@@ -38,75 +38,50 @@ $(function(){
 		browserFingerprint();
 		getGeolocalization();
 		//setImgDataAttr();
+
+		if(myLocation !== "/web/" && myLocation !== "/web/registro/" && myLocation !== "/web/index" && myLocation !== "/web/registro/index" && myLocation !== "/web/index.html" && myLocation !== "/web/registro/index.html"){
+
+			addNavFooter(null, null);
+
+		}else{
+
+			addNavFooter('never', 'never');
+		}
+
 	});
 
 	$(window).resize(function(){
 		//setImgDataAttr();
 	});
 
-	con(myLocation);
-	con(strongRoot);
-	con(totalRoot);
-
+	getDeviceIDStarting();
 
 	$(document).on('click', 'span.navbarBackBtn', function(){
 		backing(myLocation);
 	});
 
-	function whereIam() {
+	function addNavFooter(navFlag, footerFlag) {
+		var session = sessionStorage.getItem('activeSession');
+		
+		if(navFlag !== 'never'){
 
-		if(myLocation === "/web/perfil/" || myLocation === "/web/perfil/index" || myLocation === "/web/perfil/index.html"){
 
-			 getDeviceIDStarting();
-
-			 var currUsrName = sessionStorage.getItem('currentUser');
-
-			 if(currUsrName !== null && currUsrName !== undefined){
-			 	$('.fullName').html(currUsrName);
-			 }
-
-			 $(document).ready(function(){
-			 	myNavBar.load('../templates/navbar.html');
-			 	addFooter('never');
-			 });
-
+			(session === 'yes') ? (myNavBar.load('../templates/navbarIn.html'), navInfo()) : myNavBar.load('../templates/navbarOut.html');
 
 		}
-		else if(myLocation !== "/web/" && myLocation !== "/web/registro/" && myLocation !== "/web/index" && myLocation !== "/web/registro/index" && myLocation !== "/web/index.html" && myLocation !== "/web/registro/index.html"){
-			getDeviceIDStarting();
-
-			$(document).ready(function(){
-				myNavBar.load('../templates/navbar.html');
-				addFooter(null);
-			});
 
 
+
+		if(footerFlag === null){
+
+			(session === 'yes') ? mainFooter.load('../templates/footerIn.html') : mainFooter.load('../templates/footerOut.html');
+		
 		}else{
 
-
-			$(document).ready(function(){
-				addFooter('never');
-			});
-		}
-
-		
-	}
-
-	function addFooter(flag) {
-
-		var session = sessionStorage.getItem('activeSession');
-		if(flag === null){
-			(session === 'yes') ? mainFooter.load('../templates/footerIn.html') : mainFooter.load('../templates/footerOut.html');
-		}else if(flag === 'never'){
-
-			if(myLocation !== "/web/" && myLocation !== "/web/index" && myLocation !== "/web/index.html"){
-
-				mainFooter.load('../templates/footerIn.html');
-			}else{
-				mainFooter.load('./templates/footerIndex.html');
-			}
+			(myLocation !== "/web/" && myLocation !== "/web/index" && myLocation !== "/web/index.html") ? mainFooter.load('../templates/footerIn.html') : mainFooter.load('./templates/footerIndex.html');
 
 		}
+
 	}
 
 	var newWidth = 0;
@@ -397,7 +372,8 @@ $(function(){
 			goodNick = sessionStorage.getItem('nickGood');
 
 			if(mailGood === 'yes' && goodNick === 'yes'){
-				sendForm(formData);
+				//sendForm(formData);
+				sendPostToGo('usuario/registro', formData, 'perfilr');
 			}else{
 			
 				var wrongOne = "<p id='nicknameText' class='badText'>Te falto algún dato o escribiste algo mal</p>";
@@ -411,40 +387,8 @@ $(function(){
 	var userInfo = [];
 
 	function sendForm(val){
-		sessionStorage.setItem('inforToReg', val);
-		$.post('https://vrummapp.net/ws/v2/usuario/registro', 
-			val
-		).then(function(res){ 
-			console.log(res)
 
-			if(res.estado === 1){
-				var currentUser = user.val().toString();
-
-				var id = res.mensaje.usr.id;
-
-				con(id);
-
-				userInfo[0] = res.mensaje.usr;
-
-				userInfo = JSON.stringify(userInfo);
-
-				sessionStorage.setItem('currentUserInfo', userInfo);
-				
-				//getUserInfo(id);
-				
-				id.toString();
-
-				sessionStorage.setItem('currentUser', currentUser);
-				sessionStorage.setItem('currentUserId', id);
-				sessionStorage.setItem('activeSession', 'yes');
-
-				
-				navigating('perfil');
-			}
-
-		 }).fail(function(err){
-	  		console.log(err);
-		});
+		sendPostToGo('usuario/registro', val, 'perfilr');
 		
 	}
 

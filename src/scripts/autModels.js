@@ -1,4 +1,7 @@
-import {navigating, myLocation} from './locating.js';
+import {navigating, myLocation} from './commonFunc/locating.js';
+import {alleGleichlich, sizingModelItms} from './commonFunc/sizingGarageImgs.js';
+import {con} from './commonFunc/consoling.js';
+import {sendPostToGo, sendPostToGet} from './commonFunc/httpProcesor.js';
 
 
 $(function(){
@@ -216,7 +219,7 @@ $(function(){
 				                            <div class="hoverInfo">
 				                                <ul class="mDetails noPadding">
 				                                  <li class="mName">${typeItem.name}</li>
-				                                  <li class="vName">${typeItem.desde} - ${typeItem.hasta}</li>
+				                                  <li class="vPrice">${typeItem.desde} - ${typeItem.hasta}</li>
 				                                  <li class="yModel">${typeItem.year}</li>
 				                                  <li class="hiddenItm modelId">${typeItem.model_id}</li>
 				                                </ul>
@@ -238,7 +241,7 @@ $(function(){
 		$(document).on('click', 'div.hoverInfo', function(){
 			var modelId = $(this).find('li.modelId').text();
 			var modelN = $(this).find('li.mName').text();
-			var modelP = $(this).find('li.vName').text();
+			var modelP = $(this).find('li.vPrice').text();
 			getVersions(modelId, modelN, modelP);
 		});
 
@@ -249,39 +252,21 @@ $(function(){
 			 localStorage.setItem('modelPrice', modelPrice.toString());
 			 var device = sessionStorage.getItem('deviceId');
 			 var userId = sessionStorage.getItem('currentUserId');
+			 var data = {};
 
               if(device !== undefined && device !== null && modelId){
               		if(userId !== undefined && userId !== null){
-              			var data = {'device': device, modelId: modelId, user: userId};
+              			data = {'device': device, modelId: modelId, user: userId};
               		}else{
-              			var data = {'device': device, modelId: modelId};
+              			data = {'device': device, modelId: modelId};
               		}
                 		
                 data = JSON.stringify(data);
 
-                $.post('https://vrummapp.net/ws/v2/catalogo/getversiones',
-                  data).then(function(res){
-                    if(res.estado === 1){
-                      var versionsArr = res.mensaje.rs;
-                      versionsArr = JSON.stringify(versionsArr);
-                      sessionStorage.setItem('versionsArr', versionsArr);
-                      navigating('catalogo/modelo-versiones');
-                    }
-                  }).fail(function(err){
-                    console.log(err);
-                  });
+                sendPostToGo('catalogo/getversiones', data, 'versiones');
+                sendPostToGet('catalogo/getgaleria', data, 'vrsGal');
 
               }
-		}
-
-		function sizingModelItms() {
-			
-			var carContainer = $('div.modelItem');
-			
-			if(carContainer.length){
-				alleGleichlich(carContainer);
-			}
-			
 		}
 
 
@@ -291,18 +276,6 @@ $(function(){
 				alleGleichlich(carContainer);
 			}
 		});
-
-
-
-		function alleGleichlich(el) {
-			var img = $(el).find('img.carImg').first();
-			var images = $(el).find('img.carImg')
-			var width = img.width();
-			var height = width * 0.6309;
-
-			images.css({height: height});
-		}
-
 
 		function displayBrand() {
 			var brandURL = sessionStorage.getItem('currentBrandImg');
@@ -322,7 +295,3 @@ $(function(){
 
 	}
 });
-
-function con(argument) {
-	console.log(argument);
-}

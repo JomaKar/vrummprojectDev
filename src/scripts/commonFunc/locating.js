@@ -5,6 +5,8 @@ export const strongRoot = strongLocation.slice(0, findWebIdx);
 
 export let myLocation = webRoot;
 
+export let myLocHref = window.location.href;
+
 export const totalRoot = strongRoot + myLocation;
 
 

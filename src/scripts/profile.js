@@ -1,5 +1,6 @@
-import {navigating, myLocation} from './locating.js';
-import {con} from './consoling.js';
+import {navigating, myLocation} from './commonFunc/locating.js';
+import {con} from './commonFunc/consoling.js';
+import {alleGleichlich, sizingModelItms} from './commonFunc/sizingGarageImgs.js';
 
 $(function(){
 
@@ -45,6 +46,12 @@ $(function(){
 
 		$(window).resize(function(){
 			sizeAddGarageBtn();
+
+			var carContainer = $('div.modelItem');
+	
+			if(carContainer.length){
+				alleGleichlich(carContainer);
+			}
 		});
 
 		function sizeAddGarageBtn() {
@@ -408,7 +415,7 @@ $(function(){
 	                        garageGrid.prepend(auto);
 			});
 
-			
+			sizingModelItms();
 		}
 
 		$(document).on('click', 'span.trash', function(){

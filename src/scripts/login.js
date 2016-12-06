@@ -1,4 +1,6 @@
-import {navigating} from './locating.js';
+import {navigating} from './commonFunc/locating.js';
+import {con} from './commonFunc/consoling.js';
+import {sendPostToGo, sendPostToGet} from './commonFunc/httpProcesor.js';
 
 $(function(){
 
@@ -34,7 +36,7 @@ $(function(){
 	
 
 	linkReg.click(function(){
-		askForBrands();
+		sendPostToGet('catalogo/getmarcas', null, 'brands');
 		navigating('registro');
 	});
 
@@ -42,26 +44,8 @@ $(function(){
 		modal.hide();
 	});
 
-	function askForBrands(){
-			
-		$.post('https://vrummapp.net/ws/v2/catalogo/getmarcas')
-		.then(function(res){ 
-			if(res.estado === 1){
-				var brands = JSON.stringify(res.mensaje.rs);
-				sessionStorage.setItem('catalogBrands', brands);
-			}else{
-				sessionStorage.setItem('catalogBrands', 'nothing stored');
-			}
-
-
-		 }).fail(function(err){
-	  		con(err);
-		});
-		
-	}
-
 	linkBrand.click(function(){
-		navigating('catalogo');
+		sendPostToGo('catalogo/getmarcas', null, 'brands');
 	})
 
 	function recover(){
@@ -110,17 +94,7 @@ $(function(){
 
 			});
 
-			//var mailGood = sessionStorage.getItem('mailGood');
-
 			sendLogin(values);
-			/*if(mailGood === 'yes'){
-			}else{
-			
-				removePrev();
-				var wrongOne = "<p id='nicknameText' class='badText'>Te falto algún dato o escribiste algo mal</p>";
-				registrarbtn.before(wrongOne);
-
-			}*/
 
 		}else{
 			recoverPassEnd();
@@ -131,26 +105,7 @@ $(function(){
 
 			params = JSON.stringify(params);
 
-			//var mailGood = sessionStorage.getItem('mailGood');
-
 			recoverPassSend(params, null);
-
-			/*if(mailGood === 'yes'){
-
-			}else{
-				if(mailTxt.length > 0){
-					setTimeout(function(){
-						var askMailAgain  = sessionStorage.getItem('mailGood');
-						if(askMailAgain === 'yes'){
-							recoverPassSend(params, null);
-						}else{
-							var wrongOne = "<p id='nicknameText' class='badText'>Te falto algún dato o escribiste algo mal</p>";
-							registrarbtn.before(wrongOne);
-						}
-					}, 300);
-				}
-
-			}*/
 
 		}
 
@@ -159,38 +114,8 @@ $(function(){
 
 	function sendLogin(val){
 		
-
 		var data = JSON.stringify(val);
-
-
-		$.post('https://vrummapp.net/ws/v2/usuario/login', 
-				data
-			).then(function(res){
-
-				if(res.estado === 1){
-					var currentUser = userE.val().toString();
-
-					var id = res.mensaje.rs;
-					getUserInfo(id);
-					id.toString();
-					sessionStorage.removeItem('currentUser');
-					sessionStorage.setItem('currentUser', currentUser);
-					sessionStorage.removeItem('currentUserId');
-					sessionStorage.setItem('currentUserId', id);
-					sessionStorage.setItem('activeSession', 'yes');
-
-
-					navigating('perfil');
-
-				}else{
-
-					showSubmitError(res);
-				}
-
-			 }).fail(function(err){
-		  		console.log(err);
-			});
-
+		sendPostToGo('usuario/login', data, 'perfil');
 
 	}
 
@@ -210,56 +135,12 @@ $(function(){
 				}
 
 			 }).fail(function(err){
+
+			 	showSubmitError();
 		  		console.log(err);
 			});
 	}
 
-
-	function getUserInfo(id) {
-		var data = {idUsr: id};
-		data = JSON.stringify(data);
-		var devicId = sessionStorage.getItem('deviceId');
-
-		var dataForGarage = {idUsr: id, device: devicId};
-
-		dataForGarage = JSON.stringify(dataForGarage);
-
-		$.post('https://vrummapp.net/ws/v2/usuario/info', 
-				data
-			).then(function(res){
-
-				if(res.estado === 1){
-
-					var userInfo = res.mensaje.rs;
-					userInfo = JSON.stringify(userInfo);
-					sessionStorage.removeItem('currentUserInfo');
-					sessionStorage.setItem('currentUserInfo', currentUser);
-					
-				}
-
-			 }).fail(function(err){
-	  			console.log(err);
-		});
-
-		$.post('https://vrummapp.net/ws/v2/garage/listar', 
-				dataForGarage
-			).then(function(res){
-
-				if(res.estado === 1){
-
-					var userGarage = res.mensaje.rs;
-					userGarage = JSON.stringify(userGarage);
-
-					sessionStorage.setItem('currentUserGarage', userGarage);
-					
-				}else{
-					sessionStorage.setItem('currentUserGarage', 'nothing stored');
-				}
-
-			 }).fail(function(err){
-	  			console.log(err);
-		});
-	}
 
 	$.fn.disNone = function(){
 		
@@ -278,8 +159,8 @@ $(function(){
 	}
 
 
-	function showSubmitError(res) {
-		errMsg.css({display: 'block'});
+	function showSubmitError() {
+		errMsg.disBlock();
 		userE.val("");
 		userPass.val("");
 	}
@@ -314,7 +195,3 @@ $(function(){
 
 
 });
-
-function con(etw){
-	console.log(etw);
-}
