@@ -15,46 +15,7 @@
     <link rel="stylesheet" href="../css/main.css">
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <script src="../js/lib/jquery-3.1.1.min.js"></script>
-    <script type="text/javascript">
-      $(function(){
-          var brandsStored = sessionStorage.getItem('catalogBrands'),
-          brands = [];
-          sessionStorage.removeItem('modelsArr')
-
-          if(brandsStored === null || brandsStored === undefined || brandsStored === 'nothing stored'){
-              
-              getBrands();
-          
-          }
-
-          function getBrands(){
-          
-            $.post('https://vrummapp.net/ws/v2/catalogo/getmarcas')
-            .then(function(res){ 
-              
-              if(res.estado === 1){
-                brands = res.mensaje.rs;
-                brands = JSON.stringify(brands);
-
-                sessionStorage.setItem('catalogBrands', brands);
-
-              }else{
-                con(res);
-              }
-
-
-             }).fail(function(err){
-                con(err);
-            });
-            
-          }
-
-          $(document).ready(function(){
-            $(this).scrollTop(0);
-          });
-
-      })
-    </script>  
+    <script src="../js/sbl.js"></script>
 
   </head>
   

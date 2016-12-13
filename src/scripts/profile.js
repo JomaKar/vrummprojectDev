@@ -1,6 +1,8 @@
 import {navigating, myLocation} from './commonFunc/locating.js';
 import {con} from './commonFunc/consoling.js';
 import {alleGleichlich, sizingModelItms} from './commonFunc/sizingGarageImgs.js';
+import {queriesT, hashesExist} from './commonFunc/urlEncoder.js';
+import {sendPostToGo, sendPostToGet} from './commonFunc/httpProcesor.js';
 
 $(function(){
 
@@ -22,6 +24,8 @@ $(function(){
 		photoDiv = $('div.p-profilePhoto'),
 		domDataElements = [aliasSpan, dateSpace, nameSpace, carsNumber, photoDiv],
 		userObjKeys = ['alias', 'created_at', 'full_name', 'total_garage', 'foto_perfil'];
+		var usrIDG;
+		var garageAsked = false;
 
 
 		var askInterval = setInterval(function(){
@@ -191,7 +195,7 @@ $(function(){
             $.post('https://vrummapp.net/ws/v2/garage/cambiartipo', 
                 data
               ).then(function(res){
-              	con(res);
+              	//con(res);
                 if(res.estado !== 1){
 
                   reverseCategory(mainEl);
@@ -205,42 +209,124 @@ $(function(){
 		}
 
 		function checkUserGarage(garageArr) {
+			
 			if(garageArr !== null && garageArr !== undefined && garageArr !== 'nothing stored'){
+	        	
 	        	clearInterval(askForGarage);
 	        	usrGarageArr = JSON.parse(garageArr);
-	        	con(usrGarageArr);
-	        	displayGarage();
-	        }else if(garageArr === null || garageArr === 'nothing stored'){
+	        	//con(usrGarageArr);
+	        	if(hashesExist){
+	        		if(queriesT.al.length > 0 && sessionStorage.getItem('currentUserAlias') !== null){
 
-	        	if(askingTimes >= 60){
-	        		clearInterval(askForGarage);
-	        		getUserGarage();
+	        			var aliasN = sessionStorage.getItem('currentUserAlias');
+
+	        			(aliasN = queriesT.al) ? displayGarage() :  getUserInfoAl(queriesT.al);
+	        		
+	        		}else{
+
+	        			displayGarage();
+	        		}
+	        	
+	        	}else{
+
+	        		displayGarage();
+	        	}
+
+	        }else if(garageArr === null || garageArr === 'nothing stored' || garageArr === undefined){
+
+	        	if(askingTimes >= 100){
+
+	        		if(sessionStorage.getItem('currentUserId') !== null && sessionStorage.getItem('currentUserId') !== undefined){
+
+	        			clearInterval(askForGarage);
+	        			getUserGarage(sessionStorage.getItem('currentUserId'));
+	        		}
 	        	}
 
 	        }
 		}
 
-		function checkUser(userArr) {
-			if(userArr !== null && userArr !== undefined && userArr !== 'nothing stored'){
+		function checkUser(user) {
+			var usrAlias = sessionStorage.getItem('currentUserAlias');
+
+			if(user !== null && user !== undefined && user !== 'nothing stored'){
 				clearInterval(askInterval);
-				user = JSON.parse(userArr);
-				//con(user);
-				if(user.length > 0){
-					displayUserInfo(user[0]);
-				}else{
+				user = JSON.parse(user);
+
+				//console.log('from profile', user);
+
+				
+				if($.isArray(user)){
+					if(user.length > 0){
+						if(hashesExist){
+							
+							(user[0].alias == queriesT.al) ? displayUserInfo(user[0]) :  getUserInfoAl(queriesT.al);
+
+						
+						}else{
+
+							displayUserInfo(user[0]);
+							usrIDG = parseInt(user[0].id);
+						}
+					}
+
+				}else if((typeof user === "object") && (user !== null)){
+					if(hashesExist){
+						
+						(user.alias == queriesT.al) ? displayUserInfo(user) :  getUserInfoAl(queriesT.al);
+
+					
+					}else{
+
+						displayUserInfo(user);
+						usrIDG = parseInt(user[0].id);
+					}
+				}
+				else{
 					con('no user');
 				}
 		    }	
 		}
 
 
-		function getUserGarage() {
+		function getUserInfoAl(alias) {
+			  var data = {alias: alias};
+			  data = JSON.stringify(data);
 
-			var userId = sessionStorage.getItem('currentUserId');
+			  //console.log('fp. to get userInfo with alias', data);
+
+			  $.post('https://vrummapp.net/ws/v2/usuario/info', 
+			      data
+			    ).then(function(res){
+
+			      if(res.estado === 1){
+
+			        var userInfoFromIn = res.mensaje.rs;
+			        displayUserInfo(userInfoFromIn[0]);
+			        usrIDG = parseInt(userInfoFromIn[0].id);
+
+			        getUserGarage(usrIDG);
+			        
+			        userInfoFromIn = JSON.stringify(userInfoFromIn);
+			        sessionStorage.setItem('currentUserInfo', userInfoFromIn);
+			        
+			      }
+
+			     }).fail(function(err){
+			        console.log(err);
+			  });
+
+		}
+
+		function getUserGarage(id) {
+
             var devicId = sessionStorage.getItem('deviceId');
-            var dataForGarage = {idUsr: userId, device: devicId};
 
+
+            var dataForGarage = {idUsr: id, device: devicId};
             dataForGarage = JSON.stringify(dataForGarage);
+
+            //console.log('getting the garage', dataForGarage);
 
               $.post('https://vrummapp.net/ws/v2/garage/listar', 
                 dataForGarage
@@ -266,7 +352,7 @@ $(function(){
                
         }
 
-        var selectClick= false;
+        var selectClick = false;
         selectCaret.click(function(){
         	con('click')
 
@@ -277,7 +363,7 @@ $(function(){
 		var imageOk = false;
 
 		function displayUserInfo(userObj){
-
+			//console.log('displayUserInfo', userObj);
 			$.map(userObj, function(value, key){
 
 				if(key === 'created_at'){
@@ -347,75 +433,80 @@ $(function(){
 			availableClasses = ['someday', 'dream', 'soonday'];
 
 
-			
-			usrGarageArr.forEach(function(itm, idx){
-				var notSelectedCategories = '';
+			if(!garageAsked){
+				checkNavBar();
 
-				$.map(availableClasses, function(item, index){
+				usrGarageArr.forEach(function(itm, idx){
+					var notSelectedCategories = '';
 
-					if(item === itm.tipo){
-						selectedCategory = availableCats[index];
-					}else{
+					$.map(availableClasses, function(item, index){
 
-						notSelectedCategories += availableCats[index];
-					}
+						if(item === itm.tipo){
+							selectedCategory = availableCats[index];
+						}else{
 
+							notSelectedCategories += availableCats[index];
+						}
+
+					});
+
+					var auto = `<div class="col-xs-12 modelItem defaultPointer noPadding col-sm-6 col-md-4 garageImgCont ${itm.tipo}">
+		                            <div class="sideInfoBar">
+		                            	<span class="msgErrAddCat hiddenItm">No se pudo cambiar la categoría
+											<br>
+											Intente más tarde
+		                            	</span>
+		                                <div class="userCarCatCont">
+		                                    <div class="selectionContainer">
+		                                        <div class="selectedCat">
+		                                            ${selectedCategory}
+		                                        </div>
+		                                        <div class="notSelectedCat">
+		                                            ${notSelectedCategories}
+		                                        </div>
+		                                    </div>
+		                                </div>
+		                                <div class="toggleableIcons">
+		                                    <div class="compareGroup">
+		                                        <span class="fa fa-long-arrow-right right"></span>
+		                                        <span class="fa fa-long-arrow-left left"></span>
+		                                        <span class="fa fa-plus-circle circle"></span>
+		                                        <span class="message">Agrega al comparador</span>
+		                                    </div>
+		                                    <div class="shareGroup">
+		                                        <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21">
+		                                          <g>
+		                                                <path d="M17.8 6.2h-2.2c-0.4 0-0.8 0.4-0.8 0.8s0.4 0.8 0.8 0.8h1.4v10.7H4.2v-10.7h1.7c0.4 0 0.8-0.4 0.8-0.8s-0.4-0.8-0.9-0.8h-2.4c-0.5 0-0.8 0.4-0.8 0.8v12.3c0 0.4 0.3 0.7 0.8 0.7h14.5c0.4 0 0.8-0.3 0.8-0.7v-12.3C18.6 6.6 18.3 6.2 17.8 6.2zM9.4 3.9l0.3-0.1v10.2c0 0.4 0.4 0.8 0.8 0.8s0.8-0.4 0.8-0.8v-10.6l0.8 0.5c0.1 0.1 0.3 0.2 0.5 0.2 0.2 0 0.4-0.1 0.6-0.3 0.3-0.3 0.3-0.8-0.1-1.1l-2-1.5c-0.3-0.2-0.7-0.3-1 0 -0.1 0.1-1.8 1.5-1.8 1.5 -0.3 0.3-0.3 0.8 0 1.1C8.6 4.2 9.1 4.2 9.4 3.9z" />
+		                                          </g>
+		                                        </svg>
+		                                        <!-- <span class="fa fa-long-arrow-up arUp"></span>
+		                                        <span class="fa fa-square-o sqEmp"></span> -->
+		                                        <span class="message">Compartir</span>
+		                                    </div>
+		                                    <div class="toggleTrashGrp">
+		                                        <span class="fa fa-trash trash"></span>
+		                                        <span class="message">Eliminar</span>
+		                                    </div>
+		                                </div>
+		                                <span class="fa fa-ellipsis-h dots"></span>
+		                            </div>
+		                            <img  src="${itm.pic_url}" class="noMargin garageImg img-responsive" border="0"/>
+		                            <span class="hiddenItm garageVersionId">${itm.version_id}</span>
+		                            <span class="hiddenItm garageUsrCarId">${itm.garage_id}</span>
+		                            <span class="hiddenItm garageUsrBrandId">${itm.brand_id}</span>
+		                        </div>`;
+
+		                        if(loadingText.length){
+		                        	loadingText.remove();
+		                        }
+
+		                        garageGrid.prepend(auto);
 				});
-
-				var auto = `<div class="col-xs-12 modelItem defaultPointer noPadding col-sm-6 col-md-4 garageImgCont ${itm.tipo}">
-	                            <div class="sideInfoBar">
-	                            	<span class="msgErrAddCat hiddenItm">No se pudo cambiar la categoría
-										<br>
-										Intente más tarde
-	                            	</span>
-	                                <div class="userCarCatCont">
-	                                    <div class="selectionContainer">
-	                                        <div class="selectedCat">
-	                                            ${selectedCategory}
-	                                        </div>
-	                                        <div class="notSelectedCat">
-	                                            ${notSelectedCategories}
-	                                        </div>
-	                                    </div>
-	                                </div>
-	                                <div class="toggleableIcons">
-	                                    <div class="compareGroup">
-	                                        <span class="fa fa-long-arrow-right right"></span>
-	                                        <span class="fa fa-long-arrow-left left"></span>
-	                                        <span class="fa fa-plus-circle circle"></span>
-	                                        <span class="message">Agrega al comparador</span>
-	                                    </div>
-	                                    <div class="shareGroup">
-	                                        <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21">
-	                                          <g>
-	                                                <path d="M17.8 6.2h-2.2c-0.4 0-0.8 0.4-0.8 0.8s0.4 0.8 0.8 0.8h1.4v10.7H4.2v-10.7h1.7c0.4 0 0.8-0.4 0.8-0.8s-0.4-0.8-0.9-0.8h-2.4c-0.5 0-0.8 0.4-0.8 0.8v12.3c0 0.4 0.3 0.7 0.8 0.7h14.5c0.4 0 0.8-0.3 0.8-0.7v-12.3C18.6 6.6 18.3 6.2 17.8 6.2zM9.4 3.9l0.3-0.1v10.2c0 0.4 0.4 0.8 0.8 0.8s0.8-0.4 0.8-0.8v-10.6l0.8 0.5c0.1 0.1 0.3 0.2 0.5 0.2 0.2 0 0.4-0.1 0.6-0.3 0.3-0.3 0.3-0.8-0.1-1.1l-2-1.5c-0.3-0.2-0.7-0.3-1 0 -0.1 0.1-1.8 1.5-1.8 1.5 -0.3 0.3-0.3 0.8 0 1.1C8.6 4.2 9.1 4.2 9.4 3.9z" />
-	                                          </g>
-	                                        </svg>
-	                                        <!-- <span class="fa fa-long-arrow-up arUp"></span>
-	                                        <span class="fa fa-square-o sqEmp"></span> -->
-	                                        <span class="message">Compartir</span>
-	                                    </div>
-	                                    <div class="toggleTrashGrp">
-	                                        <span class="fa fa-trash trash"></span>
-	                                        <span class="message">Eliminar</span>
-	                                    </div>
-	                                </div>
-	                                <span class="fa fa-ellipsis-h dots"></span>
-	                            </div>
-	                            <img  src="${itm.pic_url}" class="noMargin garageImg img-responsive" border="0"/>
-	                            <span class="hiddenItm garageVersionId">${itm.version_id}</span>
-	                            <span class="hiddenItm garageUsrCarId">${itm.garage_id}</span>
-	                            <span class="hiddenItm garageUsrBrandId">${itm.brand_id}</span>
-	                        </div>`;
-
-	                        if(loadingText.length){
-	                        	loadingText.remove();
-	                        }
-
-	                        garageGrid.prepend(auto);
-			});
+			
+			}
 
 			sizingModelItms();
+			garageAsked = true;
 		}
 
 		$(document).on('click', 'span.trash', function(){
@@ -448,6 +539,84 @@ $(function(){
             });
 
 		});
+
+		//change profile picture
+		var headerBackImg = $('div.p-headerBackImg');
+
+
+		$(document).on('click', 'div.ok', function(){
+
+			setTimeout(function(){
+
+				if(photoDiv.find('img').length){
+					photoDiv.css({'background-image': 'none'});
+					var dataImg = photoDiv.find('img').attr('src').replace(/^data:image\/(png|jpg);base64,/, "");
+					photoDiv.append('<span class="glyphicon glyphicon-camera profImgCameraIcon"></span>');
+					chageProfilePhoto(dataImg);
+				}
+
+				if(headerBackImg.find('img').length){
+					var dataImg = headerBackImg.find('img').attr('src').replace(/^data:image\/(png|jpg);base64,/, "");
+					con(dataImg);
+				}
+
+			}, 200);
+
+		});
+
+		function chageProfilePhoto(photo){
+			var data = {device: sessionStorage.getItem('deviceId'), user: usrIDG, foto_perfil: photo, foto: photo};
+			console.log('processing to send', data);
+			data = JSON.stringify(data);
+
+			sendPostToGet('usuario/actualizar', data, 'usrAct');
+		}
+
+		function checkNavBar() {
+
+			var photo = localStorage.getItem('aUPP');
+			var logUsr = localStorage.getItem('aUsr');
+			var logUserAlias = localStorage.getItem('aUsrA');
+			
+			var userInfoObj = sessionStorage.getItem('currentUserInfo');
+			var visibleUserId = sessionStorage.getItem('currentUserId');
+
+			var isInfo = (userInfoObj !== null && userInfoObj !== undefined && userInfoObj !== 'nothing stored') ? true : false;
+
+
+			//console.log('from navbar function', photo);
+
+
+			var user = {};
+
+			var theNavbar = $('nav.myNavBar');
+
+			if($('nav.myNavBar').length && isInfo){
+
+				if($.isArray(userInfoObj)){
+					user = userInfoObj[0];
+				}else if((typeof userInfoObj === 'object') && (userInfoObj !== null)){
+					user = userInfoObj;
+				}
+
+				if(logUsr !== undefined && logUsr !== null){
+
+					logUsr = parseInt(logUsr);
+					var visibleUser = (visibleUserId !== undefined && visibleUserId !== null) ? parseInt(visibleUserId) : parseInt(user.id);
+
+					console.log('aquí en navbar', logUsr, visibleUser);
+
+					if(logUsr === visibleUser){
+						if(myLocation === "/web/perfil/" || myLocation === "/web/perfil/index" || myLocation === "/web/perfil/index.html"){
+
+							theNavbar.addClass('noPhoto')
+						}
+					}else{ theNavbar.removeClass('noPhoto');}
+				}
+
+				
+			}
+		}
 
 
 		filterSelect.change(function(){

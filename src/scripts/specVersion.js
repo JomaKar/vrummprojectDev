@@ -1,5 +1,6 @@
 import {con} from './commonFunc/consoling.js';
 import {navigating, myLocation} from './commonFunc/locating.js';
+import {queriesT, hashesExist} from './commonFunc/urlEncoder.js';
 
 
 $(function(){
@@ -9,36 +10,109 @@ $(function(){
 	if(myLocation == '/web/catalogo/specific-version.html' || myLocation == '/web/catalogo/specific-version'){
 		
 		//version info variables
-		var version = sessionStorage.getItem('versionStored');
-		var versions = sessionStorage.getItem('versionsArr');
-		versions = JSON.parse(versions);
-		version = JSON.parse(version);
+			var version = {};
+			var versions = [];
 
 		//DOM variables
 		var theCarousel = $('div.versionsCarousel');
 		var versionDetailCont = $('div.versionDetailCont');
 		var versionsArrows = $('span.versionArrow');
 
+		//spans with version index number, in compare version bar
+
+		var spanNum = $('span.versionNum');
+		var spanTotal = $('span.versionTotal');
+
+		//carousel variables
+		var imgs = [];
+		var currentVersionMainImg = '';
+
 		//change variables
 		var versionChange = false;
 		var selectedVersion = {};
 
+		//console.log(theCarousel);
+
+		if(sessionStorage.getItem('versionsArr') !== null){
+			version = JSON.parse(sessionStorage.getItem('versionStored'));
+			versions = JSON.parse(sessionStorage.getItem('versionsArr'));
+			if(hashesExist){
+				//console.log(version, 'hi here', queriesT.cId);
+				var storedNum = parseInt(version.id), 
+				newNum = parseInt(queriesT.cId);
+				
+				(storedNum === newNum) ? kickStart() : selectVersionStart(versions);
+			
+			}else{
+
+				kickStart()
+			}
+
+		}else{
+			wait();
+		}
+
+		function wait() {
+			setTimeout(function(){
+				if(sessionStorage.getItem('versionStored') !== null){
+					version = JSON.parse(sessionStorage.getItem('versionStored'));
+					versions = JSON.parse(sessionStorage.getItem('versionsArr'));
+					/*console.log('version from bundle', version);
+					console.log('versions', versions);*/
+					kickStart();
+				}else{
+					askVersionsAgain();
+				}
+			}, 2000);
+		}
+
+		function askVersionsAgain() {
+			if(hashesExist){
+				var datos = JSON.stringify({device: sessionStorage.getItem('deviceId'), modelId: parseInt(queriesT.mdlId)});
+				$.post('https://vrummapp.net/ws/v2/catalogo/getversiones', datos)
+				.then(function(res){
+					if(res.estado === 1){
+						versions = res.mensaje.rs;
+						selectVersionStart(versions);
+
+					}
+				}).fail(function(err){
+					console.log(err)
+				});
+			}else{
+				wait();
+			}
+		}
+
+		function selectVersionStart(vrs){
+			var carId = parseInt(queriesT.cId)
+			var versionAr = $.grep(vrs, function(el, idx){
+								var objId = parseInt(el.id);
+								if(objId === carId){
+
+									return  el;
+								} 
+
+							});
+
+			version = versionAr[0];
+			kickStart();
+		}
 
 
-		$(document).ready(function(){
+
+		function kickStart() {
 			displayBrand();
 			sizeCarousel();
 			displayCarousel();
 			selectVersion(null);
-
-		});
+		}
 
 		$(window).resize(function(){
 			sizeCarousel();
 		});
 
-		var imgs = [];
-		var currentVersionMainImg = '';
+
 
 		function displayCarousel() {
 
@@ -97,44 +171,28 @@ $(function(){
 
 		});
 
-		//DOM variables
 
-		var spanNum = $('span.versionNum');
-		var spanTotal = $('span.versionTotal');
 
-		spanNum.text('1');
-
-		spanTotal.text(versions.length);
+		var objIdx = -1;
 
 		function selectVersion(dir){
 			var info = [];
-			var objIdx = -1;
+
 
 			if(!versionChange){
-
+				findVersionIdx();
+				spanNum.text(objIdx + 1);
+				spanTotal.text(versions.length);
 				info =  version.ficha_tecnica;
 				throwInfo(info);
 
 			}else if(dir.length > 0 && versionChange){
+				/*console.log(versions, 'versions');
+				console.log(selectedVersion, 'selectedVersion');
+				console.log(version, 'version');*/
 
 
-
-				$.map(versions, function(itm, idx){
-
-					if(selectedVersion.id !== undefined && selectedVersion.id !== null){
-
-						if(itm.id === selectedVersion.id){
-							objIdx = idx;
-						}
-
-					}else{
-
-						if(itm.id === version.id){
-							objIdx = idx;
-						}
-
-					}
-				});
+				findVersionIdx();
 
 				var lastVersionIdx = versions.length - 1;
 
@@ -169,6 +227,7 @@ $(function(){
 				}
 
 				info = selectedVersion.ficha_tecnica;
+				changeUrlId(selectedVersion.id);
 
 				throwInfo(info);
 				displayBrand();
@@ -178,34 +237,71 @@ $(function(){
 			
 		}
 
+		function findVersionIdx() {
+
+			$.map(versions, function(itm, idx){
+
+					if(selectedVersion.id !== undefined && selectedVersion.id !== null){
+
+						if(itm.id === selectedVersion.id){
+							objIdx = idx;
+						}
+
+					}else{
+
+						if(itm.id === version.id){
+							objIdx = idx;
+						}
+
+					}
+				});
+		}
+
+
+		function changeUrlId(id) {
+			var href = window.location.href;
+
+			var carIdUrlIdx = href.search('cId');
+
+			if(carIdUrlIdx !== -1){
+				var nextAnIdx = href.indexOf('&', carIdUrlIdx);
+				var urlBefcID = href.slice(0, carIdUrlIdx);
+				var carId = 'cId=' + id;
+
+				var newHref = (nextAnIdx !== -1) ? `${urlBefcID}${carId}${href.slice(nextAnIdx)}` : `${urlBefcID}${carId}`;
+
+				con(newHref);
+			}
+		}
 
 		function throwInfo(info) {
 			$('div.fichaTecnicaDetail').empty();
 			$('div.fichaCat').empty();
 
-			var actualCat = info[0].ficha_tecnica;
+			var actualCat = info[0].tab;
 
+			//this info need to be displayed with endpoint getfichatecnica
 			
 			info.forEach(function(itm, idx){
 
 				if(idx === 0){
-					var cat = `<div class="${itm.ficha_tecnica} fichaCat">
-									<h2>${itm.ficha_tecnica}</h2>
+					var cat = `<div class="${itm.tab} fichaCat">
+									<h2>${itm.tab}</h2>
 								</div>`;
 					versionDetailCont.append(cat);
-					//console.log(actualCat, itm.ficha_tecnica);
+					//console.log(actualCat, itm.tab);
 
-				}else if(itm.ficha_tecnica !== actualCat && !versionDetailCont.find(`div.${itm.ficha_tecnica}`).length){
-					actualCat = itm.ficha_tecnica;
-					var cat = `<div class="${itm.ficha_tecnica} fichaCat">
-									<h2>${itm.ficha_tecnica}</h2>
+				}else if(itm.tab !== actualCat && !versionDetailCont.find(`div.${itm.tab}`).length){
+					actualCat = itm.tab;
+					var cat = `<div class="${itm.tab} fichaCat">
+									<h2>${itm.tab}</h2>
 								</div>`;
 					versionDetailCont.append(cat);
 				}
 
 				if(itm.dato !== null && itm.dato !== undefined){
-					var plainText = `<p class="${itm.ficha_tecnica}">${itm.valor} : ${itm.dato}</p>`
-					versionDetailCont.find(`div.${itm.ficha_tecnica}`).append(plainText);
+					var plainText = `<p class="${itm.tab}">${itm.valor} : ${itm.dato}</p>`
+					versionDetailCont.find(`div.${itm.tab}`).append(plainText);
 				}
 			});
 		}
@@ -216,7 +312,7 @@ $(function(){
 
 			var userId = sessionStorage.getItem('currentUserId');
 	        var deviceId = sessionStorage.getItem('deviceId');
-	        var versionId = ( versionChange )? selectedVersion.id : version.id;
+	        var versionId = ( versionChange ) ? selectedVersion.id : version.id;
 
 	        var dataForGarage = { 'device': deviceId, 'user': userId, 'version': versionId, 'tipo': type };
 
@@ -249,9 +345,12 @@ $(function(){
 			var modelPrcSpan = $('p.modelPrice');
 			var versionNameP = $('p.versionName');
 
-			var brandURL = sessionStorage.getItem('currentBrandImg');
-			var modelName = localStorage.getItem('modelName');
+			var brandURL = (sessionStorage.getItem('currentBrandImg') !== null) ? sessionStorage.getItem('currentBrandImg') : version.pic_marca;
+			var modelName = (localStorage.getItem('modelName') !== null) ? localStorage.getItem('modelName') : version.model_name;
 			
+			sessionStorage.setItem('currentBrandImg', version.pic_marca);
+			localStorage.getItem('modelName', version.model_name);
+
 			var modelPrice = '',
 			versionName = '';
 
@@ -269,7 +368,7 @@ $(function(){
 
 			
 			versionsBrandImg.css({
-				'background-image': brandURL
+				'background-image': `url(${brandURL})`
 			});
 
 			modelNameSpan.text(modelName);

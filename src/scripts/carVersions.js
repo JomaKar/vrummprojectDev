@@ -1,6 +1,7 @@
 import {navigating, myLocation} from './commonFunc/locating.js';
 import {con} from './commonFunc/consoling.js';
 import {sendPostToGo, sendPostToGet} from './commonFunc/httpProcesor.js';
+import {queriesT, hashesExist} from './commonFunc/urlEncoder.js';
 
 $(function(){
 	var versions = [];
@@ -18,7 +19,13 @@ $(function(){
 		var brandName = sessionStorage.getItem('currentBrandName');
 
 		$(document).ready(function(){
-			displayBrand();
+
+			if(sessionStorage.getItem('currentBrandImg') !== null && sessionStorage.getItem('currentBrandImg') !== undefined && sessionStorage.getItem('currentBrandImg') !== 'nothing stored'){
+
+				displayBrand();
+
+			}
+
 			startCarousel();
 		});
 
@@ -49,7 +56,9 @@ $(function(){
 		    if(pict !== null && pict !== undefined && pict !== 'nothing stored'){
 				clearInterval(askPhotosInterval);
 				var photos = pict;
-				displayCarousel(photos);
+
+				//displayCarousel(JSON.parse(photos));
+				(hashesExist) ?  getVersionsPhotos(queriesT.mdlId) : displayCarousel(JSON.parse(photos));
 		    }	
 		}
 
@@ -58,22 +67,63 @@ $(function(){
 
 		function manageVersions(argument) {
 			versionsArr = JSON.parse(argument);
-
 			currentVersion = versionsArr[0];
-			displayVersionsInfo();
+
+			if(sessionStorage.getItem('currentBrandImg') == null || sessionStorage.getItem('currentBrandImg') == undefined || sessionStorage.getItem('currentBrandImg') == 'nothing stored'){
+
+				displayBrand();
+
+			}
+			
+
+			if(hashesExist){
+
+				(currentVersion.model_id = queriesT.mdlId) ? displayVersionsInfo() :  getVersions(queriesT.mdlId);
+			
+			}else{
+
+				displayVersionsInfo();
+				
+			}
 						
 		}
 
 		var imgs = [];
 		var currentVersionId;
 
+		function getVersionsPhotos(modelId){
+			modelId = parseInt(modelId);
+
+		    var device = sessionStorage.getItem('deviceId');
+		    var dataForPhotos = {};
+
+		    if(device !== undefined && device !== null && modelId){
+		      dataForPhotos = {'device': device, modelId: modelId};
+		    }
+		            
+		    dataForPhotos = JSON.stringify(dataForPhotos);
+
+		    $.post('https://vrummapp.net/ws/v2/catalogo/getgaleria',
+		      dataForPhotos).then(function(res){
+		        if(res.estado === 1){
+		          var versionsPicts = res.mensaje.rs;
+		          con(versionsPicts);
+		          displayCarousel(versionsPicts);
+		          versionsPicts = JSON.stringify(versionsPicts);
+		          sessionStorage.setItem('versionsPhotos', versionsPicts);
+		        }
+		      }).fail(function(err){
+		        console.log(err);
+		      });
+		}
+
 		function displayCarousel(picts) {
+
+
 			var imgsCont = $('div.thumbImgsCont');
 			var arrowsCont = $('div.arrowsCont');
 
-			var pictures = JSON.parse(picts);
-
-			$.map(pictures.galeria, function(arrItem, idx){
+			$.map(picts.galeria, function(arrItem, idx){
 
 				imgs.push({pict: arrItem.pic_url, id: idx});
 
@@ -101,6 +151,33 @@ $(function(){
 				arrowsCont.hide();
 			}
 
+			sizeCarousel();
+
+		}
+
+		function getVersions(modelId) {
+		    var device = sessionStorage.getItem('deviceId');
+
+		    if(device !== undefined && device !== null && modelId){
+
+		        var data = {'device': device, modelId: modelId};
+		          
+		      data = JSON.stringify(data);
+
+		      $.post('https://vrummapp.net/ws/v2/catalogo/getversiones',
+		        data).then(function(res){
+		          if(res.estado === 1){
+		            versionsArr = res.mensaje.rs;
+		          	currentVersion = versionsArr[0];
+					displayVersionsInfo();
+		            versionsArr = JSON.stringify(versionsArr);
+		            sessionStorage.setItem('versionsArr', versionsArr);
+		          }
+		        }).fail(function(err){
+		          console.log(err);
+		        });
+
+		    }
 		}
 
 		function displayVersionsInfo() {
@@ -141,11 +218,11 @@ $(function(){
 		$(document).on('click', 'div.versionDetailRow', function(){
 			var el = $(this);
 			
-			activatingInfoTag(el);
+			activatingInfoTag(el, false);
 
 		});
 
-		function activatingInfoTag(el) {
+		function activatingInfoTag(el, go) {
 			var elements = $('div.versionDetailRow');
 			var selVerName = $(el).find('span.versionName').text();
 
@@ -164,13 +241,16 @@ $(function(){
 
 			currentVersion = selectedVersObj[0];
 
+			if(go){sendPostToGo(currentVersion, null, 'specVer');}
+
 			var versionStored = JSON.stringify(currentVersion);
 
 			sessionStorage.setItem('versionStored', versionStored);
 		}
 
 		$(document).on('click', 'div.goToDetailArrow', function(){
-			sendPostToGo(currentVersion, null, 'specVer');
+			var el = $(this).closest('div.versionDetailRow');
+			activatingInfoTag(el, true);
 		});
 
 
@@ -379,12 +459,18 @@ $(function(){
 			var modelNameSpan = $('p.modelName');
 			var modelPrcSpan = $('p.modelPrice');
 
-			var brandURL = sessionStorage.getItem('currentBrandImg');
-			var modelName = localStorage.getItem('modelName');
+
+			var brandURL = (sessionStorage.getItem('currentBrandImg') !== null) ? sessionStorage.getItem('currentBrandImg') : versionsArr[0].pic_marca;
+			var modelName = (localStorage.getItem('modelName') !== null) ? localStorage.getItem('modelName') : versionsArr[0].model_name;
+			
+			sessionStorage.setItem('currentBrandImg', brandURL);
+			localStorage.getItem('modelName', modelName);
+
+
 			var modelPrice = localStorage.getItem('modelPrice');
 			
 			versionsBrandImg.css({
-				'background-image': brandURL
+				'background-image': `url(${brandURL})`
 			});
 
 			modelNameSpan.text(modelName);

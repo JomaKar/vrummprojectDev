@@ -1,4 +1,13 @@
-export function getQueries() {
+var myLocHref = window.location.href;
+var queriesIdx = myLocHref.indexOf('?');
+var queries = (queriesIdx !== -1) ? myLocHref.slice(queriesIdx) : '';
+var queriesObj = {};
+var queryString = '';
+
+export var hashesExist = (queries.length > 3) ? true : false;
+
+
+function getQueries() {
 	var vars = [], hash, queriesObj = {};
 	var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
 	for(var i = 0; i < hashes.length; i++)
@@ -8,15 +17,15 @@ export function getQueries() {
 	    queriesObj[hash[0]] = hash[1];
 	}
 	
-
 	return queriesObj;
 
 }
 
-export function getQueriesString() {
+export var queriesT = getQueries();
+
+function getQueriesString() {
 	var totalUrl = window.location.href;
 	var indexOfQueryStart = totalUrl.indexOf('?');
-	var queryString = '';
 
 	if(indexOfQueryStart !== -1){
 		queryString = totalUrl.slice(indexOfQueryStart);
@@ -25,6 +34,8 @@ export function getQueriesString() {
 	return queryString;
 
 }
+
+export var queryText = getQueriesString();
 
 
 export function setQueriesWithObj(obj) {

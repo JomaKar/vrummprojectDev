@@ -26,7 +26,7 @@ export function displayErr(where){
 
 	if(where === 'login'){
 		
-		errMsg.disNone();
+		errMsg.disBlock();
 		userE.val("");
 		userPass.val("");
 	}

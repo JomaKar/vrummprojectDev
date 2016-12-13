@@ -2,8 +2,15 @@ import {backing} from './commonFunc/backPage.js';
 import {myLocation, strongRoot, totalRoot, navigating} from './commonFunc/locating.js';
 import {navInfo} from './commonFunc/activeSessionNav.js';
 import {sendPostToGo, sendPostToGet} from './commonFunc/httpProcesor.js';
+import {con} from './commonFunc/consoling.js';
 
 $(function(){
+	browserFingerprint();
+	var theresDevice = false;
+
+	if(theresDevice){
+		getDeviceIDStarting();
+	}
 
 	var fakeUUID = 0, 
 	geoloc, locationAsk = 0,
@@ -35,7 +42,6 @@ $(function(){
 
 	$(document).ready(function(){
 		$(this).scrollTop(0);
-		browserFingerprint();
 		getGeolocalization();
 		//setImgDataAttr();
 
@@ -54,14 +60,13 @@ $(function(){
 		//setImgDataAttr();
 	});
 
-	getDeviceIDStarting();
 
 	$(document).on('click', 'span.navbarBackBtn', function(){
 		backing(myLocation);
 	});
 
 	function addNavFooter(navFlag, footerFlag) {
-		var session = sessionStorage.getItem('activeSession');
+		var session = localStorage.getItem('activeSession');
 		
 		if(navFlag !== 'never'){
 
@@ -392,9 +397,19 @@ $(function(){
 		
 	}
 
+	$(document).on('click', 'a.closeSession', function(){
+		
+		localStorage.clear();
+
+		var sess = ['cUsrA', 'currentUserId', 'currentUserInfo'];
+
+		$.map(sess, function(arrItm, indx){
+			console.log(arrItm)
+
+			sessionStorage.removeItem(arrItm);
+		
+		});
+	});
+
 
 });
-
-function con(argument) {
-	console.log(argument);
-}

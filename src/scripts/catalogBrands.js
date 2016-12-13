@@ -121,6 +121,13 @@ $(function(){
 			var name = $(this).find('span.brandName').html();
 			var brandUrl = $(this).find('div.brandItmImg').css('background-image');
 
+			var idxFQuote = brandUrl.indexOf('"') + 1;
+			var idxLQuote = brandUrl.lastIndexOf('"');
+
+			//defining the actual image visible in carousel
+
+			brandUrl = brandUrl.substring(idxFQuote, idxLQuote);
+
 			if(id !== undefined && id !== null){
 				sessionStorage.setItem('currentBrandAutos', id.toString());
 				if(brandUrl !== undefined && brandUrl !== null){

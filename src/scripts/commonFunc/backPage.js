@@ -11,7 +11,7 @@ var hashes = (queries.length > 3) ? true : false;
 var queriesWOutLIdx = (hashes) ? queries.lastIndexOf('&') : -1;
 
 var lastQuery = (queriesWOutLIdx !== -1) ? queries.slice(queriesWOutLIdx + 1, queries.lastIndexOf('=')) : queries.slice(0, queries.lastIndexOf('='));
-var notTouchQueries = ['?ss', 'usrId'];
+var notTouchQueries = ['?ss', 'usrId', 'al'];
 
 var stopCutting = false;
 
@@ -24,7 +24,7 @@ notTouchQueries.forEach(function(itm, idex){
 
 });
 
-con(lastQuery);
+//con(lastQuery);
 
 
 
@@ -99,9 +99,9 @@ export function backing(currPage) {
 		//check the page from which the user come from
 		askLastPage(lastPage);
 
-	}else{								
+	}else{
 
-			navigating(lastPage.parent + queriesWithOutLast);
+		(lastPage.parent === 'home') ? navigating('home') : navigating(lastPage.parent + queriesWithOutLast);
 
 	}
 }

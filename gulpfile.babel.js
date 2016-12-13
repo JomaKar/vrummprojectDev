@@ -30,6 +30,11 @@ var config = {
 	  	watch:'./src/scripts/**/*.js',
 	  	output:'./build/web/js'
 	},
+	scriptsBL: {
+	  	main: ['./src/scriptsBL/befLoad.js'],
+	  	watch:'./src/scriptsBL/**/*.js',
+	  	output:'./build/web/js'
+	},
     images:{
 	  	watch:['./build/web/img/*.png', './build/web/img/*.jpg', './build/web/img/*.jpeg'],
 	  	output: './dist/img'
@@ -76,14 +81,24 @@ gulp.task('build:js', function(){
 	.pipe(gulp.dest(config.scripts.output));
 });
 
+gulp.task('buildBL:js', function(){
+	return browserify(config.scriptsBL.main).transform(babelify)
+	.bundle()
+	.pipe(source('sbl.js'))
+	.pipe(buffer())
+	.pipe(uglify())
+	.pipe(gulp.dest(config.scriptsBL.output));
+});
+
 gulp.task('watch', function() {
   gulp.watch(config.images.watch, ['images']);
   gulp.watch(config.styles.watch, ['build:css']);
   gulp.watch(config.html.watch, ['build']);
   gulp.watch(config.scripts.watch, ['build:js']);
+  gulp.watch(config.scriptsBL.watch, ['buildBL:js']);
 });
 
-gulp.task('build', ['build:css', 'build:js', 'images','inline']);
+gulp.task('build', ['build:css', 'build:js', 'buildBL:js', 'images','inline']);
 
 gulp.task('default', ['watch', 'build']);
 

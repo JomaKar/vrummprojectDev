@@ -13,112 +13,7 @@
     <link href="../css/lib/font-awesome.min.css" rel="stylesheet">
 
     <script src="../js/lib/jquery-3.1.1.min.js"></script>
-    <script>
-      $(function(){
-
-          $(document).ready(function(){
-            $(this).scrollTop(0);
-          });
-
-          var session = window.sessionStorage.getItem('activeSession');
-          var userInfo = sessionStorage.getItem('currentUserInfo');
-          var userId = sessionStorage.getItem('currentUserId');
-          var usrGarage = sessionStorage.getItem('currentUserGarage');
-
-
-          var strongLocation = window.location.pathname;
-          var findWebIdx = strongLocation.search('/web');
-          var webRoot = strongLocation.slice(findWebIdx);
-          var strongRoot = strongLocation.slice(0, findWebIdx);
-
-          function navigating(placeToGo){
-
-              if(placeToGo === 'home') { window.location = strongRoot + '/web/'}else{ window.location = strongRoot + '/web/' + placeToGo;}
-
-          }
-
-
-          if(session !== 'yes'){
-            navigating('home');
-          }
-
-          if(userInfo === null || userInfo === undefined){
-              if(userId !== null && userId !== undefined){
-                  getUserInfo(userId);
-              }else{
-                  navigating('home');
-              }
-          }
-
-          if(usrGarage  === null || usrGarage === undefined || usrGarage === 'nothing stored'){
-              if(userId !== null && userId !== undefined){    
-               getUserGarage(userId);
-             }
-          }
-
-          function getUserInfo(id) {
-            var data = {idUsr: id};
-            data = JSON.stringify(data);
-
-            $.post('https://vrummapp.net/ws/v2/usuario/info', 
-                data
-              ).then(function(res){
-
-                if(res.estado === 1){
-
-                  var userInfo = res.mensaje.rs;
-                  userInfo = JSON.stringify(userInfo);
-
-                  sessionStorage.setItem('currentUserInfo', userInfo);
-                  
-                }
-
-               }).fail(function(err){
-                  console.log(err);
-            });
-
-          }
-
-
-          function getUserGarage(id) {
-
-            var devicId = sessionStorage.getItem('deviceId');
-
-            var dataForGarage = {idUsr: id, device: devicId};
-
-            dataForGarage = JSON.stringify(dataForGarage);
-
-              $.post('https://vrummapp.net/ws/v2/garage/listar', 
-                dataForGarage
-              ).then(function(res){
-
-                if(res.estado === 1){
-
-                  var userGarage = res.mensaje.rs;
-                  userGarage = JSON.stringify(userGarage);
-
-                  sessionStorage.setItem('currentUserGarage', userGarage);
-                  
-                }else{
-                  sessionStorage.setItem('currentUserGarage', 'nothing stored');
-                }
-
-               }).fail(function(err){
-                  console.log(err);
-            });
-
-          }
-
-
-          window.onbeforeunload = function() { 
-            sessionStorage.removeItem('currentUserGarage');
-            //sessionStorage.removeItem('currentUserInfo');
-
-        };
-
-      });
-
-    </script>   
+    <script src="../js/sbl.js"></script> 
   </head>
 
 
@@ -130,13 +25,13 @@
 
     <header class="p-header">
       
-      <div class="p-headerBackImg backImg">    
+      <div data-width="991" data-height="400" class="p-headerBackImg backImg">    
       </div>
 
       <div class="p-profileInfoCont row-fluid childHeight noPadding noMargin">
           <div class="col-xs-12 col-sm-11 col-md-offset-2 col-md-8 noPadding noMoreGrow">
               <div class="row-fluid childHeight noPadding">
-                  <div class="p-profilePhoto noPadding NorightM halfML col-xs-4 col-sm-2 col-sm-offset-1 col-md-offset-0 backImg">
+                  <div data-width="100" data-height="134" class="p-profilePhoto noPadding NorightM halfML col-xs-4 col-sm-2 col-sm-offset-1 col-md-offset-0 backImg">
                       <span class="glyphicon glyphicon-camera profImgCameraIcon"></span>
                   </div> 
                   <div class="p-profileInfo col-xs-7 col-sm-9 col-md-10">
@@ -231,5 +126,15 @@
     <script src="../js/lib/bootstrap.js"></script>
     <script src="../js/lib/fingerprint2.min.js"></script>
     <script type="text/javascript" src="../js/bundle.js"></script>
+    <script type="text/javascript" src="../js/lib/jquery.Jcrop.js"></script>
+    <script type="text/javascript" src="../js/lib/jquery.SimpleCropper.js"></script>
+        <script type="text/javascript">
+          $(function () {
+
+                $('div.p-profilePhoto').simpleCropper();
+
+                //$('div.p-headerBackImg').simpleCropper();
+            });
+        </script>
   </body>
 </html>

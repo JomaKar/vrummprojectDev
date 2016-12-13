@@ -15,39 +15,7 @@
     <link rel="stylesheet" href="../css/main.css">
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <script src="../js/lib/jquery-3.1.1.min.js"></script>
-    <script type="text/javascript">
-      $(function(){
-
-          var versionsStored = sessionStorage.getItem('versionStored');
-
-
-
-          var strongLocation = window.location.pathname;
-          var findWebIdx = strongLocation.search('/web');
-          var webRoot = strongLocation.slice(findWebIdx);
-          var strongRoot = strongLocation.slice(0, findWebIdx);
-
-          function navigating(placeToGo){
-
-              if(placeToGo === 'home') { window.location = strongRoot + '/web/'}else{ window.location = strongRoot + '/web/' + placeToGo;}
-
-          }
-          
-
-          if(versionsStored === null || versionsStored === undefined || versionsStored === 'nothing store'){
-            navigating('catalogo/modelo-versiones');
-          
-          }
-
-          $(document).ready(function(){
-            $(this).scrollTop(0);
-          });
-
-         //window.onbeforeunload = function() { sessionStorage.removeItem('versionStored') };
-
-      });
-
-    </script>  
+    <script type="text/javascript" src="../js/sbl.js"></script>  
 
   </head>
   

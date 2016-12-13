@@ -278,11 +278,19 @@ $(function(){
 		});
 
 		function displayBrand() {
-			var brandURL = sessionStorage.getItem('currentBrandImg');
+			if(sessionStorage.getItem('currentBrandImg') !== null){
+
+				var brandURL = sessionStorage.getItem('currentBrandImg');
+				
+				headerBrandImg.css({
+					'background-image': `url(${brandURL})`
+				});
 			
-			headerBrandImg.css({
-				'background-image': brandURL
-			});
+			}else{
+
+				con('no image brand')
+
+			}
 
 		}
 

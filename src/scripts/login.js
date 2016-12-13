@@ -36,6 +36,7 @@ $(function(){
 	
 
 	linkReg.click(function(){
+		//to save time, maybe, from here ask them
 		sendPostToGet('catalogo/getmarcas', null, 'brands');
 		navigating('registro');
 	});
@@ -115,7 +116,9 @@ $(function(){
 	function sendLogin(val){
 		
 		var data = JSON.stringify(val);
-		sendPostToGo('usuario/login', data, 'perfil');
+		//sendPostToGo('usuario/login', data, 'perfil');
+		//later when trying with the alias in url
+		sendPostToGo('usuario/login', data, 'perfilLog');
 
 	}
 
@@ -168,6 +171,7 @@ $(function(){
 	function removePrev(){
 		var prevEl = registrarbtn.prev('p#nicknameText');
 		prevEl.remove();
+		passCont.disBlock();
 	}
 
 	function displayRecoverModal() {
