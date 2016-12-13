@@ -1,4 +1,5 @@
 import {queriesT, hashesExist} from './urlEncoder.js';
+import {navigating, myLocation} from './locating.js';
 
 export function navInfo() {
 	

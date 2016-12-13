@@ -7,12 +7,6 @@ $(document).ready(function(){
 });
 
 
-//////////
-//////////
-////////// before
-//////////
-//////////
-
 var session = window.localStorage.getItem('activeSession');
 var devicId = sessionStorage.getItem('deviceId');
 var userInfo = sessionStorage.getItem('currentUserInfo');
@@ -135,6 +129,7 @@ function start() {
 
           var versionsStored = sessionStorage.getItem('versionsArr'),
           versionsPhotosStored = sessionStorage.getItem('versionsPhotos'),
+          curUsrId = queriesT.al,
           modelId = localStorage.getItem('modelId'),
           versionsArr = [];
 
