@@ -34,6 +34,15 @@ body
 .defaultPointer
 	cursor default
 
+button.shareVrumm
+	padding 0
+	color whitesmoke
+	background-color transparent
+	border hidden
+	
+	&:focus
+		border hidden
+
 .myNavBar
 	position fixed !important
 	top 0
@@ -60,9 +69,8 @@ body
 			#navbar
 				.navMenuList
 					li
-						a
-							&.profileNavLink
-								display none
+						&.profileNavLinkCont
+							display none
 	
 	div
 		.navbarBackBtn

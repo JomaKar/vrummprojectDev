@@ -156,6 +156,8 @@ $(function(){
 
 			}
 
+			//console.log('checking brands', data);
+
 			sendPostToGo('catalogo/getmodelos', data, 'mdls');
 		}
 

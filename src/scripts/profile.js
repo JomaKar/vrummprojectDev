@@ -22,6 +22,8 @@ $(function(){
 		carsNumber = $('span.carsNumb'),
 		dateSpace = $('span.memDateNumb'),
 		photoDiv = $('div.p-profilePhoto'),
+		miniCameraIcon = $('span.profImgCameraIcon'),
+		headerCameraIcon = $('span.cameraIconHead'),
 		domDataElements = [aliasSpan, dateSpace, nameSpace, carsNumber, photoDiv],
 		userObjKeys = ['alias', 'created_at', 'full_name', 'total_garage', 'foto_perfil'];
 		var usrIDG;
@@ -95,7 +97,17 @@ $(function(){
 			innerDiv = $(this).find('div'),
 			notSelected = bar.find('div.notSelectedCat');
 
-			toggleCarSelection(catContainer, bar, innerDiv, notSelected);
+			if(localStorage.getItem('activeSession') === 'yes'){
+				var logUsr = localStorage.getItem('aUsr');
+				var visibleUserId = sessionStorage.getItem('currentUserId');
+
+				if(logUsr !== null && logUsr !== undefined){
+					logUsr = parseInt(logUsr);
+					var visibleUser = (visibleUserId !== undefined && visibleUserId !== null) ? parseInt(visibleUserId) : parseInt(user.id);
+
+					(logUsr === visibleUser) ? toggleCarSelection(catContainer, bar, innerDiv, notSelected) : null;
+				}
+			}
 
 		});
 
@@ -247,7 +259,6 @@ $(function(){
 		}
 
 		function checkUser(user) {
-			var usrAlias = sessionStorage.getItem('currentUserAlias');
 
 			if(user !== null && user !== undefined && user !== 'nothing stored'){
 				clearInterval(askInterval);
@@ -260,7 +271,7 @@ $(function(){
 					if(user.length > 0){
 						if(hashesExist){
 							
-							(user[0].alias == queriesT.al) ? displayUserInfo(user[0]) :  getUserInfoAl(queriesT.al);
+							(user[0].alias == queriesT.al) ? (displayUserInfo(user[0]), usrIDG = parseInt(user[0].id)) :  getUserInfoAl(queriesT.al);
 
 						
 						}else{
@@ -273,13 +284,13 @@ $(function(){
 				}else if((typeof user === "object") && (user !== null)){
 					if(hashesExist){
 						
-						(user.alias == queriesT.al) ? displayUserInfo(user) :  getUserInfoAl(queriesT.al);
+						(user.alias == queriesT.al) ? (displayUserInfo(user), usrIDG = parseInt(user.id)) :  getUserInfoAl(queriesT.al);
 
 					
 					}else{
 
 						displayUserInfo(user);
-						usrIDG = parseInt(user[0].id);
+						usrIDG = parseInt(user.id);
 					}
 				}
 				else{
@@ -341,6 +352,7 @@ $(function(){
                    
                 }else if(res.estado === 2){
                 	con('sin autos en garage');
+                	changeIfLog();
 
                 	loadingText.addClass('hiddenItm');
                 	initialText.removeClass('hiddenItm');
@@ -434,7 +446,7 @@ $(function(){
 
 
 			if(!garageAsked){
-				checkNavBar();
+				changeIfLog();
 
 				usrGarageArr.forEach(function(itm, idx){
 					var notSelectedCategories = '';
@@ -546,33 +558,63 @@ $(function(){
 
 		$(document).on('click', 'div.ok', function(){
 
-			setTimeout(function(){
+			if(localStorage.getItem('activeSession') === 'yes'){
+				var logUsr = localStorage.getItem('aUsr');
+				var visibleUserId = sessionStorage.getItem('currentUserId');
 
-				if(photoDiv.find('img').length){
-					photoDiv.css({'background-image': 'none'});
-					var dataImg = photoDiv.find('img').attr('src').replace(/^data:image\/(png|jpg);base64,/, "");
-					photoDiv.append('<span class="glyphicon glyphicon-camera profImgCameraIcon"></span>');
-					chageProfilePhoto(dataImg);
+				if(logUsr !== null && logUsr !== undefined){
+					logUsr = parseInt(logUsr);
+					var visibleUser = (visibleUserId !== undefined && visibleUserId !== null) ? parseInt(visibleUserId) : parseInt(user.id);
+
+					if(logUsr === visibleUser){
+
+						setTimeout(function(){
+
+							if(photoDiv.find('img').length){
+
+								photoDiv.css({'background-image':  'none'});
+								var dataImg = photoDiv.find('img').attr('src').replace(/^data:image\/(png|jpg);base64,/, "");
+								sessionStorage.setItem('temptyImgForLocal', dataImg.toString());
+								photoDiv.append('<span class="glyphicon glyphicon-camera profImgCameraIcon"></span>');
+								chageProfilePhoto(dataImg);
+							}
+
+							if(headerBackImg.find('img').length){
+								var dataImg = headerBackImg.find('img').attr('src').replace(/^data:image\/(png|jpg);base64,/, "");
+								//con(dataImg);
+							}
+
+						}, 200);
+
+					}else{
+						alert('tienes estar logueado y usar tu perfil para cambiar la foto');
+
+						setTimeout(function(){
+
+							if(photoDiv.find('img').length){
+								photoDiv.find('img').remove();
+							}
+
+						}, 200);
+					}
 				}
+			}
 
-				if(headerBackImg.find('img').length){
-					var dataImg = headerBackImg.find('img').attr('src').replace(/^data:image\/(png|jpg);base64,/, "");
-					con(dataImg);
-				}
-
-			}, 200);
 
 		});
 
 		function chageProfilePhoto(photo){
 			var data = {device: sessionStorage.getItem('deviceId'), user: usrIDG, foto_perfil: photo, foto: photo};
-			console.log('processing to send', data);
+			//console.log('processing to send', data);
 			data = JSON.stringify(data);
 
 			sendPostToGet('usuario/actualizar', data, 'usrAct');
 		}
 
-		function checkNavBar() {
+		var membershipDateCounter = $('div.membershipDateCounter');
+		var dateProfileRgtBtnCont = $('div.dateProfileRgtBtnCont');
+
+		function changeIfLog() {
 
 			var photo = localStorage.getItem('aUPP');
 			var logUsr = localStorage.getItem('aUsr');
@@ -583,15 +625,9 @@ $(function(){
 
 			var isInfo = (userInfoObj !== null && userInfoObj !== undefined && userInfoObj !== 'nothing stored') ? true : false;
 
-
-			//console.log('from navbar function', photo);
-
-
 			var user = {};
 
-			var theNavbar = $('nav.myNavBar');
-
-			if($('nav.myNavBar').length && isInfo){
+			if(isInfo){
 
 				if($.isArray(userInfoObj)){
 					user = userInfoObj[0];
@@ -599,23 +635,67 @@ $(function(){
 					user = userInfoObj;
 				}
 
-				if(logUsr !== undefined && logUsr !== null){
+			}
 
-					logUsr = parseInt(logUsr);
-					var visibleUser = (visibleUserId !== undefined && visibleUserId !== null) ? parseInt(visibleUserId) : parseInt(user.id);
 
-					console.log('aquí en navbar', logUsr, visibleUser);
+			//console.log('from navbar function', photo);
 
-					if(logUsr === visibleUser){
-						if(myLocation === "/web/perfil/" || myLocation === "/web/perfil/index" || myLocation === "/web/perfil/index.html"){
+			//logueado
+			if(logUsr !== undefined && logUsr !== null){
 
-							theNavbar.addClass('noPhoto')
-						}
-					}else{ theNavbar.removeClass('noPhoto');}
+				logUsr = parseInt(logUsr);
+				var visibleUser = (visibleUserId !== undefined && visibleUserId !== null) ? parseInt(visibleUserId) : parseInt(user.id);
+
+				//viendo mi perfil
+				if(logUsr === visibleUser){
+					//aparecer toggleableArea the elementos de garage
+
+					miniCameraIcon.removeClass('hiddenItm');
+					headerCameraIcon.removeClass('hiddenItm');
+
+
+					(dateProfileRgtBtnCont.hasClass('hiddenItm')) ? null : dateProfileRgtBtnCont.addClass('hiddenItm');
+					(membershipDateCounter.hasClass('hiddenItm')) ? membershipDateCounter.removeClass('hiddenItm') : null;
+					(garageGrid.hasClass('noToggleArea')) ? garageGrid.removeClass('noToggleArea') : null;
+
+					if($('nav.myNavBar').length){
+						var theNavbar = $('nav.myNavBar');
+						(myLocation === "/web/perfil/" || myLocation === "/web/perfil/index" || myLocation === "/web/perfil/index.html") ? theNavbar.addClass('noPhoto') : null;
+					}
+
+				//viendo el perfil de alguien más
+				}else{
+					//desaparecer toggeable area
+					//aparecer datos de ingreso
+
+					miniCameraIcon.addClass('hiddenItm');
+					headerCameraIcon.addClass('hiddenItm');
+
+
+					(dateProfileRgtBtnCont.hasClass('hiddenItm')) ? null : dateProfileRgtBtnCont.addClass('hiddenItm');
+					(membershipDateCounter.hasClass('hiddenItm')) ? membershipDateCounter.removeClass('hiddenItm') : null;
+					(garageGrid.hasClass('noToggleArea')) ? null : garageGrid.addClass('noToggleArea');
+
+					if($('nav.myNavBar').length && isInfo){
+						var theNavbar = $('nav.myNavBar'); 
+						theNavbar.removeClass('noPhoto');
+					}
 				}
 
-				
+			//no está logueado
+			}else if(localStorage.getItem('activeSession') !== 'yes'){
+				//desaparecer cámaras, datos de ingreso, toggeable area
+				//aparecer botón
+				miniCameraIcon.addClass('hiddenItm');
+				headerCameraIcon.addClass('hiddenItm');
+
+				(membershipDateCounter.hasClass('hiddenItm')) ? null : membershipDateCounter.addClass('hiddenItm');
+				(dateProfileRgtBtnCont.hasClass('hiddenItm')) ? dateProfileRgtBtnCont.removeClass('hiddenItm') : null;
+				(garageGrid.hasClass('noToggleArea')) ? null : garageGrid.addClass('noToggleArea');
 			}
+
+
+			
 		}
 
 

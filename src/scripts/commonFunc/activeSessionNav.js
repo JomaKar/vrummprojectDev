@@ -105,13 +105,27 @@ export function navInfo() {
 			$('div.minProfileImg').css({
 				'background-image': `url(${image})`
 			});
+
 		}
 
 		if(logUsr !== undefined && logUsr !== null){
+
+			var links = $('div.loggedNavbar').find('a');
+
+			links.each(function(indx, el){
+
+				if(!$(el).hasClass('noChangeHref')){
+					var linkHref = $(el).attr('href');
+					linkHref += `?al=${alias}`;
+					$(el).attr('href', linkHref); 
+				}
+				
+			});
+
 			logUsr = parseInt(logUsr);
 			var visibleUser = (visibleUserId !== undefined && visibleUserId !== null) ? parseInt(visibleUserId) : parseInt(userInfoObj.id);
 
-			console.log('aquí en navbar', logUsr, visibleUser);
+			//console.log('aquí en navbar', logUsr, visibleUser);
 
 			if(logUsr === visibleUser){
 				if(myLocation === "/web/perfil/" || myLocation === "/web/perfil/index" || myLocation === "/web/perfil/index.html"){

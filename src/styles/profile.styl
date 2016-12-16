@@ -72,9 +72,110 @@
 				flex-wrap wrap-reverse
 				
 			.membershipDateCounter
-				text-align right	
+				text-align right
 
 
+.carsCountTxt, .sharedCountTxt, .membershipCountTxt
+	color $regTextColor
+	font-size 9px
+
+.membershipCountTxt
+	position relative
+	top -7px
+
+.memDateNumb
+	font-size 11px
+
+.carsNumb, .shareNumb
+	color white
+	font-size 14px
+	
+
+.dateProfileRgtBtnCont
+	display none
+	
+	.rgtInvTxt
+		font-size 11px
+		margin-bottom 4px
+		letter-spacing 0.05px
+		display flex
+		justify-content center
+		word-spacing 2px
+		
+		.hidD666
+			display none
+			margin 0 3px
+
+			&:first-of-type
+				margin-left 0px
+		
+		.hidU666
+			display block
+			margin-right 3px
+			
+		.whiteSpace
+			margin 0 1px
+			
+	.rgtInvBtn
+		display block
+		width 100%
+		background-color $grayBtn
+		border-color $grayBtn
+		&:hover, &:active, &:focus
+			background-color $grayBtn
+			border-color $grayBtn
+
+@media(min-width 440px)
+	.dateProfileRgtBtnCont
+		display block
+		
+@media(min-width 666px)
+	.dateProfileRgtBtnCont
+		.rgtInvTxt
+			font-size 12px
+			word-spacing 0px
+			
+			.hidD666
+				display block
+			
+			.hidU666, .whiteSpace
+				display none
+				
+@media(min-width 730px)
+	.dateProfileRgtBtnCont
+		.rgtInvTxt
+			font-size 13px
+			
+@media(min-width 800px)
+	.dateProfileRgtBtnCont
+		.rgtInvTxt
+			font-size 15px
+			
+@media(min-width 930px)
+	.dateProfileRgtBtnCont
+		.rgtInvTxt
+			font-size 17px
+			
+		.rgtInvBtn
+			font-size 16px
+			
+@media(min-width 992px)
+	.dateProfileRgtBtnCont
+		.rgtInvTxt
+			font-size 12px
+			
+		.rgtInvBtn
+			font-size 14px
+
+@media(min-width 1150px)
+	.dateProfileRgtBtnCont
+		.rgtInvTxt
+			font-size 14px
+
+@media(min-width 1200px)
+	.dateProfileRgtBtnCont
+		.rgtInvTxt
+			font-size 16px
 
 .garageFilterBar
 	height 40px
@@ -143,24 +244,11 @@
 					.selectCaret
 						right 10px
 							
-
-.carsCountTxt, .sharedCountTxt, .membershipCountTxt
-	color $regTextColor
-	font-size 9px
-
-.membershipCountTxt
-	position relative
-	top -7px
-
-.memDateNumb
-	font-size 11px
-
-.carsNumb, .shareNumb
-	color white
-	font-size 14px
 	
 .garageGridCont
-	padding-bottom 1px !important	
+	padding-bottom 1px !important
+	
+	
 
 .addGarageBtnCon
 	padding 2% !important
@@ -188,6 +276,13 @@
 			font-size 18px
 			color rgb(154, 154, 154)
 			font-weight 600
+
+.garageGrid
+	&.noToggleArea
+		.garageImgCont
+			.sideInfoBar		
+				.dots
+					display none
 
 .garageImgCont
 	.sideInfoBar

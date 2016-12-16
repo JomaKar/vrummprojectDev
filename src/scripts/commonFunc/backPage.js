@@ -24,8 +24,6 @@ notTouchQueries.forEach(function(itm, idex){
 
 });
 
-//con(lastQuery);
-
 
 
 var queriesWithOutLast = (queriesWOutLIdx !== -1 && !stopCutting) ? queries.slice(0, queriesWOutLIdx) : queries;
@@ -97,7 +95,8 @@ export function backing(currPage) {
 	if($.isArray(lastPage.parent)){
 		
 		//check the page from which the user come from
-		askLastPage(lastPage);
+		//askLastPage(lastPage);
+		backIt(lastPage.parent);
 
 	}else{
 
@@ -118,11 +117,11 @@ function askLastPage(oldPage) {
 		var lastPageOrigin = lastPageUrl.slice(0, lastPageHostIdx);
 		var wasInApp = cameFromInside(lastPageOrigin);
 
-
+		alert(wasInApp);
 		//if it came from inside the app we return him to the last page using window history
 		if(wasInApp){
 			//if it was in the app already
-			window.location = window.history.back();
+			window.history.back();
 
 		//else, we give priority returning the user to 
 		}else{
@@ -152,5 +151,5 @@ function backIt(pos) {
 
 function cameFromInside(lastOrigin){
 	var actualOrigin = window.location.origin;
-	return (lastOrigin === actualOrigin) ?  true :  false;
+	return (lastOrigin == actualOrigin) ?  true :  false;
 }

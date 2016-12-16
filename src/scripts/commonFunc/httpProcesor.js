@@ -6,6 +6,7 @@ import {queriesT, hashesExist} from './urlEncoder.js';
 //urlEnd inticate where to go
 
 export function sendPostToGo(urlEnd, data, whereTo){
+	//console.log('from sendPostToGo', data);
 
 	var usr = localStorage.getItem('aUsrA');
 
@@ -178,11 +179,33 @@ export function sendPostToGet(urlEnd, data, flag){
 				}
 
 			}else if(flag === 'usrAct'){
-				console.log('trying to change profila photo', res);
+				//console.log('trying to change profila photo', res);
 
 				if(res.estado === 1){
 
-					con('success', res.mensaje);
+					//console.log('success', res.mensaje);
+
+					if(sessionStorage.getItem('temptyImgForLocal') !== null && sessionStorage.getItem('temptyImgForLocal') !== undefined){
+						var photoOficial = sessionStorage.getItem('temptyImgForLocal');
+						localStorage.setItem('aUPP', photoOficial.toString());
+
+						if(sessionStorage.getItem('currentUserInfo') !== null && sessionStorage.getItem('currentUserInfo') !== undefined){
+							var usrString = sessionStorage.getItem('currentUserInfo');
+							var usrNow = JSON.parse(usrString);
+
+							if($.isArray(usrNow)){
+								(usrNow.length > 0) ? usrNow[0].foto_perfil = photoOficial : null;
+							}else if((typeof usrNow === "object") && (usrNow !== null)){
+								usrNow.foto_perfil = photoOficial;
+							}
+
+							usrNow = JSON.stringify(usrNow);
+
+							sessionStorage.setItem('currentUserInfo', usrNow);
+						}
+
+						
+					}
 					
 				}
 			}

@@ -62,6 +62,7 @@ $(function(){
 
 
 	$(document).on('click', 'span.navbarBackBtn', function(){
+		con('here');
 		backing(myLocation);
 	});
 

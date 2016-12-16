@@ -1,4 +1,4 @@
-<div class="col-xs-12 navbarIn noMoreGrow col-sm-offset-1 col-sm-10 col-md-offset-2 col-md-8 NoleftP">
+<div class="col-xs-12 navbarIn noMoreGrow col-sm-offset-1 col-sm-10 col-md-offset-2 col-md-8 NoleftP loggedNavbar">
   <span class="glyphicon glyphicon-menu-left navbarBackBtn"></span>
   <div class="navbar-header">
     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -12,7 +12,7 @@
 
   <div id="navbar" class="collapse navbar-collapse">
     <ul class="nav navbar-nav navMenuList">
-        <li>
+        <li class="profileNavLinkCont">
             <!-- just development -->
             <a href="/vrumm/build/web/perfil/" class="noBrd grayColor profileNavLink">
                 <span>@</span>
@@ -26,13 +26,13 @@
                 <div class="backImg minProfileImg"></div>
             </a> -->
         </li>
-        <li class="active"><a href="#appStoreFooter">Descargar app </a></li>
-        <li class="hidden-sm hidden-md hidden-lg hidden-xl">
-             <!-- just development -->
+        <li class="active"><a class="noChangeHref" href="#appStoreFooter">Descargar app </a></li>
+        <!-- <li class="hidden-sm hidden-md hidden-lg hidden-xl">
+             just development
             <a href="/vrumm/build/web/perfil/" class="noBrd">Mi garage</a>
-            <!-- just production -->
-            <!-- <a href="/web/perfil/">Mi garage</a> -->
-        </li>
+            just production
+            <a href="/web/perfil/">Mi garage</a>
+        </li> -->
         <li class="hidden-sm hidden-md hidden-lg hidden-xl">
             <!-- just development -->
             <a href="/vrumm/build/web/catalogo/">Catálogo</a>
@@ -40,7 +40,7 @@
             <!-- <a href="/web/catalogo/">Catálogo</a> -->
         </li>
         <li class="hidden-sm hidden-md hidden-lg hidden-xl">
-            <a class="shareVrumm">Comparte Vrumm</a>
+            <button class="shareVrumm">Comparte Vrumm</button>
         </li>
         <li class="btmBrd hidden-sm hidden-md hidden-lg hidden-xl">
             <!-- just development -->
@@ -50,7 +50,7 @@
         </li>
         <li class="hidden-sm hidden-md hidden-lg hidden-xl">
             <!-- just development -->
-            <a href="/vrumm/build/web/" class="aquaColor closeSession">Cerrar Sesión</a>
+            <a href="/vrumm/build/web/" class="aquaColor closeSession noChangeHref">Cerrar Sesión</a>
             <!-- just production -->
             <!-- <a href="/web/" class="closeSession">Cerrar Sesión</a> -->
         </li>
@@ -60,12 +60,12 @@
               <span class="onExp glyphicon glyphicon-remove"></span>
             </button>
             <ul class="dropdown-menu-right navSMenuList" aria-labelledby="secondMenu">
-                <li>
-                     <!-- just development -->
+                <!-- <li>
+                     just development
                     <a href="/vrumm/build/web/perfil/" class="noBrd">Mi garage</a>
-                    <!-- just production -->
-                    <!-- <a href="/web/perfil/">Mi garage</a> -->
-                </li>
+                    just production
+                    <a href="/web/perfil/">Mi garage</a>
+                </li> -->
                 <li>
                     <!-- just development -->
                     <a href="/vrumm/build/web/catalogo/">Catálogo</a>
@@ -73,7 +73,7 @@
                     <!-- <a href="/web/catalogo/">Catálogo</a> -->
                 </li>
                 <li>
-                    <a class="shareVrumm">Comparte Vrumm</a>
+                    <button class="shareVrumm">Comparte Vrumm</button>
                 </li>
                 <li class="btmBrd">
                     <!-- just development -->
@@ -83,7 +83,7 @@
                 </li>
                 <li>
                     <!-- just development -->
-                    <a href="/vrumm/build/web/" class="aquaColor closeSession">Cerrar Sesión</a>
+                    <a href="/vrumm/build/web/" class="aquaColor closeSession noChangeHref">Cerrar Sesión</a>
                     <!-- just production -->
                     <!-- <a href="/web/" class="closeSession">Cerrar Sesión</a> -->
                 </li>

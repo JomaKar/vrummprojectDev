@@ -57,10 +57,17 @@
                       <span class="shareNumb">13</span>
                       <span class="sharedCountTxt">VECES <br> COMPARTIDO</span>
                   </div>
-                  <div class="col-xs-2 noPadding col-xs-offset-2 col-sm-offset-2 col-md-offset-1 col-lg-offset-4 membershipDateCounter">
+                  <div class="col-xs-2 noPadding col-xs-offset-2 col-sm-offset-2 col-md-offset-1 col-lg-offset-4 membershipDateCounter hiddenItm">
                       <span class="membershipCountTxt">EN VRUMM DESDE</span>
                       <br >
                       <span class="memDateNumb">12/07/2016</span>
+                  </div>
+                  <div class="dateProfileRgtBtnCont col-xs-3 noPadding col-sm-offset-1 col-lg-offset-3 col-lg-3 col-md-2 col-xs-offset-2">
+                      <p class="rgtInvTxt">¿<span class="hidD666">Aún no </span> <span class="hidU666">No </span> tienes <span class="hidD666"> una </span> <span class="whiteSpace"></span> cuenta?</p>
+                      <!-- just development -->
+                      <a href="/vrumm/build/web/registro/" class="btn btn-primary rgtInvBtn">Regístrate</a>
+                      <!-- just production -->
+                      <!-- <a href="/web/registro/" class="btn btn-primary rgtInvBtn">Regístrate</a> -->
                   </div>
               </div>
           </div>
@@ -129,9 +136,20 @@
     <script type="text/javascript" src="../js/lib/jquery.Jcrop.js"></script>
     <script type="text/javascript" src="../js/lib/jquery.SimpleCropper.js"></script>
         <script type="text/javascript">
-          $(function () {
+            $(function () {
 
-                $('div.p-profilePhoto').simpleCropper();
+                if(localStorage.getItem('activeSession') === 'yes'){
+                  var logUsr = localStorage.getItem('aUsr');
+
+                  if(logUsr !== null && logUsr !== undefined){
+                    logUsr = parseInt(logUsr);
+                    var visibleUser = (sessionStorage.getItem('currentUserId') !== undefined && sessionStorage.getItem('currentUserId') !== null) ? parseInt(sessionStorage.getItem('currentUserId')) : null;
+
+                    (logUsr === visibleUser) ? $('div.p-profilePhoto').simpleCropper() : null;
+                  }
+                }
+
+                //$('div.p-profilePhoto').simpleCropper();
 
                 //$('div.p-headerBackImg').simpleCropper();
             });

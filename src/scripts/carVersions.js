@@ -12,6 +12,7 @@ $(function(){
 	var theCarousel = $('div.versionsCarousel');
 	var infoContainer = $('div.versionDetailCont');
 	var idSpan = $('span.currentVersionId');
+	var thumbsBar = $('div.thumbImgsBar');
 
 
 	if(myLocation === "/web/catalogo/modelo-versiones.html" || myLocation === "/web/catalogo/modelo-versiones"){
@@ -107,7 +108,7 @@ $(function(){
 		      dataForPhotos).then(function(res){
 		        if(res.estado === 1){
 		          var versionsPicts = res.mensaje.rs;
-		          con(versionsPicts);
+		          //con(versionsPicts);
 		          displayCarousel(versionsPicts);
 		          versionsPicts = JSON.stringify(versionsPicts);
 		          sessionStorage.setItem('versionsPhotos', versionsPicts);
@@ -128,6 +129,8 @@ $(function(){
 				imgs.push({pict: arrItem.pic_url, id: idx});
 
 			});
+
+			changeCarBackPos(imgs[0].pict, null);
 
 			$(theCarousel).css({
 				'background-image': `url(${imgs[0].pict})`
@@ -347,6 +350,8 @@ $(function(){
 					}
 				}
 
+				currentVersionMainImg = nextCarouselImg;
+				changeCarBackPos(nextCarouselImg, null);
 				theCarousel.css({'background-image': `url(${nextCarouselImg})`});
 				idSpan.text(nextCarouselSpanId);
 
@@ -364,6 +369,9 @@ $(function(){
 				activateThumbnails(activeImage);
 
 			}else{
+
+				currentVersionMainImg = img;
+				changeCarBackPos(img, null);
 				theCarousel.css({'background-image': `url(${img})`});
 				idSpan.text(num);
 
@@ -375,6 +383,62 @@ $(function(){
 
 				//activatingInfoTag(el);
 			}
+
+		}
+
+		var imgForChange = '';
+
+		function changeCarBackPos(url, changeSize){
+
+			var imgNew = new Image();
+			var widthImg = theCarousel.width();
+
+			var imgProportionalHeight = 0.6309;
+			var backgroundAreaHeight = widthImg * imgProportionalHeight;
+
+			imgNew.src = url;
+
+			$(imgNew).one('load', function(){
+				var naturalW = imgNew.width;
+		        var naturalH = imgNew.height;
+
+		        var widthGrow = widthImg/naturalW;
+
+		        console.log('widthGrow', widthGrow);
+
+
+
+
+		        var photoBackHeight = (naturalH < naturalW) ? widthGrow * naturalH : backgroundAreaHeight;
+
+		        console.log('backgroundAreaHeight', backgroundAreaHeight);
+		        console.log('photoBackHeight', photoBackHeight);
+		        
+
+        		var extraArea = backgroundAreaHeight - photoBackHeight;
+        		var marginTArea = extraArea/2;
+
+        		//console.log(naturalW, naturalH);
+
+	        	if(naturalH >= naturalW){
+	        		$(theCarousel).css({'background-position': 'top center'});
+	        	
+	        	}else{
+
+	        		(extraArea > 0) ? $(theCarousel).css({'background-position': `0 ${marginTArea}px`}) : $(theCarousel).css({'background-position': 'top'});
+	        	}
+		        
+		        if(changeSize !== null){
+		        		
+					(naturalH >= naturalW) ? theCarousel.css({'background-size': `auto ${changeSize}px`}) : theCarousel.css({'background-size': '100%'});
+
+				}else{
+
+					(naturalH >= naturalW) ? theCarousel.css({'background-size': `auto ${backgroundAreaHeight}px`}) : theCarousel.css({'background-size': '100%'});
+				}
+
+			});
+
 
 		}
 
@@ -421,8 +485,9 @@ $(function(){
 			if(thumbImgsCont.find('div.carThumbImgUnit').length >= 7){
 				
 				thumbImgsCont.css({
-					bottom: '2%',
-					'justify-content': 'initial'
+					bottom: '11%',
+					'justify-content': 'initial',
+					height: '65%'
 				});
 
 				if(windWidth <= 310){
@@ -442,14 +507,23 @@ $(function(){
 
 
 			var imgProportionalHeight = 0.6309;
+			var heightBackground = widthImg * imgProportionalHeight;
+
+			var thumbsBarHeight = exceededProportionalHeight * widthImg;
+
+			thumbsBar.height(thumbsBarHeight);
 
 
 			var totalProportionalHeight = imgProportionalHeight + exceededProportionalHeight;
 
-			var height = widthImg * totalProportionalHeight;
+			var heightCarousel = widthImg * totalProportionalHeight;
 
+			if(currentVersionMainImg.length > 0){
 
-			theCarousel.height(height);
+				changeCarBackPos(currentVersionMainImg, heightBackground);
+			}
+			
+			theCarousel.height(heightCarousel);
 		}
 
      

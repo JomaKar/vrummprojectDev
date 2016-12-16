@@ -34,8 +34,13 @@ function start() {
         if(userInfo === null || userInfo === undefined){
 
             if(usrAlias !== null && usrAlias !== undefined){
-
-                (usrAlias == queriesT.al) ? getUserInfo(usrAlias, 'al') :  getUserInfo(queriesT.al, 'al'); 
+              if(hashesExist){
+                if(queriesT.al !== undefined && queriesT.al !== null){
+                  (usrAlias == queriesT.al) ? getUserInfo(usrAlias, 'al') :  getUserInfo(queriesT.al, 'al'); 
+                }
+              }else{
+                  getUserInfo(usrAlias, 'al')
+              }
 
             }else if(hashesExist){
 
@@ -50,7 +55,13 @@ function start() {
         }else{
 
             if(usrAlias !== null && usrAlias !== undefined){
-                (usrAlias == queriesT.al) ? null :  getUserInfo(queriesT.al, 'al');
+              
+              if(hashesExist){
+                if(queriesT.al !== undefined && queriesT.al !== null){
+                  (usrAlias == queriesT.al) ? null :  getUserInfo(queriesT.al, 'al');
+                }
+              }
+
             }
         
         }
@@ -61,7 +72,13 @@ function start() {
 
         if(usrGarage  !== null && usrGarage !== undefined && usrGarage !== 'nothing stored'){
             if(usrAlias !== null && usrAlias !== undefined){
-                (usrAlias == queriesT.al) ? null :  getUserInfo(queriesT.al, 'al');
+              
+              if(hashesExist){
+                if(queriesT.al !== undefined && queriesT.al !== null){
+                  (usrAlias == queriesT.al) ? null :  getUserInfo(queriesT.al, 'al');
+                }
+              }
+
             }
 
         }
@@ -124,7 +141,7 @@ function start() {
     }
 
     if(myLocation === "/web/catalogo/modelo-versiones.html" || myLocation === "/web/catalogo/modelo-versiones" || myLocation === "/web/catalogo/specific-version.html" || myLocation === "/web/catalogo/specific-version"){
-          console.log(myLocation, 'onbeforeunload');
+          //console.log(myLocation, 'onbeforeunload');
           var onVersions = (myLocation !== "/web/catalogo/specific-version.html" && myLocation !== "/web/catalogo/specific-version") ? true : false;
 
           var versionsStored = sessionStorage.getItem('versionsArr'),
@@ -267,14 +284,14 @@ function getVersions(theModelId) {
 
     if(device !== undefined && device !== null){
           
-          console.log('sin esperar las versiones');
+          //console.log('sin esperar las versiones');
           data = {'device': device, modelId: theModelId};
           (myLocation === "/web/catalogo/modelo-versiones.html" || myLocation === "/web/catalogo/modelo-versiones") ? sendPostToGet('catalogo/getversiones', JSON.stringify(data), 'vrsInfo') : sendPostToGet('catalogo/getversiones', JSON.stringify(data), 'spVrsInfo');
 
     }else{
       setTimeout(function(){
         data = {device: sessionStorage.getItem('deviceId'), modelId: theModelId};
-        console.log(data);
+        //console.log(data);
 
         (myLocation === "/web/catalogo/modelo-versiones.html" || myLocation === "/web/catalogo/modelo-versiones") ? sendPostToGet('catalogo/getversiones', JSON.stringify(data), 'vrsInfo') : sendPostToGet('catalogo/getversiones', JSON.stringify(data), 'spVrsInfo');
 
@@ -292,7 +309,7 @@ function getVersionsPhotos(theModelId){
     var data = {};
 
     if(device !== undefined && device !== null){
-      console.log('sin esperar fotos de las versiones', theModelId);
+      //console.log('sin esperar fotos de las versiones', theModelId);
       data = {'device': device, modelId: theModelId};
       sendPostToGet('catalogo/getgaleria', JSON.stringify(data), 'vrsGal');
     }else{
