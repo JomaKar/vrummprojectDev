@@ -251,7 +251,7 @@ $(function(){
 			 localStorage.setItem('modelName', modelName.toString());
 			 localStorage.setItem('modelPrice', modelPrice.toString());
 			 var device = sessionStorage.getItem('deviceId');
-			 var userId = sessionStorage.getItem('currentUserId');
+			 var userId = localStorage.getItem('aUsr');
 			 var data = {};
 
               if(device !== undefined && device !== null && modelId){

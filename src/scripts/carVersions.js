@@ -21,7 +21,7 @@ $(function(){
 
 		$(document).ready(function(){
 
-			if(sessionStorage.getItem('currentBrandImg') !== null && sessionStorage.getItem('currentBrandImg') !== undefined && sessionStorage.getItem('currentBrandImg') !== 'nothing stored'){
+			if(sessionStorage.getItem('currentBrandImg') !== null && versionsArr.length > 0 && sessionStorage.getItem('currentBrandImg') !== undefined && sessionStorage.getItem('currentBrandImg') !== 'nothing stored'){
 
 				displayBrand();
 
@@ -70,7 +70,7 @@ $(function(){
 			versionsArr = JSON.parse(argument);
 			currentVersion = versionsArr[0];
 
-			if(sessionStorage.getItem('currentBrandImg') == null || sessionStorage.getItem('currentBrandImg') == undefined || sessionStorage.getItem('currentBrandImg') == 'nothing stored'){
+			if(sessionStorage.getItem('currentBrandImg') !== null && sessionStorage.getItem('currentBrandImg') !== undefined && sessionStorage.getItem('currentBrandImg') !== 'nothing stored'){
 
 				displayBrand();
 
@@ -163,7 +163,7 @@ $(function(){
 
 		    if(device !== undefined && device !== null && modelId){
 
-		        var data = {'device': device, modelId: modelId};
+		        var data = (localStorage.getItem('aUsr') !== null && localStorage.getItem('aUsr') !== undefined) ? {'device': device, modelId: modelId, user: localStorage.getItem('aUsr')} : {'device': device, modelId: modelId};
 		          
 		      data = JSON.stringify(data);
 
@@ -404,15 +404,15 @@ $(function(){
 
 		        var widthGrow = widthImg/naturalW;
 
-		        console.log('widthGrow', widthGrow);
+		        //console.log('widthGrow', widthGrow);
 
 
 
 
 		        var photoBackHeight = (naturalH < naturalW) ? widthGrow * naturalH : backgroundAreaHeight;
 
-		        console.log('backgroundAreaHeight', backgroundAreaHeight);
-		        console.log('photoBackHeight', photoBackHeight);
+		        /*console.log('backgroundAreaHeight', backgroundAreaHeight);
+		        console.log('photoBackHeight', photoBackHeight);*/
 		        
 
         		var extraArea = backgroundAreaHeight - photoBackHeight;
@@ -538,16 +538,17 @@ $(function(){
 			var modelName = (localStorage.getItem('modelName') !== null) ? localStorage.getItem('modelName') : versionsArr[0].model_name;
 			
 			sessionStorage.setItem('currentBrandImg', brandURL);
-			localStorage.getItem('modelName', modelName);
+			localStorage.setItem('modelName', modelName);
 
 
-			var modelPrice = localStorage.getItem('modelPrice');
-			
 			versionsBrandImg.css({
 				'background-image': `url(${brandURL})`
 			});
 
 			modelNameSpan.text(modelName);
+
+			var modelPrice = (localStorage.getItem('modelPrice') !== null) ? localStorage.getItem('modelPrice') : versionsArr[0].starting_price;
+			
 			modelPrcSpan.text(modelPrice);
 
 		}

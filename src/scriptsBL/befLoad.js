@@ -285,12 +285,14 @@ function getVersions(theModelId) {
     if(device !== undefined && device !== null){
           
           //console.log('sin esperar las versiones');
-          data = {'device': device, modelId: theModelId};
+          data = (localStorage.getItem('aUsr') !== null && localStorage.getItem('aUsr') !== undefined) ? {'device': device, modelId: theModelId, user: localStorage.getItem('aUsr')} : {'device': device, modelId: theModelId};
+
           (myLocation === "/web/catalogo/modelo-versiones.html" || myLocation === "/web/catalogo/modelo-versiones") ? sendPostToGet('catalogo/getversiones', JSON.stringify(data), 'vrsInfo') : sendPostToGet('catalogo/getversiones', JSON.stringify(data), 'spVrsInfo');
 
     }else{
       setTimeout(function(){
-        data = {device: sessionStorage.getItem('deviceId'), modelId: theModelId};
+        
+        data = (localStorage.getItem('aUsr') !== null && localStorage.getItem('aUsr') !== undefined) ? {'device':  sessionStorage.getItem('deviceId'), modelId: theModelId, user: localStorage.getItem('aUsr')} : {'device':  sessionStorage.getItem('deviceId'), modelId: theModelId};
         //console.log(data);
 
         (myLocation === "/web/catalogo/modelo-versiones.html" || myLocation === "/web/catalogo/modelo-versiones") ? sendPostToGet('catalogo/getversiones', JSON.stringify(data), 'vrsInfo') : sendPostToGet('catalogo/getversiones', JSON.stringify(data), 'spVrsInfo');

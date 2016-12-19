@@ -1,4 +1,4 @@
-import {navigating, myLocation} from './commonFunc/locating.js';
+import {navigating, myLocation, pathnameRoot} from './commonFunc/locating.js';
 import {con} from './commonFunc/consoling.js';
 import {alleGleichlich, sizingModelItms} from './commonFunc/sizingGarageImgs.js';
 import {queriesT, hashesExist} from './commonFunc/urlEncoder.js';
@@ -462,6 +462,8 @@ $(function(){
 
 					});
 
+					var hrefPath = (localStorage.getItem('aUsrA') !== null && localStorage.getItem('aUsrA') !== undefined) ? `${pathnameRoot}catalogo/specific-version?al=${localStorage.getItem('aUsrA')}&brdId=${itm.brand_id}&mdlId=${itm.model_id}&cId=${itm.version_id}` : `${pathnameRoot}catalogo/specific-version?brdId=${itm.brand_id}&mdlId=${itm.model_id}&cId=${itm.version_id}`;
+
 					var auto = `<div class="col-xs-12 modelItem defaultPointer noPadding col-sm-6 col-md-4 garageImgCont ${itm.tipo}">
 		                            <div class="sideInfoBar">
 		                            	<span class="msgErrAddCat hiddenItm">No se pudo cambiar la categoría
@@ -502,10 +504,12 @@ $(function(){
 		                                </div>
 		                                <span class="fa fa-ellipsis-h dots"></span>
 		                            </div>
-		                            <img  src="${itm.pic_url}" class="noMargin garageImg img-responsive" border="0"/>
-		                            <span class="hiddenItm garageVersionId">${itm.version_id}</span>
-		                            <span class="hiddenItm garageUsrCarId">${itm.garage_id}</span>
-		                            <span class="hiddenItm garageUsrBrandId">${itm.brand_id}</span>
+		                            <a href="${hrefPath}">
+			                            <img  src="${itm.pic_url}" class="noMargin garageImg img-responsive" border="0"/>
+			                            <span class="hiddenItm garageVersionId">${itm.version_id}</span>
+			                            <span class="hiddenItm garageUsrCarId">${itm.garage_id}</span>
+			                            <span class="hiddenItm garageUsrBrandId">${itm.brand_id}</span>
+		                            </a>
 		                        </div>`;
 
 		                        if(loadingText.length){

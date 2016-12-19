@@ -1,6 +1,9 @@
 var strongLocation = window.location.pathname;
 var findWebIdx = strongLocation.search('/web');
 var webRoot = strongLocation.slice(findWebIdx);
+
+export var pathnameRoot = strongLocation.slice(0, findWebIdx + 5);
+
 export const strongRoot = strongLocation.slice(0, findWebIdx);
 
 export let myLocation = webRoot;

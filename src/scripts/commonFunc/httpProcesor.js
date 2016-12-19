@@ -7,6 +7,7 @@ import {queriesT, hashesExist} from './urlEncoder.js';
 
 export function sendPostToGo(urlEnd, data, whereTo){
 	//console.log('from sendPostToGo', data);
+	console.log(data, 'from sendToGo processor', whereTo);
 
 	var usr = localStorage.getItem('aUsrA');
 
@@ -104,7 +105,7 @@ export function sendPostToGo(urlEnd, data, whereTo){
 }
 
 export function sendPostToGet(urlEnd, data, flag){
-	console.log(data, 'from processor');
+	console.log(data, 'from sendToGet processor', flag);
 
 	var datos = (data) ? data : '';
 
