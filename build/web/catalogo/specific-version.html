@@ -120,8 +120,110 @@
 
                               <!-- Tab panes -->
                               <div class="tab-content">
-                                  <div role="tabpanel" class="tab-pane fichaTecnicaDetail Mecánica active" id="mechanic">mechanic</div>
-                                  <div role="tabpanel" class="tab-pane fichaTecnicaDetail Exterior" id="Exterior">Exterior</div>
+                                  <div role="tabpanel" class="tab-pane fichaTecnicaDetail Mecánica active" id="mechanic">
+                                      <ul class="lineOneMec fichaRenglon renglonMec">
+                                          <li class="dato57 colLinOneMec">
+                                              <p class="datoTitle pct17">Cilindros</p>
+                                              <p class="datoVal"></p>
+                                          </li>
+                                          <li class="dato56 colLinOneMec">
+                                              <p class="datoTitle pct17">Litros</p>
+                                              <p class="datoVal"></p>
+                                          </li>
+                                          <li class="dato58 colLinOneMec">
+                                              <p class="datoTitle pct22">Potencia</p>
+                                              <p class="datoVal"></p>
+                                          </li>
+                                          <li class="dato59 colLinOneMec">
+                                              <p class="datoTitle pct22">Torque</p>
+                                              <p class="datoVal"></p>
+                                          </li>
+                                          <li class="dato60 colLinOneMec">
+                                              <p class="datoTitle pct22">Tipo</p>
+                                              <p class="datoVal"></p>
+                                          </li>
+                                      </ul>
+                                      <ul class="lineTwoMec fichaRenglon renglonMec">
+                                          <li class="dato61 pct30 colLinTwoMec">
+                                              <p class="datoTitle">Combustible</p>
+                                              <p class="datoVal"></p>
+                                          </li>
+                                          <li class="dato66 pct20 colLinTwoMec">
+                                              <p class="datoTitle">Emisiones</p>
+                                              <p class="datoVal"></p>
+                                          </li>
+                                          <li class="dato67 pct25 colLinTwoMec">
+                                              <p class="datoTitle">Rendimiento</p>
+                                              <p class="datoVal"></p>
+                                          </li>
+                                          <li class="dato68 pct25 colLinTwoMec">
+                                              <p class="datoTitle">Vel. max.</p>
+                                              <p class="datoVal"></p>
+                                          </li>
+                                      </ul>
+                                      <ul class="lineThreeMec fichaRenglon renglonMec">
+                                          <li class="dato62 pct50 colLinThreeMec">
+                                              <p class="datoTitle">Transmisión</p>
+                                              <p class="datoVal"></p>
+                                          </li>
+                                          <li class="dato64 pct50 colLinThreeMec">
+                                              <p class="datoTitle">Tracción</p>
+                                              <p class="datoVal"></p>
+                                          </li>
+                                      </ul>
+                                      <ul class="lineFourMec fichaRenglon renglonMec">
+                                          <li class="dato65 pct25 colLinFourMec">
+                                              <p class="datoTitle"></p>
+                                              <p class="datoVal"></p>
+                                          </li>
+                                          <li class="dato337 pct25 colLinFourMec">
+                                              <p class="datoTitle"></p>
+                                              <p class="datoVal"></p>
+                                          </li>
+                                          <li class="dato102 pct50 colLinFourMec">
+                                              <p class="datoTitle"></p>
+                                              <p class="datoVal"></p>
+                                          </li>
+                                      </ul>
+                                  </div>
+                                  <div role="tabpanel" class="tab-pane fichaTecnicaDetail Exterior" id="Exterior">
+                                      <ul class="lineOneExt renglonExt">
+                                          <li class="dato263 pct40 colLinOneExt">
+                                              <p class="datoTitle"></p>
+                                              <p class="datoVal"></p>
+                                          </li>
+                                          <li class="dato76 pct20 colLinOneExt">
+                                              <p class="datoTitle"></p>
+                                              <p class="datoVal"></p>
+                                          </li>
+                                          <li class="dato77 pct20 colLinOneExt">
+                                              <p class="datoTitle"></p>
+                                              <p class="datoVal"></p>
+                                          </li>
+                                          <li class="dato78 pct20 colLinOneExt">
+                                              <p class="datoTitle"></p>
+                                              <p class="datoVal"></p>
+                                          </li>
+                                      </ul>
+                                      <ul class="lineTwoExt fichaRenglon renglonExt">
+                                          <li class="dato pct colLineTwoExt">
+                                              <p class="datoTitle"></p>
+                                              <p class="datoVal"></p>
+                                          </li>
+                                          <li class="dato pct colLineTwoExt">
+                                              <p class="datoTitle"></p>
+                                              <p class="datoVal"></p>
+                                          </li>
+                                          <li class="dato pct colLineTwoExt">
+                                              <p class="datoTitle"></p>
+                                              <p class="datoVal"></p>
+                                          </li>
+                                          <li class="dato pct colLineTwoExt">
+                                              <p class="datoTitle"></p>
+                                              <p class="datoVal"></p>
+                                          </li>
+                                      </ul>
+                                  </div>
                                   <div role="tabpanel" class="tab-pane fichaTecnicaDetail Interior" id="Interior">Interior</div>
                                   <div role="tabpanel" class="tab-pane fichaTecnicaDetail Tecnología" id="technology">technology</div>
                                   <div role="tabpanel" class="tab-pane fichaTecnicaDetail Seguridad" id="security">security</div>
@@ -155,6 +257,24 @@
                 </div>
                 <div class="modal-body">
                   <p class="text-center">Su selección ha sido agregada al Garage</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success btn-block" data-dismiss="modal">Aceptar</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
+    <div class="modal fade" id="successComparador" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header modal-header-success">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h3>
+                      <img src="../img/tab_ic_catalogo@1x.png" alt="">&nbsp;&nbsp;Agregado al Comparador
+                    </h3>
+                </div>
+                <div class="modal-body">
+                  <p class="text-center">Su selección ha sido agregada al Comparador</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-success btn-block" data-dismiss="modal">Aceptar</button>

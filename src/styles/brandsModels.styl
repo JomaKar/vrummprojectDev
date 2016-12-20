@@ -89,23 +89,28 @@
 			&.carImg
 				width 100%
 		&:hover
-			.hoverInfo
-				visibility visible
-				background-color rgba(50, 50, 50, .6)
-				color white
+			.modelItmAnchor
+				color inherit
+				
+				.hoverInfo
+					visibility visible
+					background-color rgba(50, 50, 50, .6)
+					color white
 		
-		.hoverInfo
-			visibility hidden
-			position absolute
-			top 0
-			width 100%
-			height 100%
-			font-size 16px
-			padding 10%
-			cursor pointer
-			
-			.mDetails
-				list-style-type none
+		.modelItmAnchor
+			color inherit
+			.hoverInfo
+				visibility hidden
+				position absolute
+				top 0
+				width 100%
+				height 100%
+				font-size 16px
+				padding 10%
+				cursor pointer
+				
+				.mDetails
+					list-style-type none
 
 @media(min-width 350px)
 	.innerHeaderBrand

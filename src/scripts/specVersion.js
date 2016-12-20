@@ -28,6 +28,8 @@ $(function(){
 		var addToGrgMsg = $('span.addToGrgMsg');
 		var addGrgList = $('ul.addToGarage');
 
+		var compareGroup = $('div.compareGroup.specificVersion');
+
 		//carousel variables
 		var imgs = [];
 		var currentVersionMainImg = '';
@@ -36,6 +38,7 @@ $(function(){
 		var versionChange = false;
 		var selectedVersion = {};
 		var versionInGarage = false;
+		var versionInComparator = false;
 
 		//console.log(theCarousel);
 
@@ -43,18 +46,17 @@ $(function(){
 			version = JSON.parse(sessionStorage.getItem('versionStored'));
 			versions = JSON.parse(sessionStorage.getItem('versionsArr'));
 
-			//hideShowArrows(versions, 'start');
-
 			if(hashesExist){
 				//console.log(version, 'hi here', queriesT.cId);
 				var storedNum = parseInt(version.id), 
 				newNum = parseInt(queriesT.cId);
 				
-				(storedNum === newNum) ? kickStart('start') : selectVersionStart(versions, 'start');
+				(storedNum === newNum) ?( kickStart('start'), hideShowArrows(versions, 'start')) : selectVersionStart(versions, 'start');
 			
 			}else{
 
-				kickStart('start')
+				kickStart('start');
+				hideShowArrows(versions, 'start');
 			}
 
 		}else{
@@ -66,24 +68,24 @@ $(function(){
 				if(sessionStorage.getItem('versionStored') !== null){
 					version = JSON.parse(sessionStorage.getItem('versionStored'));
 					versions = JSON.parse(sessionStorage.getItem('versionsArr'));
-					hideShowArrows(versions, 'wait');
 
 					if(hashesExist){
 						//console.log(version, 'hi here', queriesT.cId);
 						var storedNum = parseInt(version.id), 
 						newNum = parseInt(queriesT.cId);
 						
-						(storedNum === newNum) ? kickStart('wait') : selectVersionStart(versions, 'wait');
+						(storedNum === newNum) ? (kickStart('wait'), hideShowArrows(versions, 'wait')) : selectVersionStart(versions, 'wait');
 					
 					}else{
 
-						kickStart('wait')
+						kickStart('wait');
+						hideShowArrows(versions, 'wait');
 					}
 
 				}else{
 					askVersionsAgain();
 				}
-			}, 2000);
+			}, 1600);
 		}
 
 		function askVersionsAgain() {
@@ -110,7 +112,7 @@ $(function(){
 		}
 
 		function hideShowArrows(versns, or) {
-			//console.log(versns, or);
+			//console.log(,'hideShowArrows', versns, or);
 			
 			(versns.length > 1) ? null : (versionsArrows.hide(), versionRecognizerGroup.css({margin: '0 auto'}));
 		}
@@ -315,9 +317,11 @@ $(function(){
 		}
 
 		function throwInfo(info) {
+
+			//need to be deleted
 			$('div.fichaTecnicaDetail').empty();
 			$('div.fichaCat').empty();
-
+			//til here
 			var actualCat = info[0].tab;
 
 			//this info need to be displayed with endpoint getfichatecnica
@@ -389,6 +393,48 @@ $(function(){
 	    });
 
 		//endAlberto
+	    
+	    isGarageImg.click(function(){
+
+	    	(localStorage.getItem('aUsr') !== null && localStorage.getItem('aUsr') !== undefined) ? null : alert('Loguéate para añadir coches a tu garage');
+
+	    });
+
+	    compareGroup.click(function(e) {
+			(localStorage.getItem('aUsr') !== null && localStorage.getItem('aUsr') !== undefined) ? addToComparator(localStorage.getItem('aUsr')) : alert('Loguéate para añadir coches a tu comparador');	    	
+	    });
+
+	    function addToComparator(id){
+	    	var theId = parseInt(id);
+
+	    	var deviceId = sessionStorage.getItem('deviceId');
+	        var versionId = ( versionChange ) ? selectedVersion.id : version.id;
+
+	        var addedInComparatorAutos = (localStorage.getItem('addedInComAutosArr') !== null && localStorage.getItem('addedInComAutosArr') !== undefined) ? JSON.parse(localStorage.getItem('addedInComAutosArr')) : [];
+
+
+	        var dataForCompare = JSON.stringify({ 'device': deviceId, 'user': theId, 'version': versionId});
+
+	        if(!versionInComparator){
+
+		        $.post('https://vrummapp.net/ws/v2/comparador/agregar',
+		        	dataForCompare
+		        ).then(function(data){
+
+		            if(data.estado === 1){
+		            	$('#successComparador').modal();
+
+		            	addedInComparatorAutos.push(versionId);
+		            	addedInComparatorAutos = JSON.stringify(addedInComparatorAutos);
+		            	localStorage.setItem('addedInComAutosArr', addedInComparatorAutos);
+
+		            	compareGroup.find('span.circle').removeClass('fa-plus-circle').addClass('fa-check-circle');
+		            }
+		        });
+	        
+	        }
+	    }
+
 
 
 		function displayBrand() {
@@ -397,7 +443,7 @@ $(function(){
 			var modelPrcSpan = $('p.modelPrice');
 			var versionNameP = $('p.versionName');
 
-			var brandURL = (sessionStorage.getItem('currentBrandImg') !== null) ? sessionStorage.getItem('currentBrandImg') : version.pic_marca;
+			var brandURL = version.pic_marca;
 			var modelName = (localStorage.getItem('modelName') !== null) ? localStorage.getItem('modelName') : version.model_name;
 			
 			sessionStorage.setItem('currentBrandImg', version.pic_marca);
@@ -411,14 +457,16 @@ $(function(){
 				modelPrice = version.starting_price;
 				versionName = version.name;
 
-				isGarage(version);
+				isInGarage(version);
+				isInComparator(version);
 
 			}else{
 
 				modelPrice = selectedVersion.starting_price;
 				versionName = selectedVersion.name;
 
-				isGarage(selectedVersion);
+				isInGarage(selectedVersion);
+				isInComparator(selectedVersion);
 
 			}
 
@@ -433,14 +481,14 @@ $(function(){
 
 		}
 
-		function isGarage(vers){
+		function isInGarage(vers){
 
 			//console.log('specific-version', vers, localStorage.getItem('addedAutosArr'));
 
 			if(localStorage.getItem('addedAutosArr') !== null && localStorage.getItem('addedAutosArr') !== undefined){
 
 				var autosAlreadyAdded = JSON.parse(localStorage.getItem('addedAutosArr'));
-				var lastAutoStored = autosAlreadyAdded.length - 1;
+				var lastAutoStoredIdx = autosAlreadyAdded.length - 1;
 				var currAutoId = parseInt(vers.id);
 
 				if(typeof vers.esta_garage === 'string'){
@@ -454,16 +502,16 @@ $(function(){
 								isGrgTrue();
 							}
 
-							if(indx === lastAutoStored && currAutoId !== idStored && !versionInGarage){
+							if(indx === lastAutoStoredIdx && currAutoId !== idStored && !versionInGarage){
 								isGarageImg.attr('src', '../img/ic_AddGarage@2x.png');
-								(localStorage.getItem('aUsr') !== null && localStorage.getItem('aUsr') !== undefined) ? (versionInGarage = false, addToGrgMsg.text('Agregar a Mi Garage'), addGarageBtn.removeClass('defaultPointer')) : (versionInGarage = true, addGrgList.addClass('hiddenItm'), addToGrgMsg.addClass('hiddenItm'), addGarageBtn.addClass('defaultPointer'));	
+								(localStorage.getItem('aUsr') !== null && localStorage.getItem('aUsr') !== undefined) ? (versionInGarage = false, addToGrgMsg.text('Agregar a Mi Garage'), addGarageBtn.removeClass('defaultPointer')) : (versionInGarage = true, addGrgList.addClass('hiddenItm'));	
 							}
 
 						});
 
 				}else{
 					isGarageImg.attr('src', '../img/ic_AddGarage@2x.png');
-					(localStorage.getItem('aUsr') !== null && localStorage.getItem('aUsr') !== undefined) ? (versionInGarage = false, addToGrgMsg.text('Agregar a Mi Garage'), addGarageBtn.removeClass('defaultPointer')) : (versionInGarage = true, addGrgList.addClass('hiddenItm'), addToGrgMsg.addClass('hiddenItm'), addGarageBtn.addClass('defaultPointer'));
+					(localStorage.getItem('aUsr') !== null && localStorage.getItem('aUsr') !== undefined) ? (versionInGarage = false, addToGrgMsg.text('Agregar a Mi Garage'), addGarageBtn.removeClass('defaultPointer')) : (versionInGarage = true, addGrgList.addClass('hiddenItm'));
 				}
 
 
@@ -474,9 +522,54 @@ $(function(){
 			}else{
 
 				isGarageImg.attr('src', '../img/ic_AddGarage@2x.png');
-				(localStorage.getItem('aUsr') !== null && localStorage.getItem('aUsr') !== undefined) ? (versionInGarage = false, addToGrgMsg.text('Agregar a Mi Garage'), addGarageBtn.removeClass('defaultPointer')) : (versionInGarage = true, addGrgList.addClass('hiddenItm'), addToGrgMsg.addClass('hiddenItm'), addGarageBtn.addClass('defaultPointer'));
+				(localStorage.getItem('aUsr') !== null && localStorage.getItem('aUsr') !== undefined) ? (versionInGarage = false, addToGrgMsg.text('Agregar a Mi Garage'), addGarageBtn.removeClass('defaultPointer')) : (versionInGarage = true, addGrgList.addClass('hiddenItm'));
 				//console.log( 'versionInGarage', versionInGarage);
 			}
+		}
+
+		function isInComparator(vers){
+			con('isInComparator');
+
+			/*if(localStorage.getItem('addedInComAutosArr') !== null && localStorage.getItem('addedInComAutosArr') !== undefined){
+
+				var autosAlreadyCompared = JSON.parse(localStorage.getItem('addedInComAutosArr'));
+				var lastAutoStoredIdx = autosAlreadyCompared.length - 1;
+				var currAutoId = parseInt(vers.id);
+
+				if(typeof vers.esta_comparador === 'string'){
+					isGrgTrue();
+				}else if(autosAlreadyCompared.length > 0){
+
+						$.each(autosAlreadyCompared, function(indx, item){
+							var idStored = parseInt(item);
+
+							if(currAutoId === idStored){
+								isGrgTrue();
+							}
+
+							if(indx === lastAutoStoredIdx && currAutoId !== idStored && !versionInGarage){
+								isGarageImg.attr('src', '../img/ic_AddGarage@2x.png');
+								(localStorage.getItem('aUsr') !== null && localStorage.getItem('aUsr') !== undefined) ? (versionInGarage = false, addToGrgMsg.text('Agregar a Mi Garage'), addGarageBtn.removeClass('defaultPointer')) : (versionInGarage = true, addGrgList.addClass('hiddenItm'));	
+							}
+
+						});
+
+				}else{
+					isGarageImg.attr('src', '../img/ic_AddGarage@2x.png');
+					(localStorage.getItem('aUsr') !== null && localStorage.getItem('aUsr') !== undefined) ? (versionInGarage = false, addToGrgMsg.text('Agregar a Mi Garage'), addGarageBtn.removeClass('defaultPointer')) : (versionInGarage = true, addGrgList.addClass('hiddenItm'));
+				}
+
+
+			}else if(typeof vers.esta_garage === 'string'){
+			
+				isGrgTrue();
+			
+			}else{
+
+				isGarageImg.attr('src', '../img/ic_AddGarage@2x.png');
+				(localStorage.getItem('aUsr') !== null && localStorage.getItem('aUsr') !== undefined) ? (versionInGarage = false, addToGrgMsg.text('Agregar a Mi Garage'), addGarageBtn.removeClass('defaultPointer')) : (versionInGarage = true, addGrgList.addClass('hiddenItm'));
+				//console.log( 'versionInGarage', versionInGarage);
+			}*/
 		}
 
 		function isGrgTrue() {

@@ -3,6 +3,7 @@ import {con} from './commonFunc/consoling.js';
 import {alleGleichlich, sizingModelItms} from './commonFunc/sizingGarageImgs.js';
 import {queriesT, hashesExist} from './commonFunc/urlEncoder.js';
 import {sendPostToGo, sendPostToGet} from './commonFunc/httpProcesor.js';
+import {getVersions} from './commonFunc/getversiones.js';
 
 $(function(){
 
@@ -18,10 +19,11 @@ $(function(){
 		loadingText = $('p.usrGarageLoadingTxt'),
 		addGarageBtn = $('div.addGarageBtnCon'),
 		selectCaret = $('span.selectCaret'),
+		editPencil = $('span.editProfileSpan'),
 		askingTimes = 0,
 		carsNumber = $('span.carsNumb'),
 		dateSpace = $('span.memDateNumb'),
-		photoDiv = $('div.p-profilePhoto'),
+		photoDiv = $('div#profilePict'),
 		miniCameraIcon = $('span.profImgCameraIcon'),
 		headerCameraIcon = $('span.cameraIconHead'),
 		domDataElements = [aliasSpan, dateSpace, nameSpace, carsNumber, photoDiv],
@@ -58,6 +60,10 @@ $(function(){
 			if(carContainer.length){
 				alleGleichlich(carContainer);
 			}
+		});
+
+		editPencil.click(function(){
+			alert('editar perfil');
 		});
 
 		function sizeAddGarageBtn() {
@@ -504,9 +510,12 @@ $(function(){
 		                                </div>
 		                                <span class="fa fa-ellipsis-h dots"></span>
 		                            </div>
-		                            <a href="${hrefPath}">
+		                            <a href="${hrefPath}" class="garageItmAnchor">
 			                            <img  src="${itm.pic_url}" class="noMargin garageImg img-responsive" border="0"/>
 			                            <span class="hiddenItm garageVersionId">${itm.version_id}</span>
+			                            <span class="hiddenItm garageModelId">${itm.model_id}</span>
+			                            <span class="hiddenItm garageModelName">${itm.model_name}</span>
+			                            <span class="hiddenItm garageModelPrice">${itm.starting_price}</span>
 			                            <span class="hiddenItm garageUsrCarId">${itm.garage_id}</span>
 			                            <span class="hiddenItm garageUsrBrandId">${itm.brand_id}</span>
 		                            </a>
@@ -524,6 +533,17 @@ $(function(){
 			sizingModelItms();
 			garageAsked = true;
 		}
+
+		$(document).on('click', 'div.modelItem', function(e){
+			var anchor = $(e).find('a.garageItmAnchor');
+			var mdlID = anchor.children('span.garageModelId').text();
+			var mdlNam = anchor.children('span.garageModelName').text();
+			var mdlPrice = anchor.children('span.garageModelPrice').text();
+
+			getVersions(mdlID, mdlNam, mdlPrice, 'prof');
+
+		});
+
 
 		$(document).on('click', 'span.trash', function(){
 			var el = $(this),
@@ -656,7 +676,9 @@ $(function(){
 
 					miniCameraIcon.removeClass('hiddenItm');
 					headerCameraIcon.removeClass('hiddenItm');
+					editPencil.removeClass('hiddenItm');
 
+					photoDiv.addClass('p-profilePhoto').removeClass('p-profPict');
 
 					(dateProfileRgtBtnCont.hasClass('hiddenItm')) ? null : dateProfileRgtBtnCont.addClass('hiddenItm');
 					(membershipDateCounter.hasClass('hiddenItm')) ? membershipDateCounter.removeClass('hiddenItm') : null;
@@ -674,6 +696,9 @@ $(function(){
 
 					miniCameraIcon.addClass('hiddenItm');
 					headerCameraIcon.addClass('hiddenItm');
+					editPencil.addClass('hiddenItm');
+
+					photoDiv.removeClass('p-profilePhoto').addClass('p-profPict');
 
 
 					(dateProfileRgtBtnCont.hasClass('hiddenItm')) ? null : dateProfileRgtBtnCont.addClass('hiddenItm');
@@ -692,6 +717,8 @@ $(function(){
 				//aparecer botón
 				miniCameraIcon.addClass('hiddenItm');
 				headerCameraIcon.addClass('hiddenItm');
+				editPencil.addClass('hiddenItm');
+				photoDiv.removeClass('p-profilePhoto').addClass('p-profPict');
 
 				(membershipDateCounter.hasClass('hiddenItm')) ? null : membershipDateCounter.addClass('hiddenItm');
 				(dateProfileRgtBtnCont.hasClass('hiddenItm')) ? dateProfileRgtBtnCont.removeClass('hiddenItm') : null;

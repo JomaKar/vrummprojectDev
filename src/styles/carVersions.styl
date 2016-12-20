@@ -133,6 +133,12 @@
 		display flex
 		cursor pointer
 		
+		.goToDetailAnchor
+			color inherit
+			
+			&:hover
+				color inherit
+		
 	&.active
 		padding-left 1px
 		border-left 3px solid $regActiveBtn
@@ -148,6 +154,12 @@
 		
 		.goToDetailArrow
 			color $regActiveBtn
+			
+			.goToDetailAnchor
+				color inherit
+				
+				&:hover
+					color inherit
 		
 @media(min-width 370px)
 	.modelHeader

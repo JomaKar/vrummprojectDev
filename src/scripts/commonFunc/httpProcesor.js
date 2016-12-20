@@ -89,6 +89,10 @@ export function sendPostToGo(urlEnd, data, whereTo){
 			
 			}else if(whereTo === 'versiones' && res.estado === 1){
 				var versionsArr = res.mensaje.rs;
+
+				sessionStorage.setItem('currentBrandImg', versionsArr[0].pic_marca.toString());
+				localStorage.setItem('modelName', versionsArr[0].model_name.toString());
+
 				versionsArr = JSON.stringify(versionsArr);
 				sessionStorage.setItem('versionsArr', versionsArr);
 				var brandId = res.mensaje.rs[0].brand_id;
@@ -225,6 +229,8 @@ export function sendPostToGet(urlEnd, data, flag){
 			}else if(flag === 'vrsInfo' && res.estado === 1){
 
 				var versionsArr = res.mensaje.rs;
+				sessionStorage.setItem('currentBrandImg', versionsArr[0].pic_marca.toString());
+				localStorage.setItem('modelName', versionsArr[0].model_name.toString());
 				versionsArr = JSON.stringify(versionsArr);
 				sessionStorage.setItem('versionsArr', versionsArr);
 
@@ -239,6 +245,8 @@ export function sendPostToGet(urlEnd, data, flag){
 				var versionsArr = res.mensaje.rs;
 				var versionsToTransform = res.mensaje.rs;
 
+				sessionStorage.setItem('currentBrandImg', versionsArr[0].pic_marca.toString());
+				localStorage.setItem('modelName', versionsArr[0].model_name.toString());
 
 				if(hashesExist){
 

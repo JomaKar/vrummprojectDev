@@ -1,4 +1,4 @@
-import {navigating, myLocation} from './commonFunc/locating.js';
+import {navigating, myLocation, pathnameRoot} from './commonFunc/locating.js';
 import {con} from './commonFunc/consoling.js';
 import {sendPostToGo, sendPostToGet} from './commonFunc/httpProcesor.js';
 
@@ -43,6 +43,9 @@ $(function(){
 			var fullRowsNumber = 0;
 			var itmsLastRow = 0;
 			var brandItmCounter = 0;
+
+			var hrefStartPath = (localStorage.getItem('aUsrA') !== null && localStorage.getItem('aUsrA') !== undefined) ? `${pathnameRoot}catalogo/brand-modelo?al=${localStorage.getItem('aUsrA')}&brdId=` : `${pathnameRoot}catalogo/brand-modelo?brdId=`;
+
 			
 			if(num > 5){
 				fullRowsNumber = Math.floor(num/5);
@@ -60,7 +63,7 @@ $(function(){
 						var newBrand = `<div class="noPadding noMargin brandItem dynamicItem${i}">
 											<span class="brandName">${brands[i].name}</span>
 											<span class="brandId">${brands[i].id}</span>
-											<div class="backImg centerBackImg brandItmImg" style="background-image: url('${brands[i].pic_url}');"></div>
+											<a href="${hrefStartPath}${brands[i].id}" class="brandImgAnchor"><div class="backImg centerBackImg brandItmImg" style="background-image: url('${brands[i].pic_url}');"></div></a>
 										</div>`;
 
 						initialRow.append(newBrand);
@@ -82,7 +85,7 @@ $(function(){
 						var newBrand = `<div class="noPadding noMargin brandItem dynamicItem${brandItmCounter}">
 											<span class="brandName">${brands[brandItmCounter].name}</span>
 											<span class="brandId">${brands[brandItmCounter].id}</span>
-											<div class="backImg centerBackImg brandItmImg" style="background-image: url('${brands[brandItmCounter].pic_url}');"></div>
+											<a href="${hrefStartPath}${brands[brandItmCounter].id}" class="brandImgAnchor"><div class="backImg centerBackImg brandItmImg" style="background-image: url('${brands[brandItmCounter].pic_url}');"></div></a>
 										</div>`;
 
 						actualRow.append(newBrand);
@@ -106,7 +109,7 @@ $(function(){
 					var newBrand =  `<div class="noPadding noMargin brandItem dynamicItem${brandItmCounter}">
 										<span class="brandName">${brands[brandItmCounter].name}</span>
 										<span class="brandId">${brands[brandItmCounter].id}</span>
-										<div class="backImg centerBackImg brandItmImg" style="background-image: url('${brands[brandItmCounter].pic_url}');"></div>
+										<a href="${hrefStartPath}${brands[brandItmCounter].id}" class="brandImgAnchor"><div class="backImg centerBackImg brandItmImg" style="background-image: url('${brands[brandItmCounter].pic_url}');"></div></a>
 									</div>`;
 									
 					actualRow.append(newBrand);
@@ -115,6 +118,10 @@ $(function(){
 			}
 
 		}
+
+		$(document).on('click', 'a.brandImgAnchor', function(e){
+			e.preventDefault();
+		});
 
 		$(document).on('click', 'div.brandItem', function(){
 			var id = $(this).find('span.brandId').html();
@@ -129,6 +136,7 @@ $(function(){
 			brandUrl = brandUrl.substring(idxFQuote, idxLQuote);
 
 			if(id !== undefined && id !== null){
+				askForModels(id);
 				sessionStorage.setItem('currentBrandAutos', id.toString());
 				if(brandUrl !== undefined && brandUrl !== null){
 					sessionStorage.setItem('currentBrandImg', brandUrl);
@@ -137,8 +145,6 @@ $(function(){
 					sessionStorage.setItem('currentBrandName', name);
 				}
 				
-				askForModels(id);
-				
 			}else{
 				sessionStorage.setItem('currentBrandAutos', 'nothing stored');
 			}
@@ -146,19 +152,16 @@ $(function(){
 		});
 
 		function askForModels(id) {
-			var theid = parseInt(id),
-			modelsArr = [];
+			var theid = parseInt(id);
 			var device = sessionStorage.getItem('deviceId');
 
 			if(device !== undefined && device !== null && theid){
 				var data = {'device': device, brandId: theid};
 				data = JSON.stringify(data);
-
+				//console.log('checking brands', data);
+				sendPostToGo('catalogo/getmodelos', data, 'mdls');
 			}
 
-			//console.log('checking brands', data);
-
-			sendPostToGo('catalogo/getmodelos', data, 'mdls');
 		}
 
 

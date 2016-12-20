@@ -1,4 +1,4 @@
-import {navigating, myLocation} from './commonFunc/locating.js';
+import {navigating, myLocation, pathnameRoot} from './commonFunc/locating.js';
 import {con} from './commonFunc/consoling.js';
 import {sendPostToGo, sendPostToGet} from './commonFunc/httpProcesor.js';
 import {queriesT, hashesExist} from './commonFunc/urlEncoder.js';
@@ -190,6 +190,8 @@ $(function(){
 			//con(versionsArr);
 			$.each(versionsArr, function(idx, objItm){
 
+				var hrefPath = (localStorage.getItem('aUsrA') !== null && localStorage.getItem('aUsrA') !== undefined) ? `${pathnameRoot}catalogo/specific-version?al=${localStorage.getItem('aUsrA')}&brdId=${objItm.brand_id}&mdlId=${objItm.model_id}&cId=${objItm.id}` : `${pathnameRoot}catalogo/specific-version?brdId=${objItm.brand_id}&mdlId=${objItm.model_id}&cId=${objItm.id}`;
+
 				var versName = objItm.name;
 				var verPrice = objItm.starting_price;
 				var verId = objItm.id;
@@ -207,7 +209,9 @@ $(function(){
 	                                    <span class="versionId hiddenItm">${verId}</span>
 	                                </div>
 	                                <div class="col-xs-1 noPadding goToDetailArrow">
-	                                    <span class="glyphicon glyphicon-menu-right"></span>
+	                                    <a href="${hrefPath}" class="goToDetailAnchor">
+	                                    	<span class="glyphicon glyphicon-menu-right"></span>
+	                                    </a>
 	                                </div>
 	                            </div>`;
 
@@ -226,14 +230,15 @@ $(function(){
 		});
 
 		function activatingInfoTag(el, go) {
+
 			var elements = $('div.versionDetailRow');
 			var selVerName = $(el).find('span.versionName').text();
 
-			sessionStorage.removeItem('versionStored');
 
 			elements.removeClass('active');
-
 			el.addClass('active');
+
+			sessionStorage.removeItem('versionStored');
 
 			var selectedVersObj = $.grep(versionsArr, function (itm, idx) {
 
@@ -243,11 +248,8 @@ $(function(){
 			});
 
 			currentVersion = selectedVersObj[0];
-
 			if(go){sendPostToGo(currentVersion, null, 'specVer');}
-
 			var versionStored = JSON.stringify(currentVersion);
-
 			sessionStorage.setItem('versionStored', versionStored);
 		}
 
@@ -256,6 +258,10 @@ $(function(){
 			activatingInfoTag(el, true);
 		});
 
+
+		$(document).on('click', 'a.goToDetailAnchor', function(e){
+			e.preventDefault();
+		});
 
 		//start carousel mechanich
 
@@ -534,8 +540,8 @@ $(function(){
 			var modelPrcSpan = $('p.modelPrice');
 
 
-			var brandURL = (sessionStorage.getItem('currentBrandImg') !== null) ? sessionStorage.getItem('currentBrandImg') : versionsArr[0].pic_marca;
-			var modelName = (localStorage.getItem('modelName') !== null) ? localStorage.getItem('modelName') : versionsArr[0].model_name;
+			var brandURL = versionsArr[0].pic_marca;
+			var modelName = versionsArr[0].model_name;
 			
 			sessionStorage.setItem('currentBrandImg', brandURL);
 			localStorage.setItem('modelName', modelName);

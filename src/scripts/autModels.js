@@ -1,7 +1,8 @@
-import {navigating, myLocation} from './commonFunc/locating.js';
+import {navigating, myLocation, pathnameRoot} from './commonFunc/locating.js';
 import {alleGleichlich, sizingModelItms} from './commonFunc/sizingGarageImgs.js';
 import {con} from './commonFunc/consoling.js';
 import {sendPostToGo, sendPostToGet} from './commonFunc/httpProcesor.js';
+import {getVersions} from './commonFunc/getversiones.js';
 
 
 $(function(){
@@ -213,17 +214,20 @@ $(function(){
 						typeColl.forEach(function(typeItem, indexx){
 							var currentBox = $('div.modelBox' + yearUseType);
 
+							var hrefPath = (localStorage.getItem('aUsrA') !== null && localStorage.getItem('aUsrA') !== undefined) ? `${pathnameRoot}catalogo/modelo-versiones?al=${localStorage.getItem('aUsrA')}&brdId=${typeItem.brand_id}&mdlId=${typeItem.model_id}` : `${pathnameRoot}catalogo/modelo-versiones?brdId=${typeItem.brand_id}&mdlId=${typeItem.model_id}`;
 
 							var model = `<div class="col-xs-12 col-sm-4 noPadding noMargin modelItem">
 				                            <img src="${typeItem.pic_url}" class="img-responsive carImg"/>
-				                            <div class="hoverInfo">
-				                                <ul class="mDetails noPadding">
-				                                  <li class="mName">${typeItem.name}</li>
-				                                  <li class="vPrice">${typeItem.desde} - ${typeItem.hasta}</li>
-				                                  <li class="yModel">${typeItem.year}</li>
-				                                  <li class="hiddenItm modelId">${typeItem.model_id}</li>
-				                                </ul>
-				                            </div>
+				                            <a href="${hrefPath}" class="modelItmAnchor">
+					                            <div class="hoverInfo">
+					                                <ul class="mDetails noPadding">
+					                                  <li class="mName">${typeItem.name}</li>
+					                                  <li class="vPrice">${typeItem.desde} - ${typeItem.hasta}</li>
+					                                  <li class="yModel">${typeItem.year}</li>
+					                                  <li class="hiddenItm modelId">${typeItem.model_id}</li>
+					                                </ul>
+					                            </div>
+					                        </a>
 				                        </div>`;
 
 				            currentBox.append(model);            
@@ -238,36 +242,18 @@ $(function(){
 
 		}
 
+		$(document).on('click', 'a.modelItmAnchor', function(e){
+			e.preventDefault();
+		});
+
+
 		$(document).on('click', 'div.hoverInfo', function(){
 			var modelId = $(this).find('li.modelId').text();
 			var modelN = $(this).find('li.mName').text();
 			var modelP = $(this).find('li.vPrice').text();
-			getVersions(modelId, modelN, modelP);
+			getVersions(modelId, modelN, modelP, 'mdls');
+			//console.log('hi from models') 
 		});
-
-
-		function getVersions(modelId, modelName, modelPrice) {
-			 localStorage.setItem('modelId', modelId.toString());
-			 localStorage.setItem('modelName', modelName.toString());
-			 localStorage.setItem('modelPrice', modelPrice.toString());
-			 var device = sessionStorage.getItem('deviceId');
-			 var userId = localStorage.getItem('aUsr');
-			 var data = {};
-
-              if(device !== undefined && device !== null && modelId){
-              		if(userId !== undefined && userId !== null){
-              			data = {'device': device, modelId: modelId, user: userId};
-              		}else{
-              			data = {'device': device, modelId: modelId};
-              		}
-                		
-                data = JSON.stringify(data);
-
-                sendPostToGo('catalogo/getversiones', data, 'versiones');
-                sendPostToGet('catalogo/getgaleria', data, 'vrsGal');
-
-              }
-		}
 
 
 		$(window).resize(function(){
