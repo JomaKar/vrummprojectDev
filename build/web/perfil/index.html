@@ -11,7 +11,7 @@
     <link href="../css/lib/bootstrap.min.css" rel="stylesheet">
     <!-- Font-awesome -->
     <link href="../css/lib/font-awesome.min.css" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <script src="../js/lib/jquery-3.1.1.min.js"></script>
     <script src="../js/sbl.js"></script> 
   </head>
@@ -39,7 +39,7 @@
                       <p class="profileAlias">
                           <span>@</span>
                           <span class="aliasSpan">miAlias</span>
-                          <span class="fa fa-pencil editProfileSpan"></span>
+                          <a href="" class="editProfileAnchor"><span class="fa fa-pencil editProfileSpan"></span></a>
                       </p>
                       <span class="glyphicon glyphicon-camera cameraIconHead"></span>
                   </div>  
@@ -104,7 +104,21 @@
             <div class="row-fluid childHeight noPadding noMargin modelsSpace">
                 <div class="col-xs-12 noPadding noMargin garageGridCont">
                     <div class="row-fluid noPadding noMargin childHeight garageGrid">
-                        <p class="startingText gallery usrGarageLoadingTxt">Cargando modelos de la marca solicitada...</p>
+                        <!-- <p class="startingText gallery usrGarageLoadingTxt">Cargando modelos de la marca solicitada...</p> -->
+                        <div class="sk-circle">
+                          <div class="sk-circle1 sk-child"></div>
+                          <div class="sk-circle2 sk-child"></div>
+                          <div class="sk-circle3 sk-child"></div>
+                          <div class="sk-circle4 sk-child"></div>
+                          <div class="sk-circle5 sk-child"></div>
+                          <div class="sk-circle6 sk-child"></div>
+                          <div class="sk-circle7 sk-child"></div>
+                          <div class="sk-circle8 sk-child"></div>
+                          <div class="sk-circle9 sk-child"></div>
+                          <div class="sk-circle10 sk-child"></div>
+                          <div class="sk-circle11 sk-child"></div>
+                          <div class="sk-circle12 sk-child"></div>
+                        </div>
                         <p class="startingText gallery usrGarageInitialTxt hiddenItm">Aún no tienes autos en tu garage, añade uno nuevo...</p>
                         <div class="col-xs-12 modelItem col-sm-6 col-md-4 addGarageBtnCon">
                             <!-- just development-->
@@ -128,7 +142,24 @@
       <div class="row-fluid noPadding childHeight mainFooter">
           
       </div>
-
+      <div class="modal fade" id="successComparador" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header modal-header-success">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h3>
+                      <img src="../img/tab_ic_catalogo@1x.png" alt="">&nbsp;&nbsp;Agregado al Comparador
+                    </h3>
+                </div>
+                <div class="modal-body">
+                  <p class="text-center">Su selección ha sido agregada al Comparador</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success btn-block" data-dismiss="modal">Aceptar</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+      </div>
 
     </div> 
     <script src="../js/lib/bootstrap.js"></script>

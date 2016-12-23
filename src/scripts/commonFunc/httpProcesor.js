@@ -51,6 +51,11 @@ export function sendPostToGo(urlEnd, data, whereTo){
 				var id = res.mensaje.usr.id,
 				alias = res.mensaje.usr.alias;
 
+				var users = (localStorage.getItem('visitedUsrs') !== null && localStorage.getItem('visitedUsrs') !== undefined) ? JSON.parse(localStorage.getItem('visitedUsrs')) : [];
+				users.push({'al': alias, 'id': id});
+				users = JSON.stringify(users);
+				localStorage.setItem('visitedUsrs', users);
+
 				localStorage.setItem('aUsrA', alias);
 
 				var usrPhoto = (res.mensaje.usr.foto_perfil !== null && res.mensaje.usr.foto_perfil !== undefined) ? res.mensaje.usr.foto_perfil.toString() : '';
@@ -122,12 +127,34 @@ export function sendPostToGet(urlEnd, data, flag){
 				var userInfo = [];
 				userInfo[0] = res.mensaje.rs[0];
 				//console.log('from https', userInfo); goes to fast
-				
+
+
 				var usrPhoto = (userInfo[0].foto_perfil !== null && userInfo[0].foto_perfil !== undefined) ? userInfo[0].foto_perfil.toString() : '';
 				if(usrPhoto.length > 0){localStorage.setItem('aUPP', usrPhoto);}
 
 				var usrA = userInfo[0].alias;
 				var userId = userInfo[0].id;
+
+				var device = sessionStorage.getItem('deviceId');
+
+			    if(device !== undefined && device !== null && userId){
+			        var dataForGarage = {idUsr: userId, device: sessionStorage.getItem('deviceId')};
+			        dataForGarage = JSON.stringify(dataForGarage);
+			        sendPostToGet('garage/listar', dataForGarage, 'usrGrg');
+
+			    }
+
+				var users = (localStorage.getItem('visitedUsrs') !== null && localStorage.getItem('visitedUsrs') !== undefined) ? JSON.parse(localStorage.getItem('visitedUsrs')) : [];
+				
+				var indexOfUser = users.indexOf({'al': usrA, 'id': userId});
+
+				if(indexOfUser === -1){
+
+					users.push({'al': usrA, 'id': userId});
+					users = JSON.stringify(users);
+					localStorage.setItem('visitedUsrs', users);
+				
+				}
 
 
 				userInfo = JSON.stringify(userInfo);
@@ -153,6 +180,18 @@ export function sendPostToGet(urlEnd, data, flag){
 				var usrA = userInfo[0].alias;
 				var userId = userInfo[0].id;
 
+				var users = (localStorage.getItem('visitedUsrs') !== null && localStorage.getItem('visitedUsrs') !== undefined) ? JSON.parse(localStorage.getItem('visitedUsrs')) : [];
+				
+				var indexOfUser = users.indexOf({'al': usrA, 'id': userId});
+
+				if(indexOfUser === -1){
+
+					users.push({'al': usrA, 'id': userId});
+					users = JSON.stringify(users);
+					localStorage.setItem('visitedUsrs', users);
+				
+				}
+				
 				ssRmForSet('currentUserAlias', usrA.toString());
 				ssRmForSet('currentUserId', userId.toString());
 
@@ -213,6 +252,38 @@ export function sendPostToGet(urlEnd, data, flag){
 					}
 					
 				}
+			}else if(flag === 'usrContact'){
+				//console.log('trying to change profila photo', res);
+
+				if(res.estado === 1){
+
+					//console.log('success', res.mensaje);
+
+					if(sessionStorage.getItem('temptyNewContact') !== null && sessionStorage.getItem('temptyNewContact') !== undefined){
+						var contactNew = sessionStorage.getItem('temptyNewContact');
+
+						if(sessionStorage.getItem('currentUserInfo') !== null && sessionStorage.getItem('currentUserInfo') !== undefined){
+							var usrString = sessionStorage.getItem('currentUserInfo');
+							var usrNow = JSON.parse(usrString);
+
+							if($.isArray(usrNow)){
+								(usrNow.length > 0) ? usrNow[0].invitado_por = contactNew : null;
+							}else if((typeof usrNow === "object") && (usrNow !== null)){
+								usrNow.invitado_por = contactNew;
+							}
+
+							usrNow = JSON.stringify(usrNow);
+
+							sessionStorage.setItem('currentUserInfo', usrNow);
+						}
+
+						
+					}
+					
+				}
+			}
+			else if(flag === 'usrFullEdit'){
+
 			}
 			else if(flag === 'brands' && res.estado === 1){
 

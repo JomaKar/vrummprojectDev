@@ -26,6 +26,7 @@ $(function(){
 		var isGarageImg = $('#btnAddToGarage img.isGarage');
 		var addGarageBtn = $('a#btnAddToGarage');
 		var addToGrgMsg = $('span.addToGrgMsg');
+		var addToCmpMsg = $('span.addToCmpMsg');
 		var addGrgList = $('ul.addToGarage');
 
 		var compareGroup = $('div.compareGroup.specificVersion');
@@ -143,7 +144,7 @@ $(function(){
 
 		function kickStart(or) {
 			//console.log('kickStart', or);
-			displayBrand();
+			displayBrandBar();
 			sizeCarousel();
 			displayCarousel();
 			selectVersion(null);
@@ -272,7 +273,7 @@ $(function(){
 				changeUrlId(selectedVersion.id);
 
 				throwInfo(info);
-				displayBrand();
+				displayBrandBar();
 				displayCarousel();
 
 			}
@@ -405,6 +406,7 @@ $(function(){
 	    });
 
 	    function addToComparator(id){
+	    	//console.log(id, localStorage.getItem('aUsr'));
 	    	var theId = parseInt(id);
 
 	    	var deviceId = sessionStorage.getItem('deviceId');
@@ -413,8 +415,8 @@ $(function(){
 	        var addedInComparatorAutos = (localStorage.getItem('addedInComAutosArr') !== null && localStorage.getItem('addedInComAutosArr') !== undefined) ? JSON.parse(localStorage.getItem('addedInComAutosArr')) : [];
 
 
-	        var dataForCompare = JSON.stringify({ 'device': deviceId, 'user': theId, 'version': versionId});
-
+	        var dataForCompare = JSON.stringify({ 'device': deviceId, 'idUsr': theId, 'version': versionId});
+	        con(dataForCompare);
 	        if(!versionInComparator){
 
 		        $.post('https://vrummapp.net/ws/v2/comparador/agregar',
@@ -437,7 +439,7 @@ $(function(){
 
 
 
-		function displayBrand() {
+		function displayBrandBar() {
 			var versionsBrandImg = $('div.versionsBrandImg');
 			var modelNameSpan = $('p.modelName');
 			var modelPrcSpan = $('p.modelPrice');
@@ -528,48 +530,43 @@ $(function(){
 		}
 
 		function isInComparator(vers){
-			con('isInComparator');
-
-			/*if(localStorage.getItem('addedInComAutosArr') !== null && localStorage.getItem('addedInComAutosArr') !== undefined){
+			
+			//con(vers);
+			if(localStorage.getItem('addedInComAutosArr') !== null && localStorage.getItem('addedInComAutosArr') !== undefined){
+				//console.log(localStorage.getItem('addedInComAutosArr'));
 
 				var autosAlreadyCompared = JSON.parse(localStorage.getItem('addedInComAutosArr'));
-				var lastAutoStoredIdx = autosAlreadyCompared.length - 1;
+				var lastAutoInCmpIdx = autosAlreadyCompared.length - 1;
 				var currAutoId = parseInt(vers.id);
 
-				if(typeof vers.esta_comparador === 'string'){
-					isGrgTrue();
+				if(vers.esta_comparador !== null && vers.esta_comparador !== 'false'){
+					isCmpTrue();
 				}else if(autosAlreadyCompared.length > 0){
 
-						$.each(autosAlreadyCompared, function(indx, item){
-							var idStored = parseInt(item);
+					var equalId = $.grep(autosAlreadyCompared, function(item, idx){
+						var idStored = parseInt(item);
+						return idStored === currAutoId;
+					});
 
-							if(currAutoId === idStored){
-								isGrgTrue();
-							}
+					//con(equalId);
 
-							if(indx === lastAutoStoredIdx && currAutoId !== idStored && !versionInGarage){
-								isGarageImg.attr('src', '../img/ic_AddGarage@2x.png');
-								(localStorage.getItem('aUsr') !== null && localStorage.getItem('aUsr') !== undefined) ? (versionInGarage = false, addToGrgMsg.text('Agregar a Mi Garage'), addGarageBtn.removeClass('defaultPointer')) : (versionInGarage = true, addGrgList.addClass('hiddenItm'));	
-							}
+					if(equalId.length > 0 && currAutoId === parseInt(equalId[0])){
+						isCmpTrue();
+					}else{
+						compareGroup.find('span.circle').addClass('fa-plus-circle').removeClass('fa-check-circle');
+						versionInComparator = false; 
+						addToCmpMsg.text('Agregar al Comparador');
+						compareGroup.removeClass('defaultPointer');
+					}
 
-						});
-
-				}else{
-					isGarageImg.attr('src', '../img/ic_AddGarage@2x.png');
-					(localStorage.getItem('aUsr') !== null && localStorage.getItem('aUsr') !== undefined) ? (versionInGarage = false, addToGrgMsg.text('Agregar a Mi Garage'), addGarageBtn.removeClass('defaultPointer')) : (versionInGarage = true, addGrgList.addClass('hiddenItm'));
 				}
 
 
-			}else if(typeof vers.esta_garage === 'string'){
+			}else if(vers.esta_comparador !== null && vers.esta_comparador !== 'false'){
 			
-				isGrgTrue();
+				isCmpTrue();
 			
-			}else{
-
-				isGarageImg.attr('src', '../img/ic_AddGarage@2x.png');
-				(localStorage.getItem('aUsr') !== null && localStorage.getItem('aUsr') !== undefined) ? (versionInGarage = false, addToGrgMsg.text('Agregar a Mi Garage'), addGarageBtn.removeClass('defaultPointer')) : (versionInGarage = true, addGrgList.addClass('hiddenItm'));
-				//console.log( 'versionInGarage', versionInGarage);
-			}*/
+			}
 		}
 
 		function isGrgTrue() {
@@ -578,6 +575,14 @@ $(function(){
 			addGrgList.addClass('hiddenItm')
 			addGarageBtn.addClass('defaultPointer');
 			addToGrgMsg.text('Agregado al Garage');
+		}
+
+		function isCmpTrue() {
+			versionInComparator = true;
+        	compareGroup.find('span.circle').removeClass('fa-plus-circle').addClass('fa-check-circle');
+			compareGroup.addClass('defaultPointer');
+			addToCmpMsg.text('Agregado al Comparador');
+
 		}
 
 		function sizeCarousel() {

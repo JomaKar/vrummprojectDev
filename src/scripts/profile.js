@@ -16,9 +16,11 @@ $(function(){
 		aliasSpan = $('span.aliasSpan'),
 		nameSpace = $('h4.fullName'),
 		initialText = $('p.usrGarageInitialTxt'),
-		loadingText = $('p.usrGarageLoadingTxt'),
+		//loadingText = $('p.usrGarageLoadingTxt'),
+		loadingText = $('div.sk-circle'),
 		addGarageBtn = $('div.addGarageBtnCon'),
 		selectCaret = $('span.selectCaret'),
+		editProfileAnchor = $('a.editProfileAnchor'),
 		editPencil = $('span.editProfileSpan'),
 		askingTimes = 0,
 		carsNumber = $('span.carsNumb'),
@@ -30,6 +32,7 @@ $(function(){
 		userObjKeys = ['alias', 'created_at', 'full_name', 'total_garage', 'foto_perfil'];
 		var usrIDG;
 		var garageAsked = false;
+		var garageRqst = false;
 
 
 		var askInterval = setInterval(function(){
@@ -50,6 +53,8 @@ $(function(){
 
 		$(document).ready(function(){
 			sizeAddGarageBtn();
+			var hrefConfig = (localStorage.getItem('aUsrA') !== null && localStorage.getItem('aUsrA') !== undefined) ? `${pathnameRoot}perfil/configuracion?al=${localStorage.getItem('aUsrA')}` : `${pathnameRoot}perfil/configuracion`;
+			editProfileAnchor.attr('href', hrefConfig);
 		});
 
 		$(window).resize(function(){
@@ -61,6 +66,10 @@ $(function(){
 				alleGleichlich(carContainer);
 			}
 		});
+
+		editProfileAnchor.click(function(e){
+			//e.preventDefault();
+		})
 
 		editPencil.click(function(){
 			alert('editar perfil');
@@ -238,7 +247,19 @@ $(function(){
 
 	        			var aliasN = sessionStorage.getItem('currentUserAlias');
 
-	        			(aliasN = queriesT.al) ? displayGarage() :  getUserInfoAl(queriesT.al);
+	        			if(aliasN == queriesT.al) { displayGarage()} else {
+	        				if(localStorage.getItem('visitedUsrs') !== null && localStorage.getItem('visitedUsrs') !== undefined){
+
+							  	var users = JSON.parse(localStorage.getItem('visitedUsrs'));
+
+							  	users.forEach(function(objItm, objIdx){
+							  		(alias == objItm.al) ? getUserGarage(objItm.id) : null;
+							  	});
+
+							}else{
+	        					getUserInfoAl(queriesT.al);
+							}
+	        			}
 	        		
 	        		}else{
 
@@ -251,8 +272,20 @@ $(function(){
 	        	}
 
 	        }else if(garageArr === null || garageArr === 'nothing stored' || garageArr === undefined){
+	        	if(hashesExist){
+	        		if(queriesT.al.length > 0){
+	        			if(localStorage.getItem('visitedUsrs') !== null && localStorage.getItem('visitedUsrs') !== undefined){
 
-	        	if(askingTimes >= 100){
+							  	var users = JSON.parse(localStorage.getItem('visitedUsrs'));
+
+							  	users.forEach(function(objItm, objIdx){
+							  		(queriesT.al == objItm.al) ? (getUserGarage(objItm.id), clearInterval(askForGarage)) : null;
+							  	});
+
+							}
+	        		}
+	        	}
+	        	else if(askingTimes >= 100){
 
 	        		if(sessionStorage.getItem('currentUserId') !== null && sessionStorage.getItem('currentUserId') !== undefined){
 
@@ -310,6 +343,16 @@ $(function(){
 			  var data = {alias: alias};
 			  data = JSON.stringify(data);
 
+			  if(localStorage.getItem('visitedUsrs') !== null && localStorage.getItem('visitedUsrs') !== undefined){
+
+			  	var users = JSON.parse(localStorage.getItem('visitedUsrs'));
+
+			  	users.forEach(function(objItm, objIdx){
+			  		(alias == objItm.al) ? getUserGarage(objItm.id) : null;
+			  	});
+
+			  }
+
 			  //console.log('fp. to get userInfo with alias', data);
 
 			  $.post('https://vrummapp.net/ws/v2/usuario/info', 
@@ -322,7 +365,20 @@ $(function(){
 			        displayUserInfo(userInfoFromIn[0]);
 			        usrIDG = parseInt(userInfoFromIn[0].id);
 
-			        getUserGarage(usrIDG);
+			        var users = (localStorage.getItem('visitedUsrs') !== null && localStorage.getItem('visitedUsrs') !== undefined) ? JSON.parse(localStorage.getItem('visitedUsrs')) : [];
+					
+					var indexOfUser = users.indexOf({al: userInfoFromIn[0].alias, id: userInfoFromIn[0].id});
+
+					if(indexOfUser === -1){
+
+						users.push({'al': userInfoFromIn[0].alias, id: userInfoFromIn[0].id});
+						users = JSON.stringify(users);
+						localStorage.setItem('visitedUsrs', users);
+					
+					}
+
+
+			        (!garageRqst) ? getUserGarage(usrIDG) : null;
 			        
 			        userInfoFromIn = JSON.stringify(userInfoFromIn);
 			        sessionStorage.setItem('currentUserInfo', userInfoFromIn);
@@ -353,6 +409,7 @@ $(function(){
 
                   //console.log(res.mensaje.rs)
                   usrGarageArr = res.mensaje.rs;
+                  garageRqst = true;
 
                   displayGarage();
                    
@@ -369,14 +426,6 @@ $(function(){
             });
                
         }
-
-        var selectClick = false;
-        selectCaret.click(function(){
-        	con('click')
-
-        	//totally from stackoverflow
-        	$(filterSelect).trigger('click');
-        });
 
 		var imageOk = false;
 
@@ -469,6 +518,8 @@ $(function(){
 					});
 
 					var hrefPath = (localStorage.getItem('aUsrA') !== null && localStorage.getItem('aUsrA') !== undefined) ? `${pathnameRoot}catalogo/specific-version?al=${localStorage.getItem('aUsrA')}&brdId=${itm.brand_id}&mdlId=${itm.model_id}&cId=${itm.version_id}` : `${pathnameRoot}catalogo/specific-version?brdId=${itm.brand_id}&mdlId=${itm.model_id}&cId=${itm.version_id}`;
+					var compareGroupEnd = (itm.esta_comparador !== null && itm.esta_comparador !== 'false') ? `<span class="fa fa-check-circle circle"></span><span class="message">En comparador</span>` : `<span class="fa fa-plus-circle circle"></span><span class="message">Agrega al comparador</span>`;
+					var classesCompareGroup = (itm.esta_comparador !== null && itm.esta_comparador !== 'false') ? 'defaultPointer' : '';
 
 					var auto = `<div class="col-xs-12 modelItem defaultPointer noPadding col-sm-6 col-md-4 garageImgCont ${itm.tipo}">
 		                            <div class="sideInfoBar">
@@ -487,11 +538,10 @@ $(function(){
 		                                    </div>
 		                                </div>
 		                                <div class="toggleableIcons">
-		                                    <div class="compareGroup">
+		                                    <div class="compareGroup ${classesCompareGroup}">
 		                                        <span class="fa fa-long-arrow-right right"></span>
 		                                        <span class="fa fa-long-arrow-left left"></span>
-		                                        <span class="fa fa-plus-circle circle"></span>
-		                                        <span class="message">Agrega al comparador</span>
+		                                        ${compareGroupEnd}
 		                                    </div>
 		                                    <div class="shareGroup">
 		                                        <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21">
@@ -544,13 +594,52 @@ $(function(){
 
 		});
 
+		$(document).on('click', 'div.compareGroup', function(e){
+
+			var compareGroupEl = $(this),
+			container = compareGroupEl.closest('div.garageImgCont'),
+			versId = container.find('span.garageVersionId').text();
+
+			console.log(compareGroupEl, container, versId);
+
+			versId = parseInt(versId);
+
+			var userId = parseInt(localStorage.getItem('aUsr'));
+            var deviceId = sessionStorage.getItem('deviceId');
+
+            var addedInComparatorAutos = (localStorage.getItem('addedInComAutosArr') !== null && localStorage.getItem('addedInComAutosArr') !== undefined) ? JSON.parse(localStorage.getItem('addedInComAutosArr')) : [];
+            
+            var dataForCompare = JSON.stringify({ 'device': deviceId, 'idUsr': userId, 'version': versId});
+
+            con(dataForCompare);
+
+            $.post('https://vrummapp.net/ws/v2/comparador/agregar',
+	        	dataForCompare
+	        ).then(function(data){
+
+	            if(data.estado === 1){
+	            	$('#successComparador').modal();
+
+	            	addedInComparatorAutos.push(versId);
+	            	addedInComparatorAutos = JSON.stringify(addedInComparatorAutos);
+	            	localStorage.setItem('addedInComAutosArr', addedInComparatorAutos);
+
+	            	compareGroupEl.find('span.circle').removeClass('fa-plus-circle').addClass('fa-check-circle');
+	            	compareGroupEl.addClass('defaultPointer');
+	            	compareGroupEl.find('span.message').text('En Comparador');
+	            }
+	        });
+
+		});
+
 
 		$(document).on('click', 'span.trash', function(){
 			var el = $(this),
 			container = el.closest('div.garageImgCont'),
-			garageID = container.find('span.garageUsrCarId').text();
+			garageID = container.find('span.garageUsrCarId').text(),
+			versId = container.find('span.garageVersionId').text();
 
-			var userId = sessionStorage.getItem('currentUserId');
+			var userId = localStorage.getItem('aUsr');
             var devicId = sessionStorage.getItem('deviceId');
             var dataForDelete = {user: userId, device: devicId, garage: garageID};
 
@@ -563,10 +652,23 @@ $(function(){
                 if(res.estado === 1){
                 	con(res);
                 	container.remove();
+                	if(localStorage.getItem('addedAutosArr') !== null && localStorage.getItem('addedAutosArr') !== undefined){
+                		var addedAutosArr = JSON.parse(localStorage.getItem('addedAutosArr'));
+                		versId = parseInt(versId);
+                		var newAutosArr = $.grep(addedAutosArr, function(el, i){
+                			var idItm = parseInt(el);
+                			return idItm !== versId;
+                		});
+
+                		newAutosArr = JSON.stringify(newAutosArr);
+
+                		localStorage.setItem('addedAutosArr', newAutosArr);
+
+                	}
                    
                 }else{
                 	con(res);
-                	con('No se pudo eliminar el auto, intenta más tarde');
+                	alert('No se pudo eliminar el auto, intenta más tarde');
                 }
 
                }).fail(function(err){
@@ -628,11 +730,11 @@ $(function(){
 		});
 
 		function chageProfilePhoto(photo){
-			var data = {device: sessionStorage.getItem('deviceId'), user: usrIDG, foto_perfil: photo, foto: photo};
+			var data = {device: sessionStorage.getItem('deviceId'), user: usrIDG, campo: 'foto_perfil', dato: photo};
 			//console.log('processing to send', data);
 			data = JSON.stringify(data);
 
-			sendPostToGet('usuario/actualizar', data, 'usrAct');
+			sendPostToGet('usuario/actualizadato', data, 'usrAct');
 		}
 
 		var membershipDateCounter = $('div.membershipDateCounter');
@@ -676,7 +778,7 @@ $(function(){
 
 					miniCameraIcon.removeClass('hiddenItm');
 					headerCameraIcon.removeClass('hiddenItm');
-					editPencil.removeClass('hiddenItm');
+					editProfileAnchor.removeClass('hiddenItm');
 
 					photoDiv.addClass('p-profilePhoto').removeClass('p-profPict');
 
@@ -696,7 +798,7 @@ $(function(){
 
 					miniCameraIcon.addClass('hiddenItm');
 					headerCameraIcon.addClass('hiddenItm');
-					editPencil.addClass('hiddenItm');
+					editProfileAnchor.addClass('hiddenItm');
 
 					photoDiv.removeClass('p-profilePhoto').addClass('p-profPict');
 
@@ -717,7 +819,7 @@ $(function(){
 				//aparecer botón
 				miniCameraIcon.addClass('hiddenItm');
 				headerCameraIcon.addClass('hiddenItm');
-				editPencil.addClass('hiddenItm');
+				editProfileAnchor.addClass('hiddenItm');
 				photoDiv.removeClass('p-profilePhoto').addClass('p-profPict');
 
 				(membershipDateCounter.hasClass('hiddenItm')) ? null : membershipDateCounter.addClass('hiddenItm');
@@ -732,7 +834,7 @@ $(function(){
 
 		filterSelect.change(function(){
 			var val = $(this).val();
-			selectClick = false;
+			
 			$('div.garageImgCont').each(function(idx, el){
 
 				if($(el).hasClass(val)){

@@ -40,7 +40,6 @@ body {
   border-color: #262626;
   text-align: right;
   color: #fff;
-  z-index: 10;
 }
 .form-signin input[type="email"] {
   border-bottom-right-radius: 0;
@@ -48,7 +47,6 @@ body {
   border-color: #262626;
   text-align: right;
   color: #fff;
-  z-index: 10;
 }
 
 .validarEmail, .validarEmail:hover{
@@ -63,7 +61,6 @@ body {
   border-color: #262626;
   text-align: right;
   color: #fff;
-  z-index: 10;
 }
 
 #inputcontacto {
@@ -76,7 +73,6 @@ body {
   width: 100%;
   padding: 25px 0px 0px 12px;
   color: #fff;
-  z-index: 10;
 }
 
 select{

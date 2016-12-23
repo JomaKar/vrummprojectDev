@@ -22,6 +22,9 @@ body
 .hiddenItm
 	display none !important
 	
+.noMxWidth
+	max-width none !important
+	
 .noBrd
 	border hidden !important
 	
@@ -32,10 +35,10 @@ body
 	color $regActiveBtn !important
 	
 .defaultPointer
-	cursor default
+	cursor default !important
 
 button.shareVrumm
-	padding 0
+	padding 10px 15px
 	color whitesmoke
 	background-color transparent
 	border hidden
@@ -53,6 +56,9 @@ button.shareVrumm
 	min-height 40px !important
 	box-sizing content-box
 	background-color $navbarBack !important
+	
+	&.downBrd
+		border-bottom 1px solid
 	
 	&.noBacKBtn
 		div
@@ -133,6 +139,9 @@ button.shareVrumm
 					
 							
 @media(min-width 768px)
+	button.shareVrumm
+		padding 0
+		
 	.myNavBar
 		div
 			.navbarBackBtn

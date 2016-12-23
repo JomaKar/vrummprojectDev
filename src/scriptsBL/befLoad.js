@@ -85,6 +85,42 @@ function start() {
 
     }
 
+    if(myLocation === "/web/perfil/configuracion" ||  myLocation === "/web/perfil/configuracion.html"){
+      //console.log('im in config')
+        if(localStorage.getItem('aUsr') !== null && localStorage.getItem('aUsr') !== undefined){
+
+          var usrId = parseInt(localStorage.getItem('aUsr'));
+
+          if(sessionStorage.getItem('currentUserInfo') !== null && sessionStorage.getItem('currentUserInfo') !== undefined){
+              
+              var usrStored = JSON.parse(sessionStorage.getItem('currentUserInfo'));
+              var usrIdStored = parseInt(usrStored.id);
+
+              (usrId === usrIdStored) ? null : getUserInfo(usrId, 'id');
+
+          }else{
+              getUserInfo(usrId, 'id');
+          }
+
+        //technically, here says, if theres no a logged user, go back, to the visitted profile or to the landing page.
+        }else{
+          
+          if(queriesT.al !== null && queriesT.al !== undefined){
+            navigating(`perfil/?al=${queriesT.al}`);
+          }else{
+
+              if(sessionStorage.getItem('currentUserAlias') !== null && sessionStorage.getItem('currentUserAlias') !== undefined){
+                  navigating(`perfil/?al=${sessionStorage.getItem('currentUserAlias')}`); 
+              }else{
+                navigating('home');
+              }
+
+          }
+
+        }
+
+    }
+
 
     if(myLocation === "/web/catalogo/index.html" || myLocation === "/web/catalogo/index" || myLocation === "/web/catalogo/"){
         var brandsStored = sessionStorage.getItem('catalogBrands'),
@@ -235,7 +271,32 @@ function start() {
 
 
 function getUserInfo(idOrAl, type) {
+
   var data = (type === 'al') ? {alias: idOrAl} : {idUsr: idOrAl};
+  console.log(localStorage.getItem('visitedUsrs'));
+  if(type=== 'al'){
+
+      if(localStorage.getItem('visitedUsrs') !== null && localStorage.getItem('visitedUsrs') !== undefined){
+
+          var users = JSON.parse(localStorage.getItem('visitedUsrs'));
+
+          users.forEach(function(objItm, objIdx){
+              //console.log(idOrAl, objItm.al, 'bfl');
+              if(idOrAl == objItm.al){
+                  var device = sessionStorage.getItem('deviceId');
+
+                  if(device !== undefined && device !== null){
+                      var dataForGarage = {idUsr: objItm.id, device: sessionStorage.getItem('deviceId')};
+                      dataForGarage = JSON.stringify(dataForGarage);
+                      sendPostToGet('garage/listar', dataForGarage, 'usrGrg');
+
+                  }
+              }
+          });
+
+      }
+  }
+
   data = JSON.stringify(data);
 
   sendPostToGet('usuario/info', data, 'usrInfoToGet');

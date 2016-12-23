@@ -2,7 +2,8 @@ import {con} from './commonFunc/consoling.js';
 
 $(function(){
 	var refInput = $('input#referido'),
-	posFrList = $('ul.posibleFriendsList'), 
+	posFrList = $('ul.posibleFriendsList'),
+	friendsList = posFrList.children('li'),
 	togglingFrList = 0, 
 	friends,
 	noFriendMsg = $('div.errorFriendNick');
@@ -12,9 +13,19 @@ $(function(){
 	}
 
 	$(document).ready(function(){
-
-		posFrList.css({ height: 0, border: 0, width: 380});
+		listWidth();
 	});
+
+	$(window).resize(function(){
+		listWidth();
+	});
+
+	function listWidth(){
+		var referedWidth = refInput.outerWidth();
+
+		posFrList.css({ height: 0, border: 0, width: referedWidth});
+		friendsList.outerWidth(referedWidth);
+	}
 
 	refInput.on('keyup', function(e){
 

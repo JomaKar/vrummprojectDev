@@ -157,7 +157,9 @@ $(function(){
 		function upDown975() {
 		
 			var wWidth = $(window).width();
-			con(wWidth);
+			var outWidth = $(window).outerWidth();
+			console.log(wWidth, 'windowWidth');
+			console.log(outWidth, 'outerWidth');
 
 			if(wWidth < 481){
 				garageImgCont.addClass('col-xs-12').removeClass('col-xs-6');
