@@ -93,10 +93,12 @@ function start() {
 
           if(sessionStorage.getItem('currentUserInfo') !== null && sessionStorage.getItem('currentUserInfo') !== undefined){
               
-              var usrStored = JSON.parse(sessionStorage.getItem('currentUserInfo'));
+              var usrStored = JSON.parse(sessionStorage.getItem('currentUserInfo'))[0];
               var usrIdStored = parseInt(usrStored.id);
+              
+              //console.log('perfil/config', usrId, usrIdStored, usrStored);
 
-              (usrId === usrIdStored) ? null : getUserInfo(usrId, 'id');
+              (usrId !== usrIdStored) ? (getUserInfo(usrId, 'id'), sessionStorage.removeItem('currentUserInfo')) : null;
 
           }else{
               getUserInfo(usrId, 'id');
@@ -273,7 +275,7 @@ function start() {
 function getUserInfo(idOrAl, type) {
 
   var data = (type === 'al') ? {alias: idOrAl} : {idUsr: idOrAl};
-  console.log(localStorage.getItem('visitedUsrs'));
+  console.log(localStorage.getItem('visitedUsrs'), idOrAl);
   if(type=== 'al'){
 
       if(localStorage.getItem('visitedUsrs') !== null && localStorage.getItem('visitedUsrs') !== undefined){
@@ -282,7 +284,7 @@ function getUserInfo(idOrAl, type) {
 
           users.forEach(function(objItm, objIdx){
               //console.log(idOrAl, objItm.al, 'bfl');
-              if(idOrAl == objItm.al){
+              if(idOrAl == objItm.al || idOrAl == objItm.id){
                   var device = sessionStorage.getItem('deviceId');
 
                   if(device !== undefined && device !== null){

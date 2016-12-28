@@ -262,7 +262,7 @@ $(function(){
 
 				if(idTxt !== undefined && idTxt !== null && idTxt.length > 0){
 					idTxt = idTxt.toString();					
-					sessionStorage.setItem("id", idTxt);
+					sessionStorage.setItem("idPsFriend", idTxt);
 				}
 				
 				return true;
@@ -363,7 +363,7 @@ $(function(){
 
 				}else{
 					if(field.name === 'refered_by'){
-						values[field.name] = sessionStorage.getItem('id');
+						values[field.name] = sessionStorage.getItem('idPsFriend');
 					}else if(field.name === 'tags'){
 						values[field.name] = field.value + ', ' + values.alias + ', '+ values.email + ', '+ values.nombre;
 					}else{
@@ -402,7 +402,7 @@ $(function(){
 		
 		localStorage.clear();
 
-		var sess = ['cUsrA', 'currentUserId', 'currentUserInfo'];
+		var sess = ['currentUserId', 'currentUserInfo', 'idPsFriend', 'currentUserAlias', 'currentUserGarage', 'infoChange', 'contactChange', 'passwordChange'];
 
 		$.map(sess, function(arrItm, indx){
 			console.log(arrItm)

@@ -5,6 +5,8 @@ import {queriesT, hashesExist} from './urlEncoder.js';
 
 //urlEnd inticate where to go
 
+var editChangeSpan = $('#successEditProfile').find('span.datoDetail');
+
 export function sendPostToGo(urlEnd, data, whereTo){
 	//console.log('from sendPostToGo', data);
 	console.log(data, 'from sendToGo processor', whereTo);
@@ -143,10 +145,17 @@ export function sendPostToGet(urlEnd, data, flag){
 			        sendPostToGet('garage/listar', dataForGarage, 'usrGrg');
 
 			    }
+				
+				var indexOfUser = -1;
 
 				var users = (localStorage.getItem('visitedUsrs') !== null && localStorage.getItem('visitedUsrs') !== undefined) ? JSON.parse(localStorage.getItem('visitedUsrs')) : [];
 				
-				var indexOfUser = users.indexOf({'al': usrA, 'id': userId});
+				users.forEach(function(itm, idx){
+					var someId = parseInt(itm.id);
+					if(someId === userId){
+						indexOfUser = idx;
+					}
+				});
 
 				if(indexOfUser === -1){
 
@@ -180,9 +189,17 @@ export function sendPostToGet(urlEnd, data, flag){
 				var usrA = userInfo[0].alias;
 				var userId = userInfo[0].id;
 
+				var indexOfUser = -1;
+
 				var users = (localStorage.getItem('visitedUsrs') !== null && localStorage.getItem('visitedUsrs') !== undefined) ? JSON.parse(localStorage.getItem('visitedUsrs')) : [];
+
+				users.forEach(function(itm, idx){
+					var someId = parseInt(itm.id);
+					if(someId === userId){
+						indexOfUser = idx;
+					}
+				});
 				
-				var indexOfUser = users.indexOf({'al': usrA, 'id': userId});
 
 				if(indexOfUser === -1){
 
@@ -252,12 +269,24 @@ export function sendPostToGet(urlEnd, data, flag){
 					}
 					
 				}
+			
 			}else if(flag === 'usrContact'){
 				//console.log('trying to change profila photo', res);
 
 				if(res.estado === 1){
 
+					$('input.referidoEdit').attr('readonly', true);
+
 					//console.log('success', res.mensaje);
+
+					localStorage.setItem('contactChange', 'y');
+
+					if(localStorage.getItem('passwordChange') !== null && localStorage.getItem('passwordChange') !== undefined){
+						(localStorage.getItem('infoChange') !== null && localStorage.getItem('infoChange') !== undefined) ? editChangeSpan.text('contraseña, nuevo contacto de referencia e información general se ha guardado') : editChangeSpan.text('contraseña y nuevo contacto de referencia se han guardado. Pero la demás información no');
+					}else{
+						(localStorage.getItem('infoChange') !== null && localStorage.getItem('infoChange') !== undefined) ? editChangeSpan.text('nuevo contacto de referencia e información general se ha guardado') : editChangeSpan.text('nuevo contacto de referencia se ha guardado. Pero la demás información no');
+					}
+
 
 					if(sessionStorage.getItem('temptyNewContact') !== null && sessionStorage.getItem('temptyNewContact') !== undefined){
 						var contactNew = sessionStorage.getItem('temptyNewContact');
@@ -280,12 +309,91 @@ export function sendPostToGet(urlEnd, data, flag){
 						
 					}
 					
+				}else{
+					console.log(res);
 				}
-			}
-			else if(flag === 'usrFullEdit'){
+			
+			}else if(flag === 'usrPass'){
 
-			}
-			else if(flag === 'brands' && res.estado === 1){
+				if(res.estado === 1){
+					localStorage.setItem('passwordChange', 'y');
+
+					if(localStorage.getItem('contactChange') !== null && localStorage.getItem('contactChange') !== undefined){
+						(localStorage.getItem('infoChange') !== null && localStorage.getItem('infoChange') !== undefined) ? editChangeSpan.text('contraseña, nuevo contacto de referencia e información general se ha guardado') : editChangeSpan.text('contraseña y nuevo contacto de referencia se han guardado. Pero no la demás información');
+					}else{
+						(localStorage.getItem('infoChange') !== null && localStorage.getItem('infoChange') !== undefined) ? editChangeSpan.text('contraseña e información general se ha guardado') : editChangeSpan.text('contraseña se ha guardado. Pero no la demás información');
+					}
+				}
+
+			}else if(flag === 'usrFullEdit'){
+				
+				if(res.estado === 1){
+					
+					localStorage.setItem('infoChange', 'y');
+
+
+					if(localStorage.getItem('contactChange') !== null && localStorage.getItem('contactChange') !== undefined){
+						(localStorage.getItem('passwordChange') !== null && localStorage.getItem('passwordChange') !== undefined) ? editChangeSpan.text('contraseña, nuevo contacto de referencia e información general se ha guardado') : editChangeSpan.text('nuevo contacto de referencia e información se han guardado');
+					}else{
+						(localStorage.getItem('passwordChange') !== null && localStorage.getItem('passwordChange') !== undefined) ? editChangeSpan.text('contraseña e información general se ha guardado') : editChangeSpan.text('información general se ha guardado');
+					}
+
+					$('div#successEditProfile').modal();
+
+
+					if(sessionStorage.getItem('currentUserInfo') !== null && sessionStorage.getItem('currentUserInfo') !== undefined){
+						var usrString = sessionStorage.getItem('currentUserInfo');
+						var usrNow = JSON.parse(usrString);
+						var newData = JSON.parse(datos);
+
+						console.log('actFullBef', newData, usrNow);
+
+						if($.isArray(usrNow)){
+							if(usrNow.length > 0){
+								var usrOb = usrNow[0];
+
+								var datosToChange = ['fecha_nac', 'foto_perfil', 'full_name', 'genero', 'materno', 'paterno', 'nombre', 'tags'];
+
+								$.each(datosToChange, function(i, itm){
+									if(itm === 'full_name'){
+										usrOb[itm] = `${newData.nombre} ${newData.paterno} ${newData.materno}`;
+									}else if(itm === 'fecha_nac'){
+										usrOb[itm] = newData.fecha_nacimiento;
+									}else if(itm === 'foto_perfil'){
+										usrOb[itm] = newData.foto;
+									}else{
+										usrOb[itm] = newData[itm];
+									}
+								});
+
+								usrNow[0] = usrOb;
+							}
+						}else if((typeof usrNow === "object") && (usrNow !== null)){
+							var datosToChange = ['fecha_nac', 'foto_perfil', 'full_name', 'genero', 'materno', 'paterno', 'nombre', 'tags'];
+
+								$.each(datosToChange, function(i, itm){
+									if(itm === 'full_name'){
+										usrNow[itm] = `${newData.nombre} ${newData.paterno} ${newData.materno}`;
+									}else if(itm === 'fecha_nac'){
+										usrNow[itm] = newData.fecha_nacimiento;
+									}else if(itm === 'foto_perfil'){
+										usrNow[itm] = newData.foto;
+									}else{
+										usrNow[itm] = newData[itm];
+									}
+								});
+						}
+
+						//console.log('actFullAft', usrNow);
+
+						usrNow = JSON.stringify(usrNow);
+
+						sessionStorage.setItem('currentUserInfo', usrNow);
+					}
+
+				}
+
+			}else if(flag === 'brands' && res.estado === 1){
 
 				var brands = res.mensaje.rs;
 		        brands = JSON.stringify(brands);
