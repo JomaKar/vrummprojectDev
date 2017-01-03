@@ -14,20 +14,23 @@ $(function(){
 			var versions = [];
 
 		//DOM variables
-		var theCarousel = $('div.versionsCarousel');
-		var versionDetailCont = $('div.versionDetailCont');
-		var versionsArrows = $('span.versionArrow');
-
+		const theCarousel = $('div.versionsCarousel'),
+		versionDetailCont = $('div.versionDetailCont'),
+		versionsArrows = $('span.versionArrow');
 		//spans with version index number, in compare version bar
 
-		var versionRecognizerGroup = $('div.versionRecognizerGroup');
-		var spanNum = $('span.versionNum');
-		var spanTotal = $('span.versionTotal');
-		var isGarageImg = $('#btnAddToGarage img.isGarage');
-		var addGarageBtn = $('a#btnAddToGarage');
-		var addToGrgMsg = $('span.addToGrgMsg');
-		var addToCmpMsg = $('span.addToCmpMsg');
-		var addGrgList = $('ul.addToGarage');
+		const versionRecognizerGroup = $('div.versionRecognizerGroup'),
+		spanNum = $('span.versionNum'),
+		spanTotal = $('span.versionTotal'),
+		isGarageImg = $('#btnAddToGarage img.isGarage'),
+		addGarageBtn = $('a#btnAddToGarage'),
+		addToGrgMsg = $('span.addToGrgMsg'),
+		addToCmpMsg = $('span.addToCmpMsg'),
+		addGrgList = $('ul.addToGarage'),
+		
+		metaTitle = $('meta.metaTitle'),
+		metaDescrip = $('meta.metaDescrip'),
+		metaImg = $('meta.metaImg');
 
 		var compareGroup = $('div.compareGroup.specificVersion');
 
@@ -148,12 +151,34 @@ $(function(){
 			sizeCarousel();
 			displayCarousel();
 			selectVersion(null);
+			displayTecnichCard();
 		}
 
 		$(window).resize(function(){
 			sizeCarousel();
 		});
 
+
+		function displayTecnichCard() {
+			const infoCont = $('ul.fichaRenglon').children('li');
+
+
+
+			infoCont.map(function(idx, ele){
+
+				var classList = $(ele).attr('class').split(/\s+/);
+				$.each(classList, function(index, item) {
+				    if (item.search('pct') !== -1) {
+
+				        var perc = classList[index].substring(3);
+
+				        $(ele).css({
+				        	width: `${perc}%`
+				        })
+				    }
+				});
+			})
+		}
 
 
 		function displayCarousel() {
@@ -174,6 +199,9 @@ $(function(){
 
 			}
 
+			metaImg.attr('content', imgs[0]);
+
+			theCarousel.find('div.sk-circle').remove();
 
 			$(theCarousel).css({
 				'background-image': `url(${imgs[0]})`
@@ -320,8 +348,8 @@ $(function(){
 		function throwInfo(info) {
 
 			//need to be deleted
-			$('div.fichaTecnicaDetail').empty();
-			$('div.fichaCat').empty();
+			/*$('div.fichaTecnicaDetail').empty();
+			$('div.fichaCat').empty();*/
 			//til here
 			var actualCat = info[0].tab;
 
@@ -329,14 +357,9 @@ $(function(){
 			
 			info.forEach(function(itm, idx){
 
-				if(idx === 0){
-					var cat = `<div class="${itm.tab} fichaCat">
-									<h2>${itm.tab}</h2>
-								</div>`;
-					versionDetailCont.append(cat);
-					//console.log(actualCat, itm.tab);
+				//this makes a div for every tab that actually is not considered
 
-				}else if(itm.tab !== actualCat && !versionDetailCont.find(`div.${itm.tab}`).length){
+				if(itm.tab !== actualCat && !versionDetailCont.find(`div.${itm.tab}`).length){
 					actualCat = itm.tab;
 					var cat = `<div class="${actualCat} fichaCat">
 									<h2>${actualCat}</h2>
@@ -344,9 +367,43 @@ $(function(){
 					versionDetailCont.append(cat);
 				}
 
+				//this throw the info in the corresponding tab
+
 				if(itm.dato !== null && itm.dato !== undefined){
-					var plainText = `<p class="${itm.tab}">${itm.valor} : ${itm.dato}</p>`
-					versionDetailCont.find(`div.${itm.tab}`).append(plainText);
+					if(versionDetailCont.find(`div.${itm.tab}`).find(`li.dato${itm.dato}`).length){
+						if(!versionChange){
+							versionDetailCont.find(`div.${itm.tab}`).find(`li.dato${itm.dato}`).children('p.datoVal').empty().text(itm.valor);
+
+						}else{
+
+							//take off diffData class before determining if the info has change or not
+
+							versionDetailCont.find(`div.${itm.tab}`).find(`li.dato${itm.dato}`).children('p.datoVal').removeClass('diffData');
+
+							//get the data already stored there to contrast
+							var newData = itm.valor;
+							var lastData = versionDetailCont.find(`div.${itm.tab}`).find(`li.dato${itm.dato}`).children('p.datoVal').text();
+
+							//adding the new text
+
+							versionDetailCont.find(`div.${itm.tab}`).find(`li.dato${itm.dato}`).children('p.datoVal').empty().text(itm.valor);
+
+							//contrasting the data and adding 'diffData' class if any change has been detected and is inside an active tab
+
+							if(newData !== lastData) {
+								var activeOrnot = versionDetailCont.find(`div.${itm.tab}`);
+
+								(activeOrnot.hasClass('active')) ? activeOrnot.find(`li.dato${itm.dato}`).children('p.datoVal').addClass('diffData') : null;
+							}
+						}
+					}else{
+						var plainText = `<p class="${itm.tab}">${itm.valor} : ${itm.dato}</p>`;
+
+						($(`p.${itm.tab}`).length) ? $(`p.${itm.tab}`).empty().text(`${itm.valor} : ${itm.dato}`) : versionDetailCont.find(`div.${itm.tab}`).append(plainText);
+					}
+
+				}else{
+					con(itm.dato);
 				}
 			});
 		}
@@ -397,12 +454,12 @@ $(function(){
 	    
 	    isGarageImg.click(function(){
 
-	    	(localStorage.getItem('aUsr') !== null && localStorage.getItem('aUsr') !== undefined) ? null : alert('Loguéate para añadir coches a tu garage');
+	    	(localStorage.getItem('aUsr') !== null && localStorage.getItem('aUsr') !== undefined) ? null : $('div#failLog').modal();
 
 	    });
 
 	    compareGroup.click(function(e) {
-			(localStorage.getItem('aUsr') !== null && localStorage.getItem('aUsr') !== undefined) ? addToComparator(localStorage.getItem('aUsr')) : alert('Loguéate para añadir coches a tu comparador');	    	
+			(localStorage.getItem('aUsr') !== null && localStorage.getItem('aUsr') !== undefined) ? addToComparator(localStorage.getItem('aUsr')) : $('div#failLog').modal();
 	    });
 
 	    function addToComparator(id){
@@ -448,6 +505,8 @@ $(function(){
 			var brandURL = version.pic_marca;
 			var modelName = (localStorage.getItem('modelName') !== null) ? localStorage.getItem('modelName') : version.model_name;
 			
+			sessionStorage.setItem('currentBrandAutos', versions[0].brand_id);
+			localStorage.setItem('modelPrice', `${versions[0].starting_price} - ${versions[versions.length - 1].starting_price}`);
 			sessionStorage.setItem('currentBrandImg', version.pic_marca);
 			localStorage.setItem('modelName', version.model_name);
 
@@ -477,6 +536,10 @@ $(function(){
 				'background-image': `url(${brandURL})`
 			});
 
+
+			metaTitle.attr('content', `Checa el ${modelName} en Vrumm`);
+			metaDescrip.attr('content', `Vrumm te permite ver todos los autos del mercado mexicano, como el ${modelName}`);
+			
 			modelNameSpan.text(modelName);
 			modelPrcSpan.text(modelPrice);
 			versionNameP.text(versionName);

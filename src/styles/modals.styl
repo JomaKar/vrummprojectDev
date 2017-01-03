@@ -1,0 +1,65 @@
+@import 'colors.styl'
+.modal-dialog
+	width 100%
+	
+	.modal-content
+		&.custom
+			border 1px solid $regTextColor
+			color white
+			font-size 22px
+			min-height 321px
+			margin auto
+			width 50%
+			border-radius 5px
+			display flex
+			flex-direction column
+			justify-content space-around
+			background-color black
+			
+			.modal-header
+				background-color transparent
+				min-height 30%
+				border-bottom hidden
+				
+				.close
+					opacity 1
+					
+					i.fa-times
+						color white
+						opacity 1
+						text-shadow none
+						font-weight 100
+						
+						&:hover
+							color white
+							opacity 1
+							text-shadow none
+							font-weight 100
+							
+						&:focus
+							color white
+							opacity 1
+							text-shadow none
+							font-weight 100
+				
+			.modal-body
+				background-color transparent
+				min-height 30%
+
+			.modal-footer
+				border-top hidden
+				min-height 30%
+				
+				button.modalBtn
+					background-color $regActiveBtn
+					border-color $regActiveBtn
+					text-align center
+					
+					&:focus
+						background-color $regActiveBtn
+						border-color $regActiveBtn
+						
+						&:hover
+							background-color $regActiveBtn
+							border-color $regActiveBtn
+					

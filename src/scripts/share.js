@@ -4,18 +4,20 @@ $(function(){
     sharePage = $('span.sharePage'),
     sharePageSVG = $('svg.sharePage'),
     modalShare = $('div#modal-share'),
+    copyClipboard = $('a#copy-to-clipboard'),
     profilePict = $('div#profilePict'),
     versionsCarousel = $('div.versionsCarousel'),
     shareButtonFB = $('a.shareButtonFB'),
     metaTitle = $('meta.metaTitle'),
     metaDescrip = $('meta.metaDescrip'),
-    metaImg = $('meta.metaImg');
+    metaImg = $('meta.metaImg'),
+    successClip = $('div.modalClipboard');
 
     var hrefUrl = '';
     var linkTitle = '';
     var linkDescrip = 'En Vrumm podrás encontrar los mejores autos del mercado en México';
     var linkImg = '';
-    var image = '';
+    var imageToSend = '';
 
     var sharePageDo = false;
     var shareLinkDo = false;
@@ -24,39 +26,53 @@ $(function(){
 
     sharePage.click(openShare);
 
+    $(document).on('click', 'a.shareVrumm', function(){
+        openShare();
+    });
+
+    $(document).on('click', 'button.shareVrumm', function(){
+        openShare();
+    });
+
     function openShare(){
         modalShare.modal();
 
         var cssImg = (profilePict.length) ? profilePict.css('background-image') : versionsCarousel.css('background-image');
 
-        console.log(profilePict, cssImg);
 
         var idxFQuote = cssImg.indexOf('"') + 1;
         var idxLQuote = cssImg.lastIndexOf('"');
 
         //defining the actual image visible in carousel
 
-        image = cssImg.substring(idxFQuote, idxLQuote);
+        imageToSend = cssImg.substring(idxFQuote, idxLQuote);
+
+        //console.log(profilePict, image);
 
         sharePageDo = true;
-
     }
 
     $(document).on('click', 'svg.shareLink', function(){
-        alert('click')
+        //alert('click')
         var el = $(this);
         var container = el.closest('div.garageImgCont');
+        var modelName = container.find('span.garageModelName').text();
+        
+        linkDescrip += `, como el ${modelName}`;
         hrefUrl = container.find('a').attr('href');
-        linkTitle = `Checa el ${container.find('span.garageModelName').text()} en Vrumm`;
+
+        linkTitle = `Checa el ${modelName} en Vrumm`;
         linkImg = container.find('img.garageImg').attr('src');
+        //console.log('llinkShare', linkImg, hrefUrl, linkTitle, linkDescrip);
         shareLinkDo = true;
+        modalShare.modal();
     });
 
     shareButtonFB.click(function(){
 
         if(sharePageDo){
             
-            fbShare(window.location.href, metaTitle.attr('content'), metaDescrip.attr('content'), image, 550, 500);
+            fbShare(window.location.href, metaTitle.attr('content'), metaDescrip.attr('content'), imageToSend, 550, 500);
             sharePageDo = false;
         
         }else if(shareLinkDo){
@@ -68,10 +84,23 @@ $(function(){
 
     metaUrl.attr('content', window.location.href);
 
+    copyClipboard.click(function(){
+        (sharePageDo) ? copyToClipboard(window.location.href) : copyToClipboard(hrefUrl);
+    });
+
     function fbShare(url, title, descr, image, winWidth, winHeight) {
+        console.log('fbShare', url, title, descr, image);
+
+        var urlIdx = url.indexOf('/web');
+
+        url = `http://vrummapp.net/web${url.slice(urlIdx + 4)}`;
+
         var winTop = (screen.height / 2) - (winHeight / 2);
         var winLeft = (screen.width / 2) - (winWidth / 2);
-        window.open('http://www.facebook.com/sharer.php?s=100&p[title]=' + title + '&p[summary]=' + descr + '&p[url]=' + url + '&p[images][0]=' + image, 'sharer', 'top=' + winTop + ',left=' + winLeft + ',toolbar=0,status=0,width=' + winWidth + ',height=' + winHeight);
+
+        //window.open('https://www.facebook.com/sharer/sharer.php?u=' + url, title, 'width=' + winWidth + ', height=' + winHeight);
+        window.open('http://www.facebook.com/sharer.php?s=100&p[title]=' + title + '&p[summary]=' + descr + '&p[images][0]=' + image, 'sharer', 'top=' + winTop + ',left=' + winLeft + ',toolbar=0,status=0,width=' + winWidth + ',height=' + winHeight);
+        modalShare.modal('hide'); 
     }
 
 
@@ -81,7 +110,19 @@ $(function(){
         $temp.val(textToCopy).select();
         document.execCommand("copy");
         $temp.remove();
-        alert('Copied to clipboard')
+        console.log(textToCopy);
+        
+        //modalShare.modal('hide');
+        
+        successClip.animate({
+            opacity: 1,
+            right: '18px'
+        }, 500)
+        .delay(1000)
+        .animate({
+            opacity: 0,
+            right: '-200px'
+        }, 500);
     }
 
 

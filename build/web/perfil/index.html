@@ -154,11 +154,12 @@
       <div class="row-fluid noPadding childHeight mainFooter">
           
       </div>
+
       <div class="modal fade" id="successComparador" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm">
-            <div class="modal-content">
+            <div class="modal-content custom">
                 <div class="modal-header modal-header-success">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></button>
                     <h3>
                       <img src="../img/tab_ic_catalogo@1x.png" alt="">&nbsp;&nbsp;Agregado al Comparador
                     </h3>
@@ -167,54 +168,75 @@
                   <p class="text-center">Su selección ha sido agregada al Comparador</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-success btn-block" data-dismiss="modal">Aceptar</button>
+                    <button type="button" class="btn btn-success btn-block modalBtn" data-dismiss="modal">Aceptar</button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
       </div>
 
       <div class="modal fade" id="modal-share" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-            <div class="modal-dialog modal-share" role="document">
-                <div class="modal-content">
-                    <div class="modal-body">
+          <div class="modal-dialog modal-share" role="document">
+              <div class="modal-content">
+                  <div class="modalClipboard">
+                      <p class="txt">
+                        Enlace correctamente copiado
+                      </p>
+                  </div>
+                  <div class="modal-body">
 
-                        <div class="container-fluid">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <h1 class="text-right"><a href="#" data-dismiss="modal">&times;</a></h1>
-                                    <h4><strong>Invita a tus amigos a Vrumm y, por cada amigo que se registre, puedes ganar hasta 500 puntos Vrumm.</strong></h4>
-                                    <p>Ingresa las direcciones de correo electrónico de los amigos que deseas invitar</p>
-                                    <form id="invitation-form" method="post" action="send-invitation.php">
-                                        <div class="form-group">
-                                            <input type="text" name="addresses" id="tokenfield" class="form-control">
-                                        </div>
-                                        <div class="form-group">
-                                            <button type="submit" class="btn btn-primary btn-block" id="btn-send-invitation">Enviar</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <h4><strong>Otras formas de invitar a tus amigos.</strong></h4>
-                                </div>
-                                <div class="col-md-6">
-                                    <a href="" class="btn btn-share shareButtonFB" id="facebook-share">
-                                        Facebook
-                                    </a>
-                                </div>
-                                <div class="col-md-6" id="col-share">
-                                    <a href="javascript:copyToClipboard('Hola Mundo')" class="btn btn-share" id="copy-to-clipboard">
-                                        Copia el enlace y envíalo a tus amigos<br>por el medio que quieras
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        
-                    </div>
+                      <div class="container-fluid">
+                          <div class="row">
+                              <div class="col-md-12">
+                                  <h1 class="text-right"><a href="#" data-dismiss="modal">&times;</a></h1>
+                                  <h4><strong>Invita a tus amigos a Vrumm y, por cada amigo que se registre, puedes ganar hasta 500 puntos Vrumm.</strong></h4>
+                                  <p>Ingresa las direcciones de correo electrónico de los amigos que deseas invitar</p>
+                                  <form id="invitation-form" method="post" action="send-invitation.php">
+                                      <div class="form-group">
+                                          <input type="text" name="addresses" id="tokenfield" class="form-control">
+                                      </div>
+                                      <div class="form-group">
+                                          <button type="submit" class="btn btn-primary btn-block" id="btn-send-invitation">Enviar</button>
+                                      </div>
+                                  </form>
+                              </div>
+                          </div>
+                          <div class="row">
+                              <div class="col-md-12">
+                                  <h4><strong>Otras formas de invitar a tus amigos.</strong></h4>
+                              </div>
+                              <div class="col-md-6">
+                                  <a class="btn btn-share shareButtonFB" id="facebook-share">
+                                      Facebook
+                                  </a>
+                              </div>
+                              <div class="col-md-6" id="col-share">
+                                  <a class="btn btn-share" id="copy-to-clipboard">
+                                      Copia el enlace y envíalo a tus amigos<br>por el medio que quieras
+                                  </a>
+                              </div>
+                          </div>
+                      </div>
+                      
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      <div class="modal fade" id="failLog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+          <div class="modal-dialog modal-sm">
+              <div class="modal-content custom">
+                <div class="modal-header modal-header-success">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></button>
                 </div>
-            </div>
-        </div>
+                <div class="modal-body">
+                  <p class="text-center">Necesitas estar logueado para realizar esa acción</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success btn-block modalBtn" data-dismiss="modal">Aceptar</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+      </div>
 
     </div> 
     <script src="../js/lib/bootstrap.js"></script>

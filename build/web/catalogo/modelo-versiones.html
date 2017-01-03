@@ -11,10 +11,10 @@
     <!-- Facebook sharing metas -->
     <meta class="metaLoc" property="og:locale" content="es_MX" />
     <meta class="metaType" property="og:type" content="product.item" />
-    <meta class="metaDescrip" property="og:description" content="Checa este auto en Vrumm/" />
+    <meta class="metaDescrip" property="og:description" content="Vrumm te permite ver todos los autos del mercado mexicano" />
     
     <meta class="metaUrl toEdit" property="og:url" content="http://www.vrumm.com/web/catalogo/" />
-    <meta class="metaTitle toEdit" property="og:title" content="" />
+    <meta class="metaTitle toEdit" property="og:title" content="Checa este auto en Vrumm" />
     <meta class="metaImg toEdit" property="og:image" content="" />
     
     <title>Modelos Vrumm</title>
@@ -46,6 +46,21 @@
                 <div class="versionsCarousel backImg col-xs-12 noPadding">
                     <span class="currentVersionId hiddenItm"></span>
                     
+                    <div class="sk-circle" style="color: whitesmoke;">
+                      <div class="sk-circle1 sk-child"></div>
+                      <div class="sk-circle2 sk-child"></div>
+                      <div class="sk-circle3 sk-child"></div>
+                      <div class="sk-circle4 sk-child"></div>
+                      <div class="sk-circle5 sk-child"></div>
+                      <div class="sk-circle6 sk-child"></div>
+                      <div class="sk-circle7 sk-child"></div>
+                      <div class="sk-circle8 sk-child"></div>
+                      <div class="sk-circle9 sk-child"></div>
+                      <div class="sk-circle10 sk-child"></div>
+                      <div class="sk-circle11 sk-child"></div>
+                      <div class="sk-circle12 sk-child"></div>
+                    </div>
+
                     <div class="arrowsCont">
                         <span class="glyphicon glyphicon-menu-left leftArr"></span>
                         <span class="glyphicon glyphicon-menu-right rightArr"></span>
@@ -86,8 +101,14 @@
       </div>
 
       <div class="modal fade" id="modal-share" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+
           <div class="modal-dialog modal-share" role="document">
               <div class="modal-content">
+                  <div class="modalClipboard">
+                      <p class="txt">
+                        Enlace correctamente copiado
+                      </p>
+                  </div>
                   <div class="modal-body">
 
                       <div class="container-fluid">
@@ -111,12 +132,12 @@
                                   <h4><strong>Otras formas de invitar a tus amigos.</strong></h4>
                               </div>
                               <div class="col-md-6">
-                                  <a href="" class="btn btn-share shareButtonFB" id="facebook-share">
+                                  <a class="btn btn-share shareButtonFB" id="facebook-share">
                                       Facebook
                                   </a>
                               </div>
                               <div class="col-md-6" id="col-share">
-                                  <a href="javascript:copyToClipboard('Hola Mundo')" class="btn btn-share" id="copy-to-clipboard">
+                                  <a class="btn btn-share" id="copy-to-clipboard">
                                       Copia el enlace y envíalo a tus amigos<br>por el medio que quieras
                                   </a>
                               </div>
@@ -128,10 +149,25 @@
           </div>
       </div>
 
+    <div class="modal fade" id="failLog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog modal-sm">
+          <div class="modal-content custom">
+              <div class="modal-header modal-header-success">
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></button>
+              </div>
+              <div class="modal-body">
+                <p class="text-center">Necesitas estar logueado para realizar esa acción</p>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-success btn-block modalBtn" data-dismiss="modal">Aceptar</button>
+              </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+      </div>
+
       <div class="row-fluid noPadding childHeight mainFooter">
         
       </div>
-
 
     </div> 
         <script src="../js/lib/bootstrap.min.js"></script>

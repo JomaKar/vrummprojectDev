@@ -52,6 +52,11 @@ export function backing(currPage) {
 		destiny: 'home'
 	},
 	{
+		name: ['/web/perfil/configuracion.html', '/web/perfil/configuracion'],
+		parent: 'perfil',
+		destiny: 'perfil'
+	},
+	{
 		name: ['/web/perfil/detalles.html', '/web/perfil/detalles'],
 		parent: 'perfil',
 		destiny: 'perfil'

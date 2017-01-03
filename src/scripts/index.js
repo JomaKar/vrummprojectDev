@@ -3,6 +3,9 @@ import {myLocation, strongRoot, totalRoot, navigating} from './commonFunc/locati
 import {navInfo} from './commonFunc/activeSessionNav.js';
 import {sendPostToGo, sendPostToGet} from './commonFunc/httpProcesor.js';
 import {con} from './commonFunc/consoling.js';
+import {askBrands, theBrand} from './commonFunc/brandsImgs.js';
+
+askBrands();
 
 $(function(){
 	browserFingerprint();
@@ -56,13 +59,19 @@ $(function(){
 
 	});
 
+	const failModal = $('div#failLog');
+
+	$(document).on('click', 'li.disabled', function(){
+		failModal.modal();
+	});
+
 	$(window).resize(function(){
 		//setImgDataAttr();
 	});
 
 
 	$(document).on('click', 'span.navbarBackBtn', function(){
-		con('here');
+		//con('here');
 		backing(myLocation);
 	});
 

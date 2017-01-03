@@ -30,6 +30,19 @@
     border-color: #35cac8;
     font-weight: 400;
 }
+
+.modal-share .btn-primary:hover{
+    background-color: #35cac8;
+    border-color: #35cac8;
+    font-weight: 400;
+}
+
+.modal-share .btn-primary:focus{
+    background-color: #35cac8;
+    border-color: #35cac8;
+    font-weight: 400;
+}
+
 .modal-share .btn-share {
 	display: block;
 	color: #585858;
@@ -50,4 +63,19 @@
 	#modal-share .modal-dialog {
 		width: 800px;
 	}
+}
+
+div.modalClipboard{
+	opacity: 0;
+    background-color: rgba(55, 216, 55, 0.78);
+    position: fixed;
+    border-radius: 7px;
+    padding: 5px;
+    top: 0px;
+    right: -200px;
+    text-align: center;
+    width: 166px;
+    height: 50px;
+    color: #fff;
+    font-size: 14px;
 }

@@ -1,6 +1,9 @@
 import {navigating, myLocation} from '../scripts/commonFunc/locating.js';
 import {queriesT, hashesExist} from '../scripts/commonFunc/urlEncoder.js';
 import {sendPostToGo, sendPostToGet} from '../scripts/commonFunc/httpProcesor.js';
+import {askBrands, theBrand} from '../scripts/commonFunc/brandsImgs.js';
+
+askBrands();
 
 $(document).ready(function(){
   $(this).scrollTop(0);
@@ -50,6 +53,8 @@ function start() {
                     }else{navigating('home');}
                 }else{navigating('home');}
 
+            }else{
+              navigating('home');
             }
 
         }else{
@@ -162,17 +167,25 @@ function start() {
           
           }else if(modelsStored === null || modelsStored === undefined){
 
-            if(hashesExist){
+            if(hashesExist && brandId !== null && brandId !== undefined && brandId !== 'nothing store'){
 
-              (queriesT.brdId = brandId) ? getModelsInfo(brandId) : getModelsInfo(queriesT.brdId);
+              (queriesT.brdId == brandId) ? getModelsInfo(brandId) : getModelsInfo(queriesT.brdId);
             
-            }else{
+            }else if(brandId !== null && brandId !== undefined && brandId !== 'nothing store'){
 
               getModelsInfo(brandId);
 
             }
             
           
+          }else{
+
+            if(hashesExist){
+
+              (queriesT.brdId == brandId) ? null : getModelsInfo(queriesT.brdId);
+            
+            }
+            
           }
 
 

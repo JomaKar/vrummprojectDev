@@ -3,6 +3,8 @@ import {alleGleichlich, sizingModelItms} from './commonFunc/sizingGarageImgs.js'
 import {con} from './commonFunc/consoling.js';
 import {sendPostToGo, sendPostToGet} from './commonFunc/httpProcesor.js';
 import {getVersions} from './commonFunc/getversiones.js';
+import {askBrands, theBrand} from './commonFunc/brandsImgs.js';
+import {queriesT, hashesExist} from './commonFunc/urlEncoder.js';
 
 
 $(function(){
@@ -14,9 +16,9 @@ $(function(){
 
 
 
-		$(document).ready(function(){
+		/*$(document).ready(function(){
 			displayBrand();
-		});
+		});*/
 
 
 		var models = [],
@@ -30,6 +32,21 @@ $(function(){
 
 		}, 5);
 
+		var askBrand = setInterval(function(){
+		
+			var brandImg = theBrand(queriesT.brdId)[0];
+
+			checkBrandImg(brandImg);
+
+		}, 5);
+
+
+		function checkBrandImg(img) {
+			if(img !== null && img !== undefined && img){
+				clearInterval(askBrand);
+				displayBrand(img.pic_url);
+		    }	
+		}
 
 		function checkBrands(argument) {
 			if(argument !== null && argument !== undefined && argument !== 'nothing stored'){
@@ -263,8 +280,16 @@ $(function(){
 			}
 		});
 
-		function displayBrand() {
-			if(sessionStorage.getItem('currentBrandImg') !== null){
+		function displayBrand(img) {
+
+
+			if(img){
+
+				headerBrandImg.css({
+					'background-image': `url(${img})`
+				});
+
+			}else if(!img && sessionStorage.getItem('currentBrandImg') !== null){
 
 				var brandURL = sessionStorage.getItem('currentBrandImg');
 				

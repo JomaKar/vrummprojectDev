@@ -175,5 +175,61 @@
 					
 			
 .fichaTecnicaDetail
-	padding-left 2%
+	padding 2%
 	
+	ul.fichaRenglon
+		display flex
+		justify-content space-between
+		padding-left 0 !important
+		
+		li
+			list-style-type none
+			text-align center
+					
+			.datoVal
+				padding 5px
+				color whitesmoke
+				margin-bottom 2px
+				font-size 12px
+				width 100%
+				
+				&.diffData
+					color $regActiveBtn
+					
+			.titleCont
+				height 35px
+				padding 4px
+				background-color $fichaTecnicaRow
+				font-size 10px !important
+				border-right 1px solid black
+				display flex
+				flex-direction column
+				justify-content center
+				
+				.datoTitle
+					color $fichaTecnicaWords
+					margin auto
+					width 100%
+	
+
+@media(min-width 400px)
+	.fichaTecnicaDetail
+		ul.fichaRenglon
+			li
+				.titleCont
+					font-size 11px
+					
+
+@media(min-width 520px)
+	.fichaTecnicaDetail
+		ul.fichaRenglon
+			li
+				.titleCont
+					font-size 12px
+					
+@media(min-width 800px)
+	.fichaTecnicaDetail
+		ul.fichaRenglon
+			li
+				.titleCont
+					font-size 13px
