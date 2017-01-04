@@ -27,7 +27,8 @@ var config = {
 	  	 './src/scripts/login.js', './src/scripts/catalogBrands.js',
 	  	 './src/scripts/passModalDis.js', './src/scripts/profile.js', 
 	  	 './src/scripts/carVersions.js', './src/scripts/specVersion.js',
-	  	 './src/scripts/editProfile.js', './src/scripts/share.js'],
+	  	 './src/scripts/editProfile.js', './src/scripts/share.js',
+	  	 './src/scripts/breadcrumb.js'],
 	  	watch:'./src/scripts/**/*.js',
 	  	output:'./build/web/js'
 	},

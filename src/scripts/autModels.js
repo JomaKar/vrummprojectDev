@@ -40,12 +40,22 @@ $(function(){
 
 		}, 5);
 
-
+		var askBrandTimes = 0;
 		function checkBrandImg(img) {
-			if(img !== null && img !== undefined && img){
+			if(askBrandTimes < 60){
+
+				setTimeout(function(){
+					if(img !== null && img !== undefined && img){
+						clearInterval(askBrand);
+						displayBrand(img.pic_url);
+				    }	
+					askBrandTimes++;
+				}, 15);
+
+			}else{
 				clearInterval(askBrand);
-				displayBrand(img.pic_url);
-		    }	
+				displayBrand(null);
+			}
 		}
 
 		function checkBrands(argument) {

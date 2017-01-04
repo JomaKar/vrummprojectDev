@@ -7,6 +7,9 @@
 	background-size 100%
 	background-color $regBrd
 	
+	&.autos
+		background-position center
+	
 	.thumbImgsBar
 		position absolute
 		width 100%
@@ -74,11 +77,14 @@
 			
 		.modelDetail
 			margin auto 0
-			display flex
-			justify-content space-between
+			height 78px
 			
 			.mInfoDetail
 				width 100%
+				display flex
+				justify-content space-between
+				flex-direction column
+				height 100%
 				
 				.modelName
 					color white
@@ -102,9 +108,12 @@
 					text-align right
 					padding-right 0px
 					height 10px
+					position relative
 					
 					span, svg
 						cursor pointer
+						position absolute
+						top -12px
 					
 
 .versionDetailRow
