@@ -223,19 +223,74 @@
       </div>
 
       <div class="modal fade" id="failLog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-          <div class="modal-dialog modal-sm">
-              <div class="modal-content custom">
-                <div class="modal-header modal-header-success">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></button>
-                </div>
-                <div class="modal-body">
-                  <p class="text-center">Necesitas estar logueado para realizar esa acción</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-success btn-block modalBtn" data-dismiss="modal">Aceptar</button>
-                </div>
-            </div><!-- /.modal-content -->
+        <div class="modal-dialog modal-sm">
+          
+
+          <div class="modal-content custom">
+              <div class="modal-header modal-header-success">
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></button>
+              </div>
+
+              <div class="modal-body noPadding butVertHalf">
+                  <div class="row-fluid">
+                      <div class="col-xs-6 sectionLogMd logInModalSection">
+                          <p class="mdTxt">Para realizar esa acción debes ingresar a tu cuenta</p>
+                          <p class="subTitle">Ingresa tu e-mail/alias y contraseña para entrar</p>
+                          <form class="form-signin noPadding" id="login">
+                              <div id="r-emailInputGrp" class="form-control myFormContr butVertHalf13">
+
+                                <span id="l-mailLabel" class="UsuarioNombreFijo">E-mail*</span>
+                                <input type="text" id="l-email" name="email" class="form-control"  required >
+                              </div>
+
+
+                              <div id="l-passCont" class="form-control myFormContr childHeight butVertHalf13">
+                                
+                                  <span class="UsuarioNombreFijo">Contraseña*</span>
+                                  <input type="password" id="l-pass" name="passw" class="form-control" required>
+                                
+                              </div>
+                                     
+                            
+                              <div class="errorLogin">Hay un error en el mail o la contraseña</div>
+                              <div class="passRecover">¿Olvidaste tu contraseña?</div>
+                              <div class="loginBtnCont noMargin modalRec centerAlone">
+                                <button class="btn btn-lg cancelarBtn NoleftM NorightM">Cancelar</button>
+                                <button class="btn btn-lg btn-block registrarbtn loginBtn" type="submit"><span id="subBtnNrTxt">Iniciar Sesión</span><span id="subBtnRecTxt">Recuperar</span></button>
+                              </div>
+                          </form>
+                      </div>
+                      <div class="col-xs-6 sectionLogMd signInModalSection">
+                          <p class="mdTxt">¿Aún no tienes una cuenta?</p>
+                          <p class="subTitle">¡Regístrate para navegar, buscar, guardar y comparar vehículos con Vrumm!</p>
+
+                      </div>
+                      <button id="goToReg" class="btn btn-primary redirectLogBtn loginPoint">Regístrate</button>
+                  </div>
+              </div>
+
+          </div>
+
+
         </div><!-- /.modal-dialog -->
+      </div>
+
+      <div class="passModalCont">
+          <div class="recoverPassModal">
+              <span class="closeModal">X</span>
+              <div class="modalTxtContainer noMargin noPadding">
+                  <h3 class="passRecTitles">¡Recupera tu contraseña!</h3>
+                  <p class="recPassMdTxt">Ya se envió una liga al E-Mail que registraste para que puedas cambiar tu contraseña.</p>
+                  <p class="recPassMdTxt">
+                  Sigue las indicaciones detalladas en el E-mail para recuperar tu acceso a Vrumm!
+                  </p>
+                  <h3 class="passRecTitles">¿No has recibido una liga aún?</h3>
+                  <div class="resendPart">
+                      <img src="../img/ic_resend.png" class="resendImg">
+                      <p class="recPassTxt">Reenvía la liga a tu E-Mail</p>
+                  </div>
+              </div>
+          </div>
       </div>
 
     </div> 

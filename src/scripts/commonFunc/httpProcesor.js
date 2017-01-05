@@ -27,7 +27,7 @@ export function sendPostToGo(urlEnd, data, whereTo){
 		).then(function(res){
 
 			//con(res);
-			if(whereTo === 'perfilLog'){
+			if(whereTo === 'perfilLog' || whereTo === 'perfilLogIrgenwo'){
 				
 				if(res.estado === 1){
 
@@ -36,7 +36,7 @@ export function sendPostToGo(urlEnd, data, whereTo){
 
 					localStorage.setItem('activeSession', 'yes');
 
-					getInfo(id, 'user', true);
+					(whereTo !== 'perfilLogIrgenwo') ? getInfo(id, 'user', true) : getInfo(id, 'user', false); 
 					id.toString();
 					localStorage.setItem('aUsr', id);
 					
@@ -124,63 +124,81 @@ export function sendPostToGet(urlEnd, data, flag){
 				datos
 		).then(function(res){
 			//con(res);
-			if(res.estado === 1 && flag === 'usrInfoToGo'){
+			if(flag === 'usrInfoToGetR' || flag === 'usrInfoToGo'){
 
-				var userInfo = [];
-				userInfo[0] = res.mensaje.rs[0];
-				//console.log('from https', userInfo); goes to fast
+				if(res.estado === 1){
+
+					var userInfo = [];
+					userInfo[0] = res.mensaje.rs[0];
+					//console.log('from https', userInfo); goes to fast
 
 
-				var usrPhoto = (userInfo[0].foto_perfil !== null && userInfo[0].foto_perfil !== undefined) ? userInfo[0].foto_perfil.toString() : '';
-				if(usrPhoto.length > 0){localStorage.setItem('aUPP', usrPhoto);}
+					var usrPhoto = (userInfo[0].foto_perfil !== null && userInfo[0].foto_perfil !== undefined) ? userInfo[0].foto_perfil.toString() : '';
+					if(usrPhoto.length > 0){localStorage.setItem('aUPP', usrPhoto);}
 
-				var usrA = userInfo[0].alias;
-				var userId = userInfo[0].id;
+					var usrA = userInfo[0].alias;
+					var userId = userInfo[0].id;
 
-				var device = sessionStorage.getItem('deviceId');
+					var device = sessionStorage.getItem('deviceId');
 
-			    if(device !== undefined && device !== null && userId){
-			        var dataForGarage = {idUsr: userId, device: sessionStorage.getItem('deviceId')};
-			        dataForGarage = JSON.stringify(dataForGarage);
-			        sendPostToGet('garage/listar', dataForGarage, 'usrGrg');
 
-			    }
-				
-				var indexOfUser = -1;
+					//I've commented this code 'cause it's been done before in the circuit, if problems, uncomment, else, delete
+				    /*if(device !== undefined && device !== null && userId){
+				        var dataForGarage = {idUsr: userId, device: sessionStorage.getItem('deviceId')};
+				        dataForGarage = JSON.stringify(dataForGarage);
+				        sendPostToGet('garage/listar', dataForGarage, 'usrGrg');
 
-				var users = (localStorage.getItem('visitedUsrs') !== null && localStorage.getItem('visitedUsrs') !== undefined) ? JSON.parse(localStorage.getItem('visitedUsrs')) : [];
-				
-				users.forEach(function(itm, idx){
-					var someId = parseInt(itm.id);
-					if(someId === userId){
-						indexOfUser = idx;
+				    }*/
+					
+					var indexOfUser = -1;
+
+					var users = (localStorage.getItem('visitedUsrs') !== null && localStorage.getItem('visitedUsrs') !== undefined) ? JSON.parse(localStorage.getItem('visitedUsrs')) : [];
+					
+					users.forEach(function(itm, idx){
+						var someId = parseInt(itm.id);
+						if(someId === userId){
+							indexOfUser = idx;
+						}
+					});
+
+					if(indexOfUser === -1){
+
+						users.push({'al': usrA, 'id': userId});
+						users = JSON.stringify(users);
+						localStorage.setItem('visitedUsrs', users);
+					
 					}
-				});
 
-				if(indexOfUser === -1){
 
-					users.push({'al': usrA, 'id': userId});
-					users = JSON.stringify(users);
-					localStorage.setItem('visitedUsrs', users);
-				
+					userInfo = JSON.stringify(userInfo);
+					localStorage.setItem('aUsrA', usrA);
+
+
+					ssRmForSet('currentUserAlias', usrA);
+					ssRmForSet('currentUserInfo', userInfo);
+
+					if(myLocation !== "/web/perfil/" && myLocation !== "/web/perfil/index" && myLocation !== "/web/perfil/index.html"){
+
+						if(flag === 'usrInfoToGetR'){
+
+							var routHref = window.location.href;
+							var params = routHref.slice(routHref.indexOf('?') + 1);
+
+							window.location = `${window.location.pathname}?al=${usrA}&${params}`;
+
+
+						}else{
+
+							navigating(`perfil?al=${usrA}`);
+						}
+					
+					}
 				}
 
-
-				userInfo = JSON.stringify(userInfo);
-				localStorage.setItem('aUsrA', usrA);
-
-
-				ssRmForSet('currentUserAlias', usrA);
-				ssRmForSet('currentUserInfo', userInfo);
-
-				if(myLocation !== "/web/perfil/" && myLocation !== "/web/perfil/index" && myLocation !== "/web/perfil/index.html"){
-
-					navigating(`perfil?al=${usrA}`);
-				
-				}
 
 
 			}else if(res.estado === 1 && flag === 'usrInfoToGet'){
+
 
 				var userInfo = [];
 				userInfo[0] = res.mensaje.rs[0];
@@ -218,12 +236,13 @@ export function sendPostToGet(urlEnd, data, flag){
 
 				var device = sessionStorage.getItem('deviceId');
 
-			    if(device !== undefined && device !== null && userId){
+				//I've commented this code 'cause it's been done before in the circuit, if problems, uncomment, else, delete
+			    /*if(device !== undefined && device !== null && userId){
 			        var dataForGarage = {idUsr: userId, device: sessionStorage.getItem('deviceId')};
 			        dataForGarage = JSON.stringify(dataForGarage);
 			        sendPostToGet('garage/listar', dataForGarage, 'usrGrg');
 
-			    }
+			    }*/
 
 			}else if(flag === 'usrGrg'){
 
@@ -478,7 +497,7 @@ function getInfo(info, flag, going) {
 		dataForGarage = JSON.stringify(dataForGarage);
 		sendPostToGet('garage/listar', dataForGarage, 'usrGrg');
 
-		(going) ? sendPostToGet('usuario/info', data, 'usrInfoToGo') : sendPostToGet('usuario/info', data, 'usrInfoToGet');
+		(going) ? sendPostToGet('usuario/info', data, 'usrInfoToGo') : sendPostToGet('usuario/info', data, 'usrInfoToGetR');
 
 	}
 
