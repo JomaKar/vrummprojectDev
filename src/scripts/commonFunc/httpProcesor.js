@@ -177,22 +177,20 @@ export function sendPostToGet(urlEnd, data, flag){
 					ssRmForSet('currentUserAlias', usrA);
 					ssRmForSet('currentUserInfo', userInfo);
 
-					if(myLocation !== "/web/perfil/" && myLocation !== "/web/perfil/index" && myLocation !== "/web/perfil/index.html"){
+					if(flag === 'usrInfoToGetR'){
 
-						if(flag === 'usrInfoToGetR'){
+						var routHref = window.location.href;
+						var params = routHref.slice(routHref.indexOf('?') + 1);
 
-							var routHref = window.location.href;
-							var params = routHref.slice(routHref.indexOf('?') + 1);
+						window.location = `${window.location.pathname}?al=${usrA}&${params}`;
 
-							window.location = `${window.location.pathname}?al=${usrA}&${params}`;
+					}else{
 
-
-						}else{
-
+						if(myLocation !== "/web/perfil/" && myLocation !== "/web/perfil/index" && myLocation !== "/web/perfil/index.html"){
 							navigating(`perfil?al=${usrA}`);
 						}
-					
 					}
+
 				}
 
 

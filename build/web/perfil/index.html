@@ -222,8 +222,11 @@
           </div>
       </div>
 
-      <div class="modal fade" id="failLog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog modal-sm">
+    </div>
+
+
+    <div class="modal fade" id="failLog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog modal-sm">
           
 
           <div class="modal-content custom">
@@ -233,7 +236,7 @@
 
               <div class="modal-body noPadding butVertHalf">
                   <div class="row-fluid">
-                      <div class="col-xs-6 sectionLogMd logInModalSection">
+                      <div class="col-sm-6 col-xs-12 sectionLogMd logInModalSection">
                           <p class="mdTxt">Para realizar esa acción debes ingresar a tu cuenta</p>
                           <p class="subTitle">Ingresa tu e-mail/alias y contraseña para entrar</p>
                           <form class="form-signin noPadding" id="login">
@@ -260,12 +263,16 @@
                               </div>
                           </form>
                       </div>
-                      <div class="col-xs-6 sectionLogMd signInModalSection">
+                      <div class="col-sm-6 col-xs-12 sectionLogMd signInModalSection NorightP">
                           <p class="mdTxt">¿Aún no tienes una cuenta?</p>
                           <p class="subTitle">¡Regístrate para navegar, buscar, guardar y comparar vehículos con Vrumm!</p>
-
+                          <div class="regBtnContMdl">
+                              <div class="btnDefiner">
+                                  <button id="goToReg" class="btn btn-primary redirectLogBtn loginPoint hidden-sm hidden-md hidden-lg hidden-xl">Regístrate</button>
+                              </div>
+                          </div>
                       </div>
-                      <button id="goToReg" class="btn btn-primary redirectLogBtn loginPoint">Regístrate</button>
+                      <button id="goToReg" class="btn btn-primary redirectLogBtn loginPoint hidden-xs">Regístrate</button>
                   </div>
               </div>
 
@@ -275,25 +282,25 @@
         </div><!-- /.modal-dialog -->
       </div>
 
-      <div class="passModalCont">
-          <div class="recoverPassModal">
-              <span class="closeModal">X</span>
-              <div class="modalTxtContainer noMargin noPadding">
-                  <h3 class="passRecTitles">¡Recupera tu contraseña!</h3>
-                  <p class="recPassMdTxt">Ya se envió una liga al E-Mail que registraste para que puedas cambiar tu contraseña.</p>
-                  <p class="recPassMdTxt">
-                  Sigue las indicaciones detalladas en el E-mail para recuperar tu acceso a Vrumm!
-                  </p>
-                  <h3 class="passRecTitles">¿No has recibido una liga aún?</h3>
-                  <div class="resendPart">
-                      <img src="../img/ic_resend.png" class="resendImg">
-                      <p class="recPassTxt">Reenvía la liga a tu E-Mail</p>
-                  </div>
-              </div>
-          </div>
-      </div>
 
-    </div> 
+    <div class="passModalCont">
+        <div class="recoverPassModal">
+            <span class="closeModal">X</span>
+            <div class="modalTxtContainer noMargin noPadding">
+                <h3 class="passRecTitles">¡Recupera tu contraseña!</h3>
+                <p class="recPassMdTxt">Ya se envió una liga al E-Mail que registraste para que puedas cambiar tu contraseña.</p>
+                <p class="recPassMdTxt">
+                Sigue las indicaciones detalladas en el E-mail para recuperar tu acceso a Vrumm!
+                </p>
+                <h3 class="passRecTitles">¿No has recibido una liga aún?</h3>
+                <div class="resendPart">
+                    <img src="../img/ic_resend.png" class="resendImg">
+                    <p class="recPassTxt">Reenvía la liga a tu E-Mail</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="../js/lib/bootstrap.js"></script>
     <script src="../js/lib/bootstrap-tokenfield.min.js"></script>
     <script src="../js/lib/fingerprint2.min.js"></script>

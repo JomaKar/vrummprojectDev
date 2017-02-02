@@ -10,7 +10,7 @@ $(document).ready(function(){
 });
 
 
-var session = window.localStorage.getItem('activeSession');
+var session = localStorage.getItem('activeSession');
 var devicId = sessionStorage.getItem('deviceId');
 var userInfo = sessionStorage.getItem('currentUserInfo');
 var userId = sessionStorage.getItem('currentUserId');
@@ -42,7 +42,7 @@ function start() {
                   (usrAlias == queriesT.al) ? getUserInfo(usrAlias, 'al') :  getUserInfo(queriesT.al, 'al'); 
                 }
               }else{
-                  getUserInfo(usrAlias, 'al')
+                  getUserInfo(usrAlias, 'al');
               }
 
             }else if(hashesExist){
@@ -84,6 +84,8 @@ function start() {
                 }
               }
 
+            }else{
+              
             }
 
         }

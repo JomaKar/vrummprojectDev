@@ -1,3 +1,5 @@
+import {navigating, myLocation} from './commonFunc/locating.js';
+
 $(function(){
 
     const metaUrl = $('meta.metaUrl'),
@@ -37,15 +39,40 @@ $(function(){
     function openShare(){
         modalShare.modal();
 
-        var cssImg = (profilePict.length) ? profilePict.css('background-image') : versionsCarousel.css('background-image');
+        if(myLocation !== "/web/catalogo/index.html" && myLocation !== "/web/catalogo/index" && myLocation !== "/web/catalogo/" && myLocation !== "/web/catalogo/brand-modelo.html" && myLocation !== "/web/catalogo/brand-modelo"){
+
+            var cssImg = (profilePict.length) ? profilePict.css('background-image') : versionsCarousel.css('background-image');
 
 
-        var idxFQuote = cssImg.indexOf('"') + 1;
-        var idxLQuote = cssImg.lastIndexOf('"');
+            var idxFQuote = cssImg.indexOf('"') + 1;
+            var idxLQuote = cssImg.lastIndexOf('"');
 
-        //defining the actual image visible in carousel
+            //defining the actual image visible in carousel or in profile
 
-        imageToSend = cssImg.substring(idxFQuote, idxLQuote);
+            imageToSend = cssImg.substring(idxFQuote, idxLQuote);
+        
+        }else{
+
+                if(sessionStorage.getItem('currentBrandImg') !== null && sessionStorage.getItem('currentBrandImg') !== undefined){
+                    imageToSend = sessionStorage.getItem('currentBrandImg');
+                }else{
+                    if(sessionStorage.getItem('catalogBrands') !== null && sessionStorage.getItem('catalogBrands') !== undefined){
+
+                            var brandsStored = JSON.parse(sessionStorage.getItem('catalogBrands'));
+
+                            var lgth = brandsStored.length - 1;
+
+                            var randomNum = Math.floor(Math.random() * lgth) + 1;
+
+                            imageToSend = brandsStored[randomNum].pic_url;
+                    }else{
+                        imageToSend = '../img/favicon.png';
+                    }
+                }
+
+        }
+
+
 
         //console.log(profilePict, image);
 

@@ -132,12 +132,19 @@ $(function(){
 				if(res.estado === 2){
 
 					if(flag === null){
+						
 						if($('div#failLog').length){
+							
+							recoverPassEnd();
+
 							$('div#failLog').modal('hide');
 						}
 						displayRecoverModal();						
+					
 					}else{
+					
 						modal.hide();
+					
 					}
 				}
 
