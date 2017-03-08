@@ -82,7 +82,7 @@ $(function(){
 
 	loginForm.submit(function(e){
 		e.preventDefault();
-		var devID = sessionStorage.getItem('deviceId');
+		var devID = localStorage.getItem('deviceId');
 		devID = devID.toString();
 
 		if(!recoverPass){
@@ -101,7 +101,7 @@ $(function(){
 			recoverPassEnd();
 
 			var mailTxt = userE.val();
-			var geoLoc = sessionStorage.getItem('location');
+			var geoLoc = localStorage.getItem('location');
 			var params = {device: devID, mail: mailTxt, geoloc: geoLoc};
 
 			params = JSON.stringify(params);
@@ -189,10 +189,10 @@ $(function(){
 
 		modal.css({display: 'flex'});
 		
-		var devID = sessionStorage.getItem('deviceId');
+		var devID = localStorage.getItem('deviceId');
 		devID = devID.toString();
 		var mailTxt = userE.val();
-		var geoLoc = sessionStorage.getItem('location');
+		var geoLoc = localStorage.getItem('location');
 		var params = {device: devID, mail: mailTxt, geoloc: geoLoc};
 
 		resendPassMail.click(function(){

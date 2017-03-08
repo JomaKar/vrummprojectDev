@@ -41,7 +41,7 @@ $(function(){
 		var dataImg = '';
 
 		var contactId;
-		var dataForFullAct = {device: sessionStorage.getItem('deviceId'), geoloc: sessionStorage.getItem('location'), user: localStorage.getItem('aUsr')};
+		var dataForFullAct = {device: localStorage.getItem('deviceId'), geoloc: localStorage.getItem('location'), user: localStorage.getItem('aUsr')};
 
 		$(document).ready(function(){
 			sizing();
@@ -119,6 +119,13 @@ $(function(){
 			});
 		}
 
+		btnValidate.click(function(){
+			let mail = mailInpEdit.val();
+			var data = {device: localStorage.getItem('deviceId'), user: localStorage.getItem('aUsr'), mail: mail, geoloc: localStorage.getItem('location')};
+			sendPostToGet('usuario/enviacodigo', JSON.stringify(data), 'validaMail');
+
+		});
+
 		$(document).on('click', 'li.posibleFriend', function(e){
 			var cId = $(this).find('span.friendId').text();
 
@@ -195,7 +202,7 @@ $(function(){
 				if(PassNewTxt !== '' && PassNewTxt === PassNewConfTxt && PassNewConfTxt !== '' && OldPassTxt !== '' && PassNewTxt !== OldPassTxt){
 
 					dataOK = true;
-					var dataForChangePass = JSON.stringify({device: sessionStorage.getItem('deviceId'), geoloc: sessionStorage.getItem('location'), user: localStorage.getItem('aUsr'), actual: OldPassTxt, nueva: PassNewTxt});
+					var dataForChangePass = JSON.stringify({device: localStorage.getItem('deviceId'), geoloc: localStorage.getItem('location'), user: localStorage.getItem('aUsr'), actual: OldPassTxt, nueva: PassNewTxt});
 					sendPostToGet('usuario/cambiapsw', dataForChangePass, 'usrPass');
 
 				}else{
@@ -209,7 +216,7 @@ $(function(){
 		function changeContactProcess(id, name) {
 			var theId = parseInt(id);
 			sessionStorage.setItem('temptyNewContact', name.toString());
-			var dataForChangeContact = {device: sessionStorage.getItem('deviceId'), user: localStorage.getItem('aUsr'), campo: 'refered', dato: id};
+			var dataForChangeContact = {device: localStorage.getItem('deviceId'), user: localStorage.getItem('aUsr'), campo: 'refered', dato: id};
 			//console.log('processing to send', data);
 			dataForChangeContact = JSON.stringify(dataForChangeContact);
 			sendPostToGet('usuario/actualizadato', dataForChangeContact, 'usrContact');

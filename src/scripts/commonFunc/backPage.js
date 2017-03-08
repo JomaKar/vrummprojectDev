@@ -42,6 +42,11 @@ export function backing(currPage) {
 		destiny: 'registro'
 	},
 	{
+		name: ['/web/paseo/', '/web/paseo/index.html', '/web/paseo/index'],
+		parent: 'home',
+		destiny: 'paseo'
+	},
+	{
 		name: ['/web/catalogo/', '/web/catalogo/index.html', '/web/catalogo/index'],
 		parent: ['home', 'perfil'],
 		destiny: ''

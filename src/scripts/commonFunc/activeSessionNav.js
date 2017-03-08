@@ -115,9 +115,17 @@ export function navInfo() {
 			links.each(function(indx, el){
 
 				if(!$(el).hasClass('noChangeHref')){
-					var linkHref = $(el).attr('href');
-					linkHref += `?al=${alias}`;
-					$(el).attr('href', linkHref); 
+					var dataD = $(el).data('dev');
+					var dataP = $(el).data('prod');
+
+
+					dataD += `?al=${alias}`;
+					dataP += `?al=${alias}`;
+					
+					$(el).data('dev', dataD);
+					$(el).data('prod', dataP);
+
+					sessionStorage.setItem('hrefNav', 'setted');				
 				}
 				
 			});

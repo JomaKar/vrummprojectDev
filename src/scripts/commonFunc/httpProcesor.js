@@ -54,9 +54,21 @@ export function sendPostToGo(urlEnd, data, whereTo){
 				alias = res.mensaje.usr.alias;
 
 				var users = (localStorage.getItem('visitedUsrs') !== null && localStorage.getItem('visitedUsrs') !== undefined) ? JSON.parse(localStorage.getItem('visitedUsrs')) : [];
-				users.push({'al': alias, 'id': id});
-				users = JSON.stringify(users);
-				localStorage.setItem('visitedUsrs', users);
+				
+				var indexOfUser = -1;
+
+				users.forEach(function(itm, idx){
+					var someId = parseInt(itm.id);
+					if(someId == parseInt(id)){
+						indexOfUser = idx;
+					}
+				});
+
+				if(indexOfUser === -1){
+					users.push({'al': alias, 'id': id});
+					users = JSON.stringify(users);
+					localStorage.setItem('visitedUsrs', users);
+				}
 
 				localStorage.setItem('aUsrA', alias);
 
@@ -139,12 +151,12 @@ export function sendPostToGet(urlEnd, data, flag){
 					var usrA = userInfo[0].alias;
 					var userId = userInfo[0].id;
 
-					var device = sessionStorage.getItem('deviceId');
+					var device = localStorage.getItem('deviceId');
 
 
 					//I've commented this code 'cause it's been done before in the circuit, if problems, uncomment, else, delete
 				    /*if(device !== undefined && device !== null && userId){
-				        var dataForGarage = {idUsr: userId, device: sessionStorage.getItem('deviceId')};
+				        var dataForGarage = {idUsr: userId, device: localStorage.getItem('deviceId')};
 				        dataForGarage = JSON.stringify(dataForGarage);
 				        sendPostToGet('garage/listar', dataForGarage, 'usrGrg');
 
@@ -156,7 +168,7 @@ export function sendPostToGet(urlEnd, data, flag){
 					
 					users.forEach(function(itm, idx){
 						var someId = parseInt(itm.id);
-						if(someId === userId){
+						if(someId == userId){
 							indexOfUser = idx;
 						}
 					});
@@ -211,7 +223,7 @@ export function sendPostToGet(urlEnd, data, flag){
 
 				users.forEach(function(itm, idx){
 					var someId = parseInt(itm.id);
-					if(someId === userId){
+					if(someId == userId){
 						indexOfUser = idx;
 					}
 				});
@@ -232,11 +244,11 @@ export function sendPostToGet(urlEnd, data, flag){
 
 				ssRmForSet('currentUserInfo', userInfo);
 
-				var device = sessionStorage.getItem('deviceId');
+				var device = localStorage.getItem('deviceId');
 
 				//I've commented this code 'cause it's been done before in the circuit, if problems, uncomment, else, delete
 			    /*if(device !== undefined && device !== null && userId){
-			        var dataForGarage = {idUsr: userId, device: sessionStorage.getItem('deviceId')};
+			        var dataForGarage = {idUsr: userId, device: localStorage.getItem('deviceId')};
 			        dataForGarage = JSON.stringify(dataForGarage);
 			        sendPostToGet('garage/listar', dataForGarage, 'usrGrg');
 
@@ -254,6 +266,13 @@ export function sendPostToGet(urlEnd, data, flag){
 					
 				}else{
 					sessionStorage.setItem('currentUserGarage', 'nothing stored');
+				}
+
+			}else if(flag === 'validaMail'){
+				con(res);
+				if(res.estado === 1){
+					$('div#successMailVal').find('p.textRes').empty().text(res.mensaje.rs);
+					$('div#successMailVal').modal();
 				}
 
 			}else if(flag === 'usrAct'){
@@ -486,7 +505,7 @@ function checkIfActive(){
 function getInfo(info, flag, going) {
 	if(flag === 'user'){
 		
-		var devicId = sessionStorage.getItem('deviceId');
+		var devicId = localStorage.getItem('deviceId');
 		var data = {idUsr: info};
 
 		data = JSON.stringify(data);

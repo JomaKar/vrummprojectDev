@@ -216,7 +216,7 @@ $(function(){
 
 
 			var userId = sessionStorage.getItem('currentUserId');
-            var devicId = sessionStorage.getItem('deviceId');
+            var devicId = localStorage.getItem('deviceId');
 
             var data = {user: userId, device: devicId, tipo: cat, garage: grgId};
             data = JSON.stringify(data);
@@ -373,7 +373,7 @@ $(function(){
 					
 					users.forEach(function(itm, idx){
 						var someId = parseInt(itm.id);
-						if(someId === usrIDG){
+						if(someId == usrIDG){
 							indexOfUser = idx;
 						}
 					});
@@ -402,7 +402,7 @@ $(function(){
 
 		function getUserGarage(id) {
 
-            var devicId = sessionStorage.getItem('deviceId');
+            var devicId = localStorage.getItem('deviceId');
 
 
             var dataForGarage = {idUsr: id, device: devicId};
@@ -619,7 +619,7 @@ $(function(){
 			versId = parseInt(versId);
 
 			var userId = parseInt(localStorage.getItem('aUsr'));
-            var deviceId = sessionStorage.getItem('deviceId');
+            var deviceId = localStorage.getItem('deviceId');
 
             var addedInComparatorAutos = (localStorage.getItem('addedInComAutosArr') !== null && localStorage.getItem('addedInComAutosArr') !== undefined) ? JSON.parse(localStorage.getItem('addedInComAutosArr')) : [];
             
@@ -654,7 +654,7 @@ $(function(){
 			versId = container.find('span.garageVersionId').text();
 
 			var userId = localStorage.getItem('aUsr');
-            var devicId = sessionStorage.getItem('deviceId');
+            var devicId = localStorage.getItem('deviceId');
             var dataForDelete = {user: userId, device: devicId, garage: garageID};
 
             dataForDelete = JSON.stringify(dataForDelete);

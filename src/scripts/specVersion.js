@@ -94,7 +94,7 @@ $(function(){
 
 		function askVersionsAgain() {
 			if(hashesExist){
-				var datos = (localStorage.getItem('aUsr') !== null && localStorage.getItem('aUsr') !== undefined) ? {'device': sessionStorage.getItem('deviceId'), modelId: parseInt(queriesT.mdlId), user: localStorage.getItem('aUsr')} : {'device': sessionStorage.getItem('deviceId'), modelId: parseInt(queriesT.mdlId)};
+				var datos = (localStorage.getItem('aUsr') !== null && localStorage.getItem('aUsr') !== undefined) ? {'device': localStorage.getItem('deviceId'), modelId: parseInt(queriesT.mdlId), user: localStorage.getItem('aUsr')} : {'device': localStorage.getItem('deviceId'), modelId: parseInt(queriesT.mdlId)};
 				datos = JSON.stringify(datos);
 				$.post('https://vrummapp.net/ws/v2/catalogo/getversiones', datos)
 				.then(function(res){
@@ -213,20 +213,17 @@ $(function(){
 
 			imgsCont.find('div.carThumbImgUnit').remove();
 
-			imgs.forEach(function(item, idx){
-				(idx === 0) ? classes = 'carThumb active' : classes = 'carThumb';
-
-				var imgPrototype = `<div class="carThumbImgUnit"><img src="${item}" class="${classes} img-responsive"></div>`;
-
-				imgsCont.append(imgPrototype);
-			});
-
-			if(imgs.length <= 1){
-
-				arrowsCont.hide();
-			}
-
 		}
+
+		$(document).on('click', 'input.autoColorOption', function(e){
+			var inp = $(e.target);
+
+			var imgColor = $(inp).data('auto');
+
+			$(theCarousel).css({
+				'background-image': `url(${imgColor})`
+			})
+		});
 
 
 		versionsArrows.on('click', function(){
@@ -352,6 +349,7 @@ $(function(){
 			$('div.fichaCat').empty();*/
 			//til here
 			var actualCat = info[0].tab;
+			//con(info);
 
 			//this info need to be displayed with endpoint getfichatecnica
 			
@@ -368,42 +366,85 @@ $(function(){
 				}
 
 				//this throw the info in the corresponding tab
+				if(itm.tab !== 'Colores'){
+					if(itm.dato !== null && itm.dato !== undefined){
+						if(versionDetailCont.find(`div.${itm.tab}`).find(`li.dato${itm.dato}`).length){
+							var xIfFalse = '<i class="fa fa-times" aria-hidden="true"></i';
+							var yIfTrue = '<i class="fa fa-check" aria-hidden="true"></i';
+							
 
-				if(itm.dato !== null && itm.dato !== undefined){
+
+							if(!versionChange){
+
+								if(itm.valor == 'false' || itm.valor == 'No' || itm.valor == 'No tiene ' || itm.valor == 0 || itm.valor == 'true' || itm.valor == 'Si tiene ' || itm.valor == 1 || itm.valor == 'Sí' || itm.valor == 'Sí tienetrue'){
+									(itm.valor == 'false' || itm.valor == 'No' || itm.valor == 'No tiene ' || itm.valor == 0) ? versionDetailCont.find(`div.${itm.tab}`).find(`li.dato${itm.dato}`).children('p.datoVal').empty().html(`<span class="hiddenItm">${itm.valor}</span>${xIfFalse}`) : versionDetailCont.find(`div.${itm.tab}`).find(`li.dato${itm.dato}`).children('p.datoVal').empty().html(`<span class="hiddenItm">${itm.valor}</span>${yIfTrue}`);
+								}else{
+									versionDetailCont.find(`div.${itm.tab}`).find(`li.dato${itm.dato}`).children('p.datoVal').empty().html(`<span class="hiddenItm">${itm.valor}</span>${itm.valor}`);
+								}
+
+							}else{
+
+								//take off diffData class before determining if the info has change or not
+
+								versionDetailCont.find(`div.${itm.tab}`).find(`li.dato${itm.dato}`).children('p.datoVal').removeClass('diffData');
+
+								//get the data already stored there to contrast
+								var newData = itm.valor;
+								var lastData = versionDetailCont.find(`div.${itm.tab}`).find(`li.dato${itm.dato}`).children('p.datoVal').find('span.hiddenItm').text();
+
+								//adding the new text
+
+								if(itm.valor == 'false' || itm.valor == 'No' || itm.valor == 'No tiene ' || itm.valor == 0 || itm.valor == 'true' || itm.valor == 'Si tiene ' || itm.valor == 1 || itm.valor == 'Sí' || itm.valor == 'Sí tienetrue'){
+									//con(itm.valor);
+									(itm.valor == 'false' || itm.valor == 'No' || itm.valor == 'No tiene ' || itm.valor == 0) ? versionDetailCont.find(`div.${itm.tab}`).find(`li.dato${itm.dato}`).children('p.datoVal').empty().html(`<span class="hiddenItm">${itm.valor}</span>${xIfFalse}`) : versionDetailCont.find(`div.${itm.tab}`).find(`li.dato${itm.dato}`).children('p.datoVal').empty().html(`<span class="hiddenItm">${itm.valor}</span>${yIfTrue}`);
+								}else{ 
+									//con(itm.valor);
+									versionDetailCont.find(`div.${itm.tab}`).find(`li.dato${itm.dato}`).children('p.datoVal').empty().html(`<span class="hiddenItm">${itm.valor}</span>${itm.valor}`);
+								}
+
+								//contrasting the data and adding 'diffData' class if any change has been detected and is inside an active tab
+
+								if(newData !== lastData) {
+									var activeOrnot = versionDetailCont.find(`div.${itm.tab}`);
+
+									(activeOrnot.hasClass('active')) ? activeOrnot.find(`li.dato${itm.dato}`).children('p.datoVal').addClass('diffData') : null;
+								}
+							}
+						}else{
+							var plainText = `<p class="${itm.tab}">${itm.valor} : ${itm.dato}</p>`;
+
+							($(`p.${itm.tab}`).length) ? $(`p.${itm.tab}`).empty().text(`${itm.valor} : ${itm.dato}`) : versionDetailCont.find(`div.${itm.tab}`).append(plainText);
+						}
+
+					}else{
+						con(itm.dato);
+					}
+				}else{
 					if(versionDetailCont.find(`div.${itm.tab}`).find(`li.dato${itm.dato}`).length){
-						if(!versionChange){
-							versionDetailCont.find(`div.${itm.tab}`).find(`li.dato${itm.dato}`).children('p.datoVal').empty().text(itm.valor);
+						if(itm.valor !== 0){
+							
+							var colors = itm.colors;
+
+							if(colors !== null && colors !== undefined && $.isArray(colors)){
+								versionDetailCont.find(`div.${itm.tab}`).find(`li.dato${itm.dato}`).children('p.datoVal').remove();
+								colors.forEach((color, idx) => {
+									var colorBtn = `<input type="image" src="${color.boton}" class="autoColorOption" data-auto="${color.foto}">`;
+									var btnWrapper = `<div class="color${idx} colorCont">${colorBtn} <span class="colorName">${color.nombre}</span></div>`;
+
+									if(idx == 0){
+										versionDetailCont.find(`div.${itm.tab}`).find(`li.dato${itm.dato}`).children('div.titleCont').after(btnWrapper);
+									}else{
+										versionDetailCont.find(`div.${itm.tab}`).find(`li.dato${itm.dato}`).children(`div.color${idx-1}`).after(btnWrapper);
+									}
+								});
+							}else{
+								versionDetailCont.find(`div.${itm.tab}`).find(`li.dato${itm.dato}`).children('p.datoVal').text('No hay colores para mostrar');	
+							}
 
 						}else{
-
-							//take off diffData class before determining if the info has change or not
-
-							versionDetailCont.find(`div.${itm.tab}`).find(`li.dato${itm.dato}`).children('p.datoVal').removeClass('diffData');
-
-							//get the data already stored there to contrast
-							var newData = itm.valor;
-							var lastData = versionDetailCont.find(`div.${itm.tab}`).find(`li.dato${itm.dato}`).children('p.datoVal').text();
-
-							//adding the new text
-
-							versionDetailCont.find(`div.${itm.tab}`).find(`li.dato${itm.dato}`).children('p.datoVal').empty().text(itm.valor);
-
-							//contrasting the data and adding 'diffData' class if any change has been detected and is inside an active tab
-
-							if(newData !== lastData) {
-								var activeOrnot = versionDetailCont.find(`div.${itm.tab}`);
-
-								(activeOrnot.hasClass('active')) ? activeOrnot.find(`li.dato${itm.dato}`).children('p.datoVal').addClass('diffData') : null;
-							}
+							versionDetailCont.find(`div.${itm.tab}`).find(`li.dato${itm.dato}`).children('p.datVal').text(itm.valor);
 						}
-					}else{
-						var plainText = `<p class="${itm.tab}">${itm.valor} : ${itm.dato}</p>`;
-
-						($(`p.${itm.tab}`).length) ? $(`p.${itm.tab}`).empty().text(`${itm.valor} : ${itm.dato}`) : versionDetailCont.find(`div.${itm.tab}`).append(plainText);
 					}
-
-				}else{
-					con(itm.dato);
 				}
 			});
 		}
@@ -413,7 +454,7 @@ $(function(){
 		function addToGarage(type) {
 
 			var userId = localStorage.getItem('aUsr');
-	        var deviceId = sessionStorage.getItem('deviceId');
+	        var deviceId = localStorage.getItem('deviceId');
 	        var versionId = ( versionChange ) ? selectedVersion.id : version.id;
 
 	        var addedAutos = (localStorage.getItem('addedAutosArr') !== null && localStorage.getItem('addedAutosArr') !== undefined) ? JSON.parse(localStorage.getItem('addedAutosArr')) : [];
@@ -466,7 +507,7 @@ $(function(){
 	    	//console.log(id, localStorage.getItem('aUsr'));
 	    	var theId = parseInt(id);
 
-	    	var deviceId = sessionStorage.getItem('deviceId');
+	    	var deviceId = localStorage.getItem('deviceId');
 	        var versionId = ( versionChange ) ? selectedVersion.id : version.id;
 
 	        var addedInComparatorAutos = (localStorage.getItem('addedInComAutosArr') !== null && localStorage.getItem('addedInComAutosArr') !== undefined) ? JSON.parse(localStorage.getItem('addedInComAutosArr')) : [];

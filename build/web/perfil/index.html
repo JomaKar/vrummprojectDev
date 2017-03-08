@@ -78,7 +78,7 @@
                   <div class="dateProfileRgtBtnCont col-xs-3 noPadding col-sm-offset-1 col-lg-offset-3 col-lg-3 col-md-2 col-xs-offset-2">
                       <p class="rgtInvTxt">¿<span class="hidD666">Aún no </span> <span class="hidU666">No </span> tienes <span class="hidD666"> una </span> <span class="whiteSpace"></span> cuenta?</p>
                       <!-- just development -->
-                      <a href="/vrumm/build/web/registro/" class="btn btn-primary rgtInvBtn">Regístrate</a>
+                      <a href="/vrumm/build/web/registro/" data-dev="/vrumm/build/web/registro/" data-prod="/web/registro/" class="btn btn-primary rgtInvBtn linkChangeOnEnv">Regístrate</a>
                       <!-- just production -->
                       <!-- <a href="/web/registro/" class="btn btn-primary rgtInvBtn">Regístrate</a> -->
                   </div>
@@ -134,7 +134,7 @@
                         <p class="startingText gallery usrGarageInitialTxt hiddenItm">Aún no tienes autos en tu garage, añade uno nuevo...</p>
                         <div class="col-xs-12 modelItem col-sm-6 col-md-4 addGarageBtnCon">
                             <!-- just development-->
-                            <a href="/vrumm/build/web/catalogo/" class="addGarageBtn">
+                            <a href="/vrumm/build/web/catalogo/" data-dev="/vrumm/build/web/catalogo/" data-prod="/web/catalogo/" class="addGarageBtn linkChangeOnEnv">
                                 <span class="fa fa-plus-square addGarageIcon"></span>
                                 <p class="addGarageTxt">Añade autos</p>
                             </a>
@@ -189,8 +189,8 @@
                               <div class="col-md-12">
                                   <h1 class="text-right"><a href="#" data-dismiss="modal">&times;</a></h1>
                                   <h4><strong>Invita a tus amigos a Vrumm y, por cada amigo que se registre, puedes ganar hasta 500 puntos Vrumm.</strong></h4>
-                                  <p>Ingresa las direcciones de correo electrónico de los amigos que deseas invitar</p>
-                                  <form id="invitation-form" method="post" action="send-invitation.php">
+                                  <p class="onlyOnLogged hiddenItm">Ingresa las direcciones de correo electrónico de los amigos que deseas invitar</p>
+                                  <form class="onlyOnLogged hiddenItm" id="invitation-form" method="post" action="">
                                       <div class="form-group">
                                           <input type="text" name="addresses" id="tokenfield" class="form-control">
                                       </div>
@@ -201,7 +201,7 @@
                               </div>
                           </div>
                           <div class="row">
-                              <div class="col-md-12">
+                              <div class="col-md-12 onlyOnLogged hiddenItm">
                                   <h4><strong>Otras formas de invitar a tus amigos.</strong></h4>
                               </div>
                               <div class="col-md-6">
@@ -209,7 +209,7 @@
                                       Facebook
                                   </a>
                               </div>
-                              <div class="col-md-6" id="col-share">
+                              <div class="col-md-6 onlyOnLogged hiddenItm" id="col-share">
                                   <a class="btn btn-share" id="copy-to-clipboard">
                                       Copia el enlace y envíalo a tus amigos<br>por el medio que quieras
                                   </a>

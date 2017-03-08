@@ -153,7 +153,7 @@ $(function(){
 
 		function askForModels(id) {
 			var theid = parseInt(id);
-			var device = sessionStorage.getItem('deviceId');
+			var device = localStorage.getItem('deviceId');
 
 			if(device !== undefined && device !== null && theid){
 				var data = {'device': device, brandId: theid};

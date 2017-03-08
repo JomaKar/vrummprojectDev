@@ -44,7 +44,7 @@ $(function(){
 	});
 
 	$(document).ready(function(){
-		$(this).scrollTop(0);
+		(myLocation !== "/web/paseo/" && myLocation !== "/web/paseo/index" && myLocation !== "/web/paseo/index.html") ? $(this).scrollTop(0) : null;
 		getGeolocalization();
 		//setImgDataAttr();
 
@@ -80,8 +80,11 @@ $(function(){
 		
 		if(navFlag !== 'never'){
 
-
-			(session === 'yes') ? (myNavBar.load('../templates/navbarIn.html'), navInfo()) : myNavBar.load('../templates/navbarOut.html');
+			if(session === 'yes') {
+				(myLocation !== "/web/paseo/" && myLocation !== "/web/paseo/index" && myLocation !== "/web/paseo/index.html") ? (myNavBar.load('../templates/navbarIn.html'), navInfo()) : myNavBar.load('../templates/navbarPaseo.html');
+			} else{
+				(myLocation !== "/web/paseo/" && myLocation !== "/web/paseo/index" && myLocation !== "/web/paseo/index.html") ? myNavBar.load('../templates/navbarOut.html') : myNavBar.load('../templates/navbarPaseo.html');
+			}
 
 		}
 
@@ -89,7 +92,11 @@ $(function(){
 
 		if(footerFlag === null){
 
-			(session === 'yes') ? mainFooter.load('../templates/footerIn.html') : mainFooter.load('../templates/footerOut.html');
+			if(session === 'yes') { 
+				(myLocation !== "/web/paseo/" && myLocation !== "/web/paseo/index" && myLocation !== "/web/paseo/index.html") ? mainFooter.load('../templates/footerIn.html') : mainFooter.load('../templates/footerPaseo.html');
+			} else{
+				(myLocation !== "/web/paseo/" && myLocation !== "/web/paseo/index" && myLocation !== "/web/paseo/index.html") ? mainFooter.load('../templates/footerOut.html') : mainFooter.load('../templates/footerPaseo.html');
+			}
 		
 		}else{
 
@@ -129,7 +136,7 @@ $(function(){
 
 	function getDeviceIDStarting(){
 		var currentDeviceId = '',
-		 storedDeviceId = sessionStorage.getItem('deviceId');
+		 storedDeviceId = localStorage.getItem('deviceId');
 		 sessionStorage.removeItem('nickGood');
 		 sessionStorage.removeItem('mailGood');
 
@@ -196,7 +203,7 @@ $(function(){
 		if(getDeviceAsk ===  0){
 			deviceIdval = argument.toString();
 			getDeviceAsk++;
-			sessionStorage.setItem('deviceId', deviceIdval);
+			localStorage.setItem('deviceId', deviceIdval);
 			return;
 		}
 			return deviceIdval;
@@ -239,7 +246,7 @@ $(function(){
 	}
 
 	function getGeolocalization(){
-		var loc = sessionStorage.getItem('location');
+		var loc = localStorage.getItem('location');
 
 		if(loc !== undefined && loc !== null){
 
@@ -253,7 +260,7 @@ $(function(){
 	            	var longitude = position.coords.longitude;
 	            	geoloc = latitude + ', ' + longitude;
 	            	currentLocation(geoloc);
-	            	sessionStorage.setItem('location', geoloc); 
+	            	localStorage.setItem('location', geoloc); 
         		});
     		}
 		}

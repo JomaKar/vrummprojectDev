@@ -28,6 +28,28 @@ $(function(){
 
     sharePage.click(openShare);
 
+    if($('div#modal-share').length && localStorage.getItem('activeSession') === 'yes'){
+        $('p.onlyOnLogged').removeClass('hiddenItm');
+        $('form.onlyOnLogged').removeClass('hiddenItm');
+        $('div.onlyOnLogged').removeClass('hiddenItm');
+    }
+
+
+    $(document).on('click', 'button.firstMenu', function(){
+        
+        if(myLocation !== "/web/catalogo/index.html" && myLocation !== "/web/catalogo/index" && myLocation !== "/web/catalogo/" && myLocation !== "/web/catalogo/brand-modelo.html" && myLocation !== "/web/catalogo/brand-modelo" && myLocation !== "/web/perfil/configuracion" && myLocation !== "/web/perfil/configuracion.html"){
+            $('ul.navMenuList').find('li.shareVrummLi').removeClass('hiddenItm');
+        }
+
+    });
+
+
+    $(document).on('click', 'button#secondMenu', function(){
+        if(myLocation !== "/web/catalogo/index.html" && myLocation !== "/web/catalogo/index" && myLocation !== "/web/catalogo/" && myLocation !== "/web/catalogo/brand-modelo.html" && myLocation !== "/web/catalogo/brand-modelo" && myLocation !== "/web/perfil/configuracion" && myLocation !== "/web/perfil/configuracion.html"){
+            $('ul.navSMenuList').find('li.shareVrummLi').removeClass('hiddenItm');
+        }
+    });
+
     $(document).on('click', 'a.shareVrumm', function(){
         openShare();
     });
@@ -39,7 +61,7 @@ $(function(){
     function openShare(){
         modalShare.modal();
 
-        if(myLocation !== "/web/catalogo/index.html" && myLocation !== "/web/catalogo/index" && myLocation !== "/web/catalogo/" && myLocation !== "/web/catalogo/brand-modelo.html" && myLocation !== "/web/catalogo/brand-modelo"){
+        if(myLocation !== "/web/catalogo/index.html" && myLocation !== "/web/catalogo/index" && myLocation !== "/web/catalogo/" && myLocation !== "/web/catalogo/brand-modelo.html" && myLocation !== "/web/catalogo/brand-modelo" && myLocation !== "/web/perfil/configuracion" && myLocation !== "/web/perfil/configuracion.html"){
 
             var cssImg = (profilePict.length) ? profilePict.css('background-image') : versionsCarousel.css('background-image');
 
@@ -172,14 +194,63 @@ $(function(){
         }).tokenfield()
     }
 
-    $('#invitation-form').submit(function() {
+    $('#invitation-form').submit(function(e) {
+        e.preventDefault();
         if ( $('#tokenfield').tokenfield('getTokens').length > 0 ) {
             $('#btn-send-invitation').button('loading');
+
+            let objToSend = $(this).serializeArray();
+
+            if($('input#tokenfield-tokenfield').length){
+                    console.log('sí existe el input');
+                    var textToCheck = $('input#tokenfield-tokenfield').val();
+                    console.log(textToCheck);
+                    if(textToCheck.length > 0){
+                        var whiteSpaceIdx = textToCheck.indexOf(' ');
+                        var commaIdx = textToCheck.indexOf(',');
+
+                        if((whiteSpaceIdx !== -1 && commaIdx !== -1) || (whiteSpaceIdx !== -1 && commaIdx == -1)){
+                            //array of posible arrays
+                            var posMails = textToCheck.split(' ');
+
+                            posMails.forEach((word, idx) => {
+                                word = word.replace(/,/g, '');
+                                word = word.replace(/ /g, '');
+
+                                if(isValidEmailAddress(word)){
+                                    objToSend[0].value += `, ${word}`;
+                                }
+
+                            });
+
+                        }else if(whiteSpaceIdx == -1 && commaIdx !== -1){
+
+                            var posMails = textToCheck.split(',');
+                            posMails.forEach((word, idx) => {
+                                word = word.replace(/,/g, '');
+                                word = word.replace(/ /g, '');
+
+                                if(isValidEmailAddress(word)){
+                                    objToSend[0].value += `, ${word}`;
+                                }
+
+                            });
+
+                        }else{
+                            if (isValidEmailAddress(textToCheck)) {
+                                 objToSend[0].value += `, ${textToCheck}`;
+                            }
+                        }
+                    }
+
+                }
+
+
             $.ajax({
                 type    : "POST",
                 cache   : false,
                 url     : $(this).attr('action'),
-                data    : $(this).serializeArray(),
+                data    : objToSend,
                 success : function(data){
                     alert(data);
                 },
@@ -195,7 +266,12 @@ $(function(){
             alert('Agregue una dirección de correo valida');
         }
         return false;
-    });      
+    }); 
+
+    function isValidEmailAddress(emailAddress) {
+        var pattern = new RegExp(/^(("[\w-+\s]+")|([\w-+]+(?:\.[\w-+]+)*)|("[\w-+\s]+")([\w-+]+(?:\.[\w-+]+)*))(@((?:[\w-+]+\.)*\w[\w-+]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][\d]\.|1[\d]{2}\.|[\d]{1,2}\.))((25[0-5]|2[0-4][\d]|1[\d]{2}|[\d]{1,2})\.){2}(25[0-5]|2[0-4][\d]|1[\d]{2}|[\d]{1,2})\]?$)/i);
+        return pattern.test(emailAddress);
+    };    
 
 
 })

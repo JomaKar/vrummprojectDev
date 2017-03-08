@@ -99,7 +99,7 @@ $(function(){
 		function getVersionsPhotos(modelId){
 			modelId = parseInt(modelId);
 
-		    var device = sessionStorage.getItem('deviceId');
+		    var device = localStorage.getItem('deviceId');
 		    var dataForPhotos = {};
 
 		    if(device !== undefined && device !== null && modelId){
@@ -167,7 +167,7 @@ $(function(){
 		}
 
 		function getVersions(modelId) {
-		    var device = sessionStorage.getItem('deviceId');
+		    var device = localStorage.getItem('deviceId');
 
 		    if(device !== undefined && device !== null && modelId){
 

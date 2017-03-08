@@ -28,7 +28,8 @@ var config = {
 	  	 './src/scripts/passModalDis.js', './src/scripts/profile.js', 
 	  	 './src/scripts/carVersions.js', './src/scripts/specVersion.js',
 	  	 './src/scripts/editProfile.js', './src/scripts/share.js',
-	  	 './src/scripts/breadcrumb.js'],
+	  	 './src/scripts/breadcrumb.js', './src/scripts/paseo.js', 
+	  	 './src/scripts/changeLinksHref.js'],
 	  	watch:'./src/scripts/**/*.js',
 	  	output:'./build/web/js'
 	},
@@ -70,7 +71,9 @@ gulp.task('build:css', function() {
 
 gulp.task('inline', function(){
 	gulp.src('./build/web/index.html')
-	.pipe(smoosher())
+	.pipe(smoosher().on('error', function(e){
+		console.log(e);
+	}))
 	.pipe(gulp.dest('./dist'));
 });
 
@@ -100,7 +103,9 @@ gulp.task('watch', function() {
   gulp.watch(config.scriptsBL.watch, ['buildBL:js']);
 });
 
-gulp.task('build', ['build:css', 'build:js', 'buildBL:js', 'images','inline']);
+gulp.task('build', ['build:css', 'build:js', 'buildBL:js']).on('error', function(e){
+		console.log(e);
+	});
 
 gulp.task('default', ['watch', 'build']);
 

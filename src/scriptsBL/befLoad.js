@@ -11,7 +11,7 @@ $(document).ready(function(){
 
 
 var session = localStorage.getItem('activeSession');
-var devicId = sessionStorage.getItem('deviceId');
+var devicId = localStorage.getItem('deviceId');
 var userInfo = sessionStorage.getItem('currentUserInfo');
 var userId = sessionStorage.getItem('currentUserId');
 var usrAlias = sessionStorage.getItem('currentUserAlias');
@@ -300,10 +300,10 @@ function getUserInfo(idOrAl, type) {
           users.forEach(function(objItm, objIdx){
               //console.log(idOrAl, objItm.al, 'bfl');
               if(idOrAl == objItm.al || idOrAl == objItm.id){
-                  var device = sessionStorage.getItem('deviceId');
+                  var device = localStorage.getItem('deviceId');
 
                   if(device !== undefined && device !== null){
-                      var dataForGarage = {idUsr: objItm.id, device: sessionStorage.getItem('deviceId')};
+                      var dataForGarage = {idUsr: objItm.id, device: localStorage.getItem('deviceId')};
                       dataForGarage = JSON.stringify(dataForGarage);
                       sendPostToGet('garage/listar', dataForGarage, 'usrGrg');
 
@@ -331,7 +331,7 @@ function getBrands(){
 function getModelsInfo(id){
 
     var theId = parseInt(id);
-    var device = sessionStorage.getItem('deviceId');
+    var device = localStorage.getItem('deviceId');
 
     if(device !== undefined && device !== null && theId){
       console.log('without waiting')
@@ -343,7 +343,7 @@ function getModelsInfo(id){
     }else{
       setTimeout(function(){
 
-        data = {device: sessionStorage.getItem('deviceId'), brandId: theId};
+        data = {device: localStorage.getItem('deviceId'), brandId: theId};
         sendPostToGet('catalogo/getmodelos', JSON.stringify(data), 'mdls');
 
 
@@ -357,7 +357,7 @@ function getVersions(theModelId) {
     var data = {};
     theModelId = parseInt(theModelId);
 
-    var device = sessionStorage.getItem('deviceId');
+    var device = localStorage.getItem('deviceId');
     var userId = sessionStorage.getItem('currentUserId');
 
     if(device !== undefined && device !== null){
@@ -370,7 +370,7 @@ function getVersions(theModelId) {
     }else{
       setTimeout(function(){
         
-        data = (localStorage.getItem('aUsr') !== null && localStorage.getItem('aUsr') !== undefined) ? {'device':  sessionStorage.getItem('deviceId'), modelId: theModelId, user: localStorage.getItem('aUsr')} : {'device':  sessionStorage.getItem('deviceId'), modelId: theModelId};
+        data = (localStorage.getItem('aUsr') !== null && localStorage.getItem('aUsr') !== undefined) ? {'device':  localStorage.getItem('deviceId'), modelId: theModelId, user: localStorage.getItem('aUsr')} : {'device':  localStorage.getItem('deviceId'), modelId: theModelId};
         //console.log(data);
 
         (myLocation === "/web/catalogo/modelo-versiones.html" || myLocation === "/web/catalogo/modelo-versiones") ? sendPostToGet('catalogo/getversiones', JSON.stringify(data), 'vrsInfo') : sendPostToGet('catalogo/getversiones', JSON.stringify(data), 'spVrsInfo');
@@ -385,7 +385,7 @@ function getVersionsPhotos(theModelId){
     theModelId = parseInt(theModelId);
 
 
-    var device = sessionStorage.getItem('deviceId');
+    var device = localStorage.getItem('deviceId');
     var data = {};
 
     if(device !== undefined && device !== null){
@@ -394,7 +394,7 @@ function getVersionsPhotos(theModelId){
       sendPostToGet('catalogo/getgaleria', JSON.stringify(data), 'vrsGal');
     }else{
       setTimeout(function(){
-        data = {device: sessionStorage.getItem('deviceId'), modelId: theModelId};
+        data = {device: localStorage.getItem('deviceId'), modelId: theModelId};
         sendPostToGet('catalogo/getgaleria', JSON.stringify(data), 'vrsGal');
       }, 1000);
     }

@@ -13,24 +13,32 @@ $(function(){
 
 			if(!$(el).hasClass('noChangeHref')){
 
-				var linkHref = $(el).attr('href');
+				var dataD = $(el).data('dev');
+				var dataP = $(el).data('prod');
 
 				if($(el).hasClass('brdId')){
 
-					linkHref += (queriesT.al) ? `?al=${queriesT.al}&brdId=${queriesT.brdId}` : `?brdId=${queriesT.brdId}`;
+					dataD += (queriesT.al) ? `?al=${queriesT.al}&brdId=${queriesT.brdId}` : `?brdId=${queriesT.brdId}`;
+					dataP += (queriesT.al) ? `?al=${queriesT.al}&brdId=${queriesT.brdId}` : `?brdId=${queriesT.brdId}`;
 				
 				}
 
 				if($(el).hasClass('mdlId')){
 
-					linkHref += (queriesT.al) ? `?al=${queriesT.al}&brdId=${queriesT.brdId}&mdlId=${queriesT.mdlId}` : `?brdId=${queriesT.brdId}&mdlId=${queriesT.mdlId}`;
+					dataD += (queriesT.al) ? `?al=${queriesT.al}&brdId=${queriesT.brdId}&mdlId=${queriesT.mdlId}` : `?brdId=${queriesT.brdId}&mdlId=${queriesT.mdlId}`;
+					dataP += (queriesT.al) ? `?al=${queriesT.al}&brdId=${queriesT.brdId}&mdlId=${queriesT.mdlId}` : `?brdId=${queriesT.brdId}&mdlId=${queriesT.mdlId}`;
 
 				}
 
-				$(el).attr('href', linkHref); 
+				$(el).data('dev', dataD);
+				$(el).data('prod', dataP);
+
+				sessionStorage.setItem('hrefBreadCrumb', 'setted');
 			}
 			
 		});
+
+
 	}
 
 });

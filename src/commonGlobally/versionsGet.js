@@ -1,6 +1,6 @@
 function getVersionsPhotos(modelId){
 
-    var device = sessionStorage.getItem('deviceId');
+    var device = localStorage.getItem('deviceId');
     var data = {};
 
     if(device !== undefined && device !== null && modelId){

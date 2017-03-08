@@ -4,7 +4,7 @@ export function getVersions(modelId, modelName, modelPrice, or) {
 	 localStorage.setItem('modelId', modelId.toString());
 	 localStorage.setItem('modelName', modelName.toString());
 	 localStorage.setItem('modelPrice', modelPrice.toString());
-	 var device = sessionStorage.getItem('deviceId');
+	 var device = localStorage.getItem('deviceId');
 	 var userId = localStorage.getItem('aUsr');
 	 var data = {};
 
