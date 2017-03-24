@@ -69,7 +69,7 @@ $(function(){
 				$(el).attr('href', hrefChange);
 			});
 		
-		}else if(environment == "www.vrummapp.net"){
+		}else if(environment == "www.vrummapp.net" || environment == "vrummapp.net"){
 
 			linksToChange.each((id, el) => {
 				var hrefChange = $(el).data('prod');
