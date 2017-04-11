@@ -84,9 +84,10 @@ $(function(){
 		
 		}else{
 
-			(myLocation !== "/web/" && myLocation !== "/web/index" && myLocation !== "/web/index.html") ? mainFooter.load('../templates/footerIn.html') : mainFooter.load('./templates/footerIndex.html');
+			(myLocation !== "/web/" && myLocation !== "/web/index" && myLocation !== "/web/index.html") ? mainFooter.load('../templates/footerLog.html') : mainFooter.load('./templates/footerIndex.html');
 
 		}
+
 
 	}
 

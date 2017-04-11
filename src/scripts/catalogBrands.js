@@ -9,9 +9,14 @@ $(function(){
 	linkRegCat = $('button#goToReg-Cat'),
 	initialRow = $('div.firstRow');
 
-	linkRegCat.click(function(){
-		navigating('registro');
-	})
+	$(document).on('click', 'button#goToReg-Cat', function(){
+		con('the function gets');
+		navigating('registro');		
+	});
+
+	// linkRegCat.click(function(){
+	// 	navigating('registro');
+	// })
 
 
 	if(myLocation === "/web/catalogo/index.html" || myLocation === "/web/catalogo/index" || myLocation === "/web/catalogo/"){
