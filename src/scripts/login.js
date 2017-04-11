@@ -1,4 +1,4 @@
-import {navigating} from './commonFunc/locating.js';
+import {navigating, myLocation} from './commonFunc/locating.js';
 import {con} from './commonFunc/consoling.js';
 import {sendPostToGo, sendPostToGet} from './commonFunc/httpProcesor.js';
 
@@ -59,14 +59,14 @@ $(function(){
 		subBtnRecTxt.disBlock();
 		recoverPassTxt.disBlock();
 		cancelarBtn.disBlock();
-		loginBtnCont.css({display: 'flex'});
+		loginBtnCont.css({display: 'flex'}).removeClass('centerAlone');
 		registrarbtn.addClass('NorightM halfML');
 		recoverPass = true;
 	}
 
 	function recoverPassEnd() {
 		recoverPass = false;
-		loginBtnCont.disBlock();
+		loginBtnCont.disBlock().addClass('centerAlone');
 		emailCont.after(passCont);
 		errMsg.after(passRecTxt);
 		recoverPassTxt.disNone();
@@ -82,7 +82,7 @@ $(function(){
 
 	loginForm.submit(function(e){
 		e.preventDefault();
-		var devID = sessionStorage.getItem('deviceId');
+		var devID = localStorage.getItem('deviceId');
 		devID = devID.toString();
 
 		if(!recoverPass){
@@ -101,7 +101,7 @@ $(function(){
 			recoverPassEnd();
 
 			var mailTxt = userE.val();
-			var geoLoc = sessionStorage.getItem('location');
+			var geoLoc = localStorage.getItem('location');
 			var params = {device: devID, mail: mailTxt, geoloc: geoLoc};
 
 			params = JSON.stringify(params);
@@ -118,7 +118,8 @@ $(function(){
 		var data = JSON.stringify(val);
 		//sendPostToGo('usuario/login', data, 'perfil');
 		//later when trying with the alias in url
-		sendPostToGo('usuario/login', data, 'perfilLog');
+
+		(myLocation !== "/web/" && myLocation !== "/web/index" && myLocation !== "/web/index.html") ? sendPostToGo('usuario/login', data, 'perfilLogIrgenwo') : sendPostToGo('usuario/login', data, 'perfilLog');
 
 	}
 
@@ -131,9 +132,19 @@ $(function(){
 				if(res.estado === 2){
 
 					if(flag === null){
+						
+						if($('div#failLog').length){
+							
+							recoverPassEnd();
+
+							$('div#failLog').modal('hide');
+						}
 						displayRecoverModal();						
+					
 					}else{
+					
 						modal.hide();
+					
 					}
 				}
 
@@ -178,10 +189,10 @@ $(function(){
 
 		modal.css({display: 'flex'});
 		
-		var devID = sessionStorage.getItem('deviceId');
+		var devID = localStorage.getItem('deviceId');
 		devID = devID.toString();
 		var mailTxt = userE.val();
-		var geoLoc = sessionStorage.getItem('location');
+		var geoLoc = localStorage.getItem('location');
 		var params = {device: devID, mail: mailTxt, geoloc: geoLoc};
 
 		resendPassMail.click(function(){

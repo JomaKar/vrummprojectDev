@@ -41,18 +41,17 @@ body {
   text-align: right;
   color: #fff;
 }
-
-.form-signin input[type="text"].noTouch, .form-signin input[type="email"].noTouch {
-  color: #585858;
-  cursor: not-allowed; 
-}
-
 .form-signin input[type="email"] {
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
   border-color: #262626;
   text-align: right;
   color: #fff;
+}
+
+.form-signin input[type="text"].noTouch, .form-signin input[type="email"].noTouch {
+  color: #585858;
+  cursor: not-allowed; 
 }
 
 .validarEmail, .validarEmail:hover{

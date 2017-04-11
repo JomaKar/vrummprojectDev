@@ -2,6 +2,7 @@ import {navigating, myLocation, pathnameRoot} from './commonFunc/locating.js';
 import {con} from './commonFunc/consoling.js';
 import {queriesT, hashesExist} from './commonFunc/urlEncoder.js';
 import {sendPostToGo, sendPostToGet} from './commonFunc/httpProcesor.js';
+import {changeProfilePhoto} from './commonFunc/changeProfilePhoto.js';
 
 $(function(){
 
@@ -9,23 +10,38 @@ $(function(){
 
 		//DOM variables
 
-		const configForm = $('form#configForm')
-		const formSecondPart = $('div.formSecondPart');
-		const formFirstPart = $('div.formFirstPart');
-		const passChA = $('div.passwordChangeArea');
-		const passEditBtn = $('button.passEditBtn');
-		const passInptsCont = $('div.passwordChangeInptsCont');
-		const inpPassNewConf = $('input#inpPassNewConf');
-		const inpPassNew = $('input#inpPassNew');
-		const mailInpEdit = $('input.mailInpEdit');
-		const btnValidate = $('button.validateMailBtn');
-		const contactInp = $('input#referido');
+		const configForm = $('form#configForm'),
+		formSecondPart = $('div.formSecondPart'),
+		formFirstPart = $('div.formFirstPart'),
+		passChA = $('div.passwordChangeArea'),
+		passEditBtn = $('button.passEditBtn'),
+		passInptsCont = $('div.passwordChangeInptsCont'),
+		inpOldPass = $('input#inpOldPass'),
+		inpPassNew = $('input#inpPassNew'),
+		inpPassNewConf = $('input#inpPassNewConf'),
+		mailInpEdit = $('input.mailInpEdit'),
+		btnValidate = $('button.validateMailBtn'),
+		contactInp = $('input#referido'),
+		profileImgCont = $('div.profileImgCont'),
+		editTagsCont = $('div.editTagsCont');
 
-		var changeContact = true;
-		var changePass = false;
+		const divMaterno = $('div.divMaterno');
+		const divPaterno = $('div.divPaterno');
+
+
+		var changeContact = false,
+		validateMail = false,
+		changePass = false,
+		changePassAskStop = false,
+		changePhoto = false,
+		dataOK = true;
+
 		var defaultContact = '';
+		var initialInfo = {};
+		var dataImg = '';
 
 		var contactId;
+		var dataForFullAct = {device: localStorage.getItem('deviceId'), geoloc: localStorage.getItem('location'), user: localStorage.getItem('aUsr')};
 
 		$(document).ready(function(){
 			sizing();
@@ -54,10 +70,16 @@ $(function(){
 			$(this).addClass('hiddenItm');
 			passInptsCont.css({visibility: 'visible'});
 			changePass = true;
+			inpOldPass.prop('required', true);
+			inpPassNew.prop('required', true);
+			inpPassNewConf.prop('required', true);
 		})
 
 		function displayInForm(userObj) {
 			con(userObj);
+
+			initialInfo = userObj[0];
+			dataImg = userObj[0].foto_perfil;
 
 			$.map(userObj[0], function(val, key){
 
@@ -78,29 +100,56 @@ $(function(){
 
 					if(value === 1){
 						adjustValBtn('y');
-						mailInpEdit.css({'padding-right': '5px !important'});
-						btnValidate.remove();
 					}
-
 
 				}else{
 					configForm.find(`input[name='${key}']`).val(val);
+					
 					if(key === 'tags'){
 						configForm.find(`textarea[name='${key}']`).val(val);
 					}
 
-					if(key === 'invitado_por' && val === 'Sin invitación'){
-						configForm.find(`input[name='${key}']`).removeAttr('readonly');
+					if(key === 'invitado_por'){
 						defaultContact = val;
+						(val === 'Usuario Pruebas' || val === null) ? (configForm.find(`input[name='${key}']`).removeAttr('readonly'), changeContact = true) : changeContact = false;
+						//console.log('when displaying', val, changeContact);
 					}
 				}
 
 			});
 		}
 
+		btnValidate.click(function(){
+			let mail = mailInpEdit.val();
+			var data = {device: localStorage.getItem('deviceId'), user: localStorage.getItem('aUsr'), mail: mail, geoloc: localStorage.getItem('location')};
+			sendPostToGet('usuario/enviacodigo', JSON.stringify(data), 'validaMail');
+
+		});
+
 		$(document).on('click', 'li.posibleFriend', function(e){
-			contactId = $(e).find('span.friendId').text();
-			contactId = parseInt(contactId);
+			var cId = $(this).find('span.friendId').text();
+
+			//console.log('posibleFriend', cId);
+
+			sessionStorage.setItem('idPsFriend', cId);
+		});
+
+		$(document).on('click', 'div.ok', function(){
+
+				changePhoto = true;
+
+
+				setTimeout(function(){
+
+					if(profileImgCont.find('img').length){
+
+						profileImgCont.css({'background-image':  'none'});
+						dataImg = profileImgCont.find('img').attr('src').replace(/^data:image\/(png|jpg);base64,/, "");
+						sessionStorage.setItem('temptyImgForLocal', dataImg.toString());
+					}
+
+				}, 200);
+
 		});
 
 		configForm.submit(function(e){
@@ -108,39 +157,80 @@ $(function(){
 
 			var data = $(this).serializeArray();
 
-			con(data);
-
-			var dataForFullAct = {};
-			var dataForChangePass = {};
+			//con(data);
 
 			data.forEach(function(itm, idx){
 
 				if(itm.name === 'invitado_por' && changeContact){
 					var contactVal = contactInp.val();
+					//console.log(contactVal, defaultContact, changeContact);
 
-					(contactVal === defaultContact) ? changeContactProcess(contactId, contactVal) : null;
+					(contactVal !== defaultContact) ? changeContactProcess(sessionStorage.getItem('idPsFriend'), contactVal) : null;
 				
 				}else if(itm.name === 'actual' || itm.name === 'nueva' || itm.name === 'nuevaConf'){
-					con(itm.value);
+					(itm.value !== '' && changePass) ? changePassProcess() : null;
+				
+				}else if(itm.name === 'nombre' || itm.name === 'paterno' || itm.name === 'materno' || itm.name === 'genero' || itm.name === 'tags' || itm.name === 'fecha_nac'){
+					if(!$.isEmptyObject(initialInfo)){
+						if(itm.name !== 'fecha_nac'){
+							(initialInfo[itm.name] == itm.value) ? dataForFullAct[itm.name] = initialInfo[itm.name] : dataForFullAct[itm.name] = itm.value;
+						}else{
+							(initialInfo[itm.name] == itm.value) ? dataForFullAct.fecha_nacimiento = initialInfo[itm.name] : dataForFullAct.fecha_nacimiento = itm.value;
+						}
+					}
 				}
-
-				/*$.map(itm, function(val, key){
-
-				});*/
 			});
 
+			if(changePhoto){
+				var logUsr = parseInt(localStorage.getItem('aUsr'));
+				changeProfilePhoto(dataImg, logUsr);
+			}
 
+			sendFullUpdate(dataForFullAct);
 
-			//sendPostToGet(, , 'usrFullEdit')
 		});
+
+		function changePassProcess() {
+			if(!changePassAskStop){
+				
+				changePassAskStop = true;
+				
+				var OldPassTxt = inpOldPass.val();
+				var PassNewTxt = inpPassNew.val();
+				var PassNewConfTxt = inpPassNewConf.val();
+
+				if(PassNewTxt !== '' && PassNewTxt === PassNewConfTxt && PassNewConfTxt !== '' && OldPassTxt !== '' && PassNewTxt !== OldPassTxt){
+
+					dataOK = true;
+					var dataForChangePass = JSON.stringify({device: localStorage.getItem('deviceId'), geoloc: localStorage.getItem('location'), user: localStorage.getItem('aUsr'), actual: OldPassTxt, nueva: PassNewTxt});
+					sendPostToGet('usuario/cambiapsw', dataForChangePass, 'usrPass');
+
+				}else{
+					alert('las nuevas contraseñas no son iguales');
+					dataOK = false;
+					changePassAskStop = false;
+				}
+			}
+		}
 
 		function changeContactProcess(id, name) {
 			var theId = parseInt(id);
 			sessionStorage.setItem('temptyNewContact', name.toString());
-			var dataForChangeContact = {device: sessionStorage.getItem('deviceId'), user: localStorage.getItem('aUsr'), campo: 'refered', dato: id};
+			var dataForChangeContact = {device: localStorage.getItem('deviceId'), user: localStorage.getItem('aUsr'), campo: 'refered', dato: id};
 			//console.log('processing to send', data);
 			dataForChangeContact = JSON.stringify(dataForChangeContact);
 			sendPostToGet('usuario/actualizadato', dataForChangeContact, 'usrContact');
+
+		}
+
+		function sendFullUpdate(data) {
+			data.foto = dataImg;
+
+			con(data);
+
+			data = JSON.stringify(data);
+
+			(dataOK) ? sendPostToGet('usuario/actualizar', data , 'usrFullEdit') : null;
 
 		}
 
@@ -186,15 +276,15 @@ $(function(){
 
 			}
 
-
-
 		}
 
 		function adjustValBtn(stop) {
 			if(stop === 'y'){
-				changeContact = false;
+				validateMail = true;
+				mailInpEdit.css({'padding-right': '5px !important'});
+				btnValidate.remove();
 
-			}else if(changeContact){
+			}else if(!validateMail){
 
 				var rightP = btnValidate.outerWidth();
 				mailInpEdit.css({'padding-right': rightP + 4})
@@ -204,13 +294,19 @@ $(function(){
 
 		function adjustInputs(flag){
 			if(flag === 'down'){
+				divPaterno.removeClass('NoleftP halfR').css({padding: '0px 0px 6px'});
+				divMaterno.removeClass('NorightP halfL').css({padding: '6px 0px 0px'});
 				inpPassNewConf.closest('div.col-md-6').removeClass('NorightP halfL').addClass('noPadding');
 				inpPassNew.closest('div.col-md-6').removeClass('NoleftP halfR').addClass('noPadding');
+				profileImgCont.removeClass('NorightP halfL').addClass('NoleftP halfR');
+				editTagsCont.addClass('NorightP halfL');
 			}else{
 				inpPassNewConf.closest('div.col-md-6').addClass('NorightP halfL').removeClass('noPadding');
 				inpPassNew.closest('div.col-md-6').addClass('NoleftP halfR').removeClass('noPadding');
+				divPaterno.addClass('NoleftP halfR');
+				divMaterno.addClass('NorightP halfL').removeClass('noPadding');
 			}
-		} 
+		}
 
 	}
 

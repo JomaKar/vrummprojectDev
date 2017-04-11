@@ -101,7 +101,19 @@ export function navInfo() {
 			var image = (photo !== null && photo !== undefined) ? `data:image/png;base64,${photo}` : '../img/profileDafault.png';
 			var alias = (logUserAlias !== null && logUserAlias !== undefined) ? logUserAlias : userInfoObj.alias;
 
-			$('span.aliasNavSpan').text(alias);
+			let spanAlias = $('span.aliasNavSpan');
+			let anchorProfile = spanAlias.closest('a');
+
+			if(anchorProfile.attr('href').length > 0 && anchorProfile.attr('href').indexOf('?') < 0){
+				let textToAdd = '?al=' + alias;
+				anchorProfile.attr('href', anchorProfile.attr('href') + textToAdd); 
+			}else{
+				(anchorProfile.attr('data-dev').indexOf('?') < 0) ? null : anchorProfile.attr('data-dev', anchorProfile.attr('data-dev') + '?al=' + alias);
+				(anchorProfile.attr('data-prod').indexOf('?') < 0) ? null : anchorProfile.attr('data-prod', anchorProfile.attr('data-dev') + '?al=' + alias);
+			}
+
+			spanAlias.text(alias);
+
 			$('div.minProfileImg').css({
 				'background-image': `url(${image})`
 			});
@@ -115,9 +127,17 @@ export function navInfo() {
 			links.each(function(indx, el){
 
 				if(!$(el).hasClass('noChangeHref')){
-					var linkHref = $(el).attr('href');
-					linkHref += `?al=${alias}`;
-					$(el).attr('href', linkHref); 
+					var dataD = $(el).data('dev');
+					var dataP = $(el).data('prod');
+
+
+					dataD += `?al=${alias}`;
+					dataP += `?al=${alias}`;
+					
+					$(el).data('dev', dataD);
+					$(el).data('prod', dataP);
+
+					sessionStorage.setItem('hrefNav', 'setted');				
 				}
 				
 			});

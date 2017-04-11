@@ -3,6 +3,9 @@ import {myLocation, strongRoot, totalRoot, navigating} from './commonFunc/locati
 import {navInfo} from './commonFunc/activeSessionNav.js';
 import {sendPostToGo, sendPostToGet} from './commonFunc/httpProcesor.js';
 import {con} from './commonFunc/consoling.js';
+import {askBrands, theBrand} from './commonFunc/brandsImgs.js';
+
+askBrands();
 
 $(function(){
 	browserFingerprint();
@@ -41,7 +44,7 @@ $(function(){
 	});
 
 	$(document).ready(function(){
-		$(this).scrollTop(0);
+		(myLocation !== "/web/paseo/" && myLocation !== "/web/paseo/index" && myLocation !== "/web/paseo/index.html") ? $(this).scrollTop(0) : null;
 		getGeolocalization();
 		//setImgDataAttr();
 
@@ -56,13 +59,19 @@ $(function(){
 
 	});
 
+	const failModal = $('div#failLog');
+
+	$(document).on('click', 'li.disabled', function(){
+		failModal.modal();
+	});
+
 	$(window).resize(function(){
 		//setImgDataAttr();
 	});
 
 
 	$(document).on('click', 'span.navbarBackBtn', function(){
-		con('here');
+		//con('here');
 		backing(myLocation);
 	});
 
@@ -71,8 +80,11 @@ $(function(){
 		
 		if(navFlag !== 'never'){
 
-
-			(session === 'yes') ? (myNavBar.load('../templates/navbarIn.html'), navInfo()) : myNavBar.load('../templates/navbarOut.html');
+			if(session === 'yes') {
+				(myLocation !== "/web/paseo/" && myLocation !== "/web/paseo/index" && myLocation !== "/web/paseo/index.html") ? (myNavBar.load('../templates/navbarIn.html'), navInfo()) : myNavBar.load('../templates/navbarPaseo.html');
+			} else{
+				(myLocation !== "/web/paseo/" && myLocation !== "/web/paseo/index" && myLocation !== "/web/paseo/index.html") ? myNavBar.load('../templates/navbarOut.html') : myNavBar.load('../templates/navbarPaseo.html');
+			}
 
 		}
 
@@ -80,14 +92,17 @@ $(function(){
 
 		if(footerFlag === null){
 
-			(session === 'yes') ? mainFooter.load('../templates/footerIn.html') : mainFooter.load('../templates/footerOut.html');
+			if(session === 'yes') { 
+				(myLocation !== "/web/paseo/" && myLocation !== "/web/paseo/index" && myLocation !== "/web/paseo/index.html") ? mainFooter.load('../templates/footerIn.html') : mainFooter.load('../templates/footerPaseo.html');
+			} else{
+				(myLocation !== "/web/paseo/" && myLocation !== "/web/paseo/index" && myLocation !== "/web/paseo/index.html") ? mainFooter.load('../templates/footerOut.html') : mainFooter.load('../templates/footerPaseo.html');
+			}
 		
 		}else{
 
 			(myLocation !== "/web/" && myLocation !== "/web/index" && myLocation !== "/web/index.html") ? mainFooter.load('../templates/footerLog.html') : mainFooter.load('./templates/footerIndex.html');
 
 		}
-
 
 	}
 
@@ -121,7 +136,7 @@ $(function(){
 
 	function getDeviceIDStarting(){
 		var currentDeviceId = '',
-		 storedDeviceId = sessionStorage.getItem('deviceId');
+		 storedDeviceId = localStorage.getItem('deviceId');
 		 sessionStorage.removeItem('nickGood');
 		 sessionStorage.removeItem('mailGood');
 
@@ -188,7 +203,7 @@ $(function(){
 		if(getDeviceAsk ===  0){
 			deviceIdval = argument.toString();
 			getDeviceAsk++;
-			sessionStorage.setItem('deviceId', deviceIdval);
+			localStorage.setItem('deviceId', deviceIdval);
 			return;
 		}
 			return deviceIdval;
@@ -231,7 +246,7 @@ $(function(){
 	}
 
 	function getGeolocalization(){
-		var loc = sessionStorage.getItem('location');
+		var loc = localStorage.getItem('location');
 
 		if(loc !== undefined && loc !== null){
 
@@ -245,7 +260,7 @@ $(function(){
 	            	var longitude = position.coords.longitude;
 	            	geoloc = latitude + ', ' + longitude;
 	            	currentLocation(geoloc);
-	            	sessionStorage.setItem('location', geoloc); 
+	            	localStorage.setItem('location', geoloc); 
         		});
     		}
 		}
@@ -263,7 +278,7 @@ $(function(){
 
 				if(idTxt !== undefined && idTxt !== null && idTxt.length > 0){
 					idTxt = idTxt.toString();					
-					sessionStorage.setItem("id", idTxt);
+					sessionStorage.setItem("idPsFriend", idTxt);
 				}
 				
 				return true;
@@ -364,7 +379,7 @@ $(function(){
 
 				}else{
 					if(field.name === 'refered_by'){
-						values[field.name] = sessionStorage.getItem('id');
+						values[field.name] = sessionStorage.getItem('idPsFriend');
 					}else if(field.name === 'tags'){
 						values[field.name] = field.value + ', ' + values.alias + ', '+ values.email + ', '+ values.nombre;
 					}else{
@@ -403,7 +418,7 @@ $(function(){
 		
 		localStorage.clear();
 
-		var sess = ['cUsrA', 'currentUserId', 'currentUserInfo'];
+		var sess = ['currentUserId', 'currentUserInfo', 'idPsFriend', 'currentUserAlias', 'currentUserGarage', 'infoChange', 'contactChange', 'passwordChange'];
 
 		$.map(sess, function(arrItm, indx){
 			console.log(arrItm)
@@ -412,6 +427,5 @@ $(function(){
 		
 		});
 	});
-
 
 });

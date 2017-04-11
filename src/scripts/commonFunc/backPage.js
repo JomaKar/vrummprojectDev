@@ -42,6 +42,11 @@ export function backing(currPage) {
 		destiny: 'registro'
 	},
 	{
+		name: ['/web/paseo/', '/web/paseo/index.html', '/web/paseo/index'],
+		parent: 'home',
+		destiny: 'paseo'
+	},
+	{
 		name: ['/web/catalogo/', '/web/catalogo/index.html', '/web/catalogo/index'],
 		parent: ['home', 'perfil'],
 		destiny: ''
@@ -50,6 +55,11 @@ export function backing(currPage) {
 		name: ['/web/perfil/index.html', '/web/perfil/index','/web/perfil/'],
 		parent: 'home',
 		destiny: 'home'
+	},
+	{
+		name: ['/web/perfil/configuracion.html', '/web/perfil/configuracion'],
+		parent: 'perfil',
+		destiny: 'perfil'
 	},
 	{
 		name: ['/web/perfil/detalles.html', '/web/perfil/detalles'],

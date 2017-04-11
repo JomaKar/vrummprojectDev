@@ -9,10 +9,14 @@ $(function(){
 	var currentVersionImgs = [];
 	var currentVersionMainImg = '';
 	var versionsArr = [];
-	var theCarousel = $('div.versionsCarousel');
-	var infoContainer = $('div.versionDetailCont');
-	var idSpan = $('span.currentVersionId');
-	var thumbsBar = $('div.thumbImgsBar');
+
+	const theCarousel = $('div.versionsCarousel'),
+	infoContainer = $('div.versionDetailCont'),
+	idSpan = $('span.currentVersionId'),
+	thumbsBar = $('div.thumbImgsBar'),
+	metaTitle = $('meta.metaTitle'),
+	metaDescrip = $('meta.metaDescrip'),
+	metaImg = $('meta.metaImg');
 
 
 	if(myLocation === "/web/catalogo/modelo-versiones.html" || myLocation === "/web/catalogo/modelo-versiones"){
@@ -95,7 +99,7 @@ $(function(){
 		function getVersionsPhotos(modelId){
 			modelId = parseInt(modelId);
 
-		    var device = sessionStorage.getItem('deviceId');
+		    var device = localStorage.getItem('deviceId');
 		    var dataForPhotos = {};
 
 		    if(device !== undefined && device !== null && modelId){
@@ -132,6 +136,10 @@ $(function(){
 
 			changeCarBackPos(imgs[0].pict, null);
 
+			metaImg.attr('content', imgs[0].pict);
+
+			theCarousel.find('div.sk-circle').remove();
+
 			$(theCarousel).css({
 				'background-image': `url(${imgs[0].pict})`
 			});
@@ -159,7 +167,7 @@ $(function(){
 		}
 
 		function getVersions(modelId) {
-		    var device = sessionStorage.getItem('deviceId');
+		    var device = localStorage.getItem('deviceId');
 
 		    if(device !== undefined && device !== null && modelId){
 
@@ -544,8 +552,11 @@ $(function(){
 			var modelName = versionsArr[0].model_name;
 			
 			sessionStorage.setItem('currentBrandImg', brandURL);
+			sessionStorage.setItem('currentBrandAutos', versionsArr[0].brand_id);
 			localStorage.setItem('modelName', modelName);
 
+			metaTitle.attr('content', `Checa el ${modelName} en Vrumm`);
+			metaDescrip.attr('content', `Vrumm te permite ver todos los autos del mercado mexicano, como el ${modelName}`);
 
 			versionsBrandImg.css({
 				'background-image': `url(${brandURL})`

@@ -44,6 +44,8 @@
 }
 
 #r-inpFileImgCont img{
-    height: auto; 
-    width: 100%;
+    height: 100%;
+    width: auto;
+    display: block;
+    margin: 0 auto;
 }

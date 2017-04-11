@@ -5,6 +5,8 @@ import {queriesT, hashesExist} from './urlEncoder.js';
 
 //urlEnd inticate where to go
 
+var editChangeSpan = $('#successEditProfile').find('span.datoDetail');
+
 export function sendPostToGo(urlEnd, data, whereTo){
 	//console.log('from sendPostToGo', data);
 	console.log(data, 'from sendToGo processor', whereTo);
@@ -25,7 +27,7 @@ export function sendPostToGo(urlEnd, data, whereTo){
 		).then(function(res){
 
 			//con(res);
-			if(whereTo === 'perfilLog'){
+			if(whereTo === 'perfilLog' || whereTo === 'perfilLogIrgenwo'){
 				
 				if(res.estado === 1){
 
@@ -34,7 +36,7 @@ export function sendPostToGo(urlEnd, data, whereTo){
 
 					localStorage.setItem('activeSession', 'yes');
 
-					getInfo(id, 'user', true);
+					(whereTo !== 'perfilLogIrgenwo') ? getInfo(id, 'user', true) : getInfo(id, 'user', false); 
 					id.toString();
 					localStorage.setItem('aUsr', id);
 					
@@ -52,9 +54,21 @@ export function sendPostToGo(urlEnd, data, whereTo){
 				alias = res.mensaje.usr.alias;
 
 				var users = (localStorage.getItem('visitedUsrs') !== null && localStorage.getItem('visitedUsrs') !== undefined) ? JSON.parse(localStorage.getItem('visitedUsrs')) : [];
-				users.push({'al': alias, 'id': id});
-				users = JSON.stringify(users);
-				localStorage.setItem('visitedUsrs', users);
+				
+				var indexOfUser = -1;
+
+				users.forEach(function(itm, idx){
+					var someId = parseInt(itm.id);
+					if(someId == parseInt(id)){
+						indexOfUser = idx;
+					}
+				});
+
+				if(indexOfUser === -1){
+					users.push({'al': alias, 'id': id});
+					users = JSON.stringify(users);
+					localStorage.setItem('visitedUsrs', users);
+				}
 
 				localStorage.setItem('aUsrA', alias);
 
@@ -122,57 +136,80 @@ export function sendPostToGet(urlEnd, data, flag){
 				datos
 		).then(function(res){
 			//con(res);
-			if(res.estado === 1 && flag === 'usrInfoToGo'){
+			if(flag === 'usrInfoToGetR' || flag === 'usrInfoToGo'){
 
-				var userInfo = [];
-				userInfo[0] = res.mensaje.rs[0];
-				//console.log('from https', userInfo); goes to fast
+				if(res.estado === 1){
+
+					var userInfo = [];
+					userInfo[0] = res.mensaje.rs[0];
+					//console.log('from https', userInfo); goes to fast
 
 
-				var usrPhoto = (userInfo[0].foto_perfil !== null && userInfo[0].foto_perfil !== undefined) ? userInfo[0].foto_perfil.toString() : '';
-				if(usrPhoto.length > 0){localStorage.setItem('aUPP', usrPhoto);}
+					var usrPhoto = (userInfo[0].foto_perfil !== null && userInfo[0].foto_perfil !== undefined) ? userInfo[0].foto_perfil.toString() : '';
+					if(usrPhoto.length > 0){localStorage.setItem('aUPP', usrPhoto);}
 
-				var usrA = userInfo[0].alias;
-				var userId = userInfo[0].id;
+					var usrA = userInfo[0].alias;
+					var userId = userInfo[0].id;
 
-				var device = sessionStorage.getItem('deviceId');
+					var device = localStorage.getItem('deviceId');
 
-			    if(device !== undefined && device !== null && userId){
-			        var dataForGarage = {idUsr: userId, device: sessionStorage.getItem('deviceId')};
-			        dataForGarage = JSON.stringify(dataForGarage);
-			        sendPostToGet('garage/listar', dataForGarage, 'usrGrg');
 
-			    }
+					//I've commented this code 'cause it's been done before in the circuit, if problems, uncomment, else, delete
+				    /*if(device !== undefined && device !== null && userId){
+				        var dataForGarage = {idUsr: userId, device: localStorage.getItem('deviceId')};
+				        dataForGarage = JSON.stringify(dataForGarage);
+				        sendPostToGet('garage/listar', dataForGarage, 'usrGrg');
 
-				var users = (localStorage.getItem('visitedUsrs') !== null && localStorage.getItem('visitedUsrs') !== undefined) ? JSON.parse(localStorage.getItem('visitedUsrs')) : [];
-				
-				var indexOfUser = users.indexOf({'al': usrA, 'id': userId});
+				    }*/
+					
+					var indexOfUser = -1;
 
-				if(indexOfUser === -1){
+					var users = (localStorage.getItem('visitedUsrs') !== null && localStorage.getItem('visitedUsrs') !== undefined) ? JSON.parse(localStorage.getItem('visitedUsrs')) : [];
+					
+					users.forEach(function(itm, idx){
+						var someId = parseInt(itm.id);
+						if(someId == userId){
+							indexOfUser = idx;
+						}
+					});
 
-					users.push({'al': usrA, 'id': userId});
-					users = JSON.stringify(users);
-					localStorage.setItem('visitedUsrs', users);
-				
+					if(indexOfUser === -1){
+
+						users.push({'al': usrA, 'id': userId});
+						users = JSON.stringify(users);
+						localStorage.setItem('visitedUsrs', users);
+					
+					}
+
+
+					userInfo = JSON.stringify(userInfo);
+					localStorage.setItem('aUsrA', usrA);
+
+
+					ssRmForSet('currentUserAlias', usrA);
+					ssRmForSet('currentUserInfo', userInfo);
+
+					if(flag === 'usrInfoToGetR'){
+
+						var routHref = window.location.href;
+						var params = routHref.slice(routHref.indexOf('?') + 1);
+
+						window.location = `${window.location.pathname}?al=${usrA}&${params}`;
+
+					}else{
+
+						if(myLocation !== "/web/perfil/" && myLocation !== "/web/perfil/index" && myLocation !== "/web/perfil/index.html"){
+							navigating(`perfil?al=${usrA}`);
+						}
+					}
+
 				}
 
-
-				userInfo = JSON.stringify(userInfo);
-				localStorage.setItem('aUsrA', usrA);
-
-
-				ssRmForSet('currentUserAlias', usrA);
-				ssRmForSet('currentUserInfo', userInfo);
-
-				if(myLocation !== "/web/perfil/" && myLocation !== "/web/perfil/index" && myLocation !== "/web/perfil/index.html"){
-
-					navigating(`perfil?al=${usrA}`);
-				
-				}
 
 
 			}else if(res.estado === 1 && flag === 'usrInfoToGet'){
 
+
 				var userInfo = [];
 				userInfo[0] = res.mensaje.rs[0];
 				//console.log('from https', userInfo); goes to fast
@@ -180,9 +217,17 @@ export function sendPostToGet(urlEnd, data, flag){
 				var usrA = userInfo[0].alias;
 				var userId = userInfo[0].id;
 
+				var indexOfUser = -1;
+
 				var users = (localStorage.getItem('visitedUsrs') !== null && localStorage.getItem('visitedUsrs') !== undefined) ? JSON.parse(localStorage.getItem('visitedUsrs')) : [];
+
+				users.forEach(function(itm, idx){
+					var someId = parseInt(itm.id);
+					if(someId == userId){
+						indexOfUser = idx;
+					}
+				});
 				
-				var indexOfUser = users.indexOf({'al': usrA, 'id': userId});
 
 				if(indexOfUser === -1){
 
@@ -199,14 +244,15 @@ export function sendPostToGet(urlEnd, data, flag){
 
 				ssRmForSet('currentUserInfo', userInfo);
 
-				var device = sessionStorage.getItem('deviceId');
+				var device = localStorage.getItem('deviceId');
 
-			    if(device !== undefined && device !== null && userId){
-			        var dataForGarage = {idUsr: userId, device: sessionStorage.getItem('deviceId')};
+				//I've commented this code 'cause it's been done before in the circuit, if problems, uncomment, else, delete
+			    /*if(device !== undefined && device !== null && userId){
+			        var dataForGarage = {idUsr: userId, device: localStorage.getItem('deviceId')};
 			        dataForGarage = JSON.stringify(dataForGarage);
 			        sendPostToGet('garage/listar', dataForGarage, 'usrGrg');
 
-			    }
+			    }*/
 
 			}else if(flag === 'usrGrg'){
 
@@ -220,6 +266,13 @@ export function sendPostToGet(urlEnd, data, flag){
 					
 				}else{
 					sessionStorage.setItem('currentUserGarage', 'nothing stored');
+				}
+
+			}else if(flag === 'validaMail'){
+				con(res);
+				if(res.estado === 1){
+					$('div#successMailVal').find('p.textRes').empty().text(res.mensaje.rs);
+					$('div#successMailVal').modal();
 				}
 
 			}else if(flag === 'usrAct'){
@@ -252,12 +305,24 @@ export function sendPostToGet(urlEnd, data, flag){
 					}
 					
 				}
+			
 			}else if(flag === 'usrContact'){
 				//console.log('trying to change profila photo', res);
 
 				if(res.estado === 1){
 
+					$('input.referidoEdit').attr('readonly', true);
+
 					//console.log('success', res.mensaje);
+
+					localStorage.setItem('contactChange', 'y');
+
+					if(localStorage.getItem('passwordChange') !== null && localStorage.getItem('passwordChange') !== undefined){
+						(localStorage.getItem('infoChange') !== null && localStorage.getItem('infoChange') !== undefined) ? editChangeSpan.text('contraseña, nuevo contacto de referencia e información general se ha guardado') : editChangeSpan.text('contraseña y nuevo contacto de referencia se han guardado. Pero la demás información no');
+					}else{
+						(localStorage.getItem('infoChange') !== null && localStorage.getItem('infoChange') !== undefined) ? editChangeSpan.text('nuevo contacto de referencia e información general se ha guardado') : editChangeSpan.text('nuevo contacto de referencia se ha guardado. Pero la demás información no');
+					}
+
 
 					if(sessionStorage.getItem('temptyNewContact') !== null && sessionStorage.getItem('temptyNewContact') !== undefined){
 						var contactNew = sessionStorage.getItem('temptyNewContact');
@@ -280,12 +345,91 @@ export function sendPostToGet(urlEnd, data, flag){
 						
 					}
 					
+				}else{
+					console.log(res);
 				}
-			}
-			else if(flag === 'usrFullEdit'){
+			
+			}else if(flag === 'usrPass'){
 
-			}
-			else if(flag === 'brands' && res.estado === 1){
+				if(res.estado === 1){
+					localStorage.setItem('passwordChange', 'y');
+
+					if(localStorage.getItem('contactChange') !== null && localStorage.getItem('contactChange') !== undefined){
+						(localStorage.getItem('infoChange') !== null && localStorage.getItem('infoChange') !== undefined) ? editChangeSpan.text('contraseña, nuevo contacto de referencia e información general se ha guardado') : editChangeSpan.text('contraseña y nuevo contacto de referencia se han guardado. Pero no la demás información');
+					}else{
+						(localStorage.getItem('infoChange') !== null && localStorage.getItem('infoChange') !== undefined) ? editChangeSpan.text('contraseña e información general se ha guardado') : editChangeSpan.text('contraseña se ha guardado. Pero no la demás información');
+					}
+				}
+
+			}else if(flag === 'usrFullEdit'){
+				
+				if(res.estado === 1){
+					
+					localStorage.setItem('infoChange', 'y');
+
+
+					if(localStorage.getItem('contactChange') !== null && localStorage.getItem('contactChange') !== undefined){
+						(localStorage.getItem('passwordChange') !== null && localStorage.getItem('passwordChange') !== undefined) ? editChangeSpan.text('contraseña, nuevo contacto de referencia e información general se ha guardado') : editChangeSpan.text('nuevo contacto de referencia e información se han guardado');
+					}else{
+						(localStorage.getItem('passwordChange') !== null && localStorage.getItem('passwordChange') !== undefined) ? editChangeSpan.text('contraseña e información general se ha guardado') : editChangeSpan.text('información general se ha guardado');
+					}
+
+					$('div#successEditProfile').modal();
+
+
+					if(sessionStorage.getItem('currentUserInfo') !== null && sessionStorage.getItem('currentUserInfo') !== undefined){
+						var usrString = sessionStorage.getItem('currentUserInfo');
+						var usrNow = JSON.parse(usrString);
+						var newData = JSON.parse(datos);
+
+						console.log('actFullBef', newData, usrNow);
+
+						if($.isArray(usrNow)){
+							if(usrNow.length > 0){
+								var usrOb = usrNow[0];
+
+								var datosToChange = ['fecha_nac', 'foto_perfil', 'full_name', 'genero', 'materno', 'paterno', 'nombre', 'tags'];
+
+								$.each(datosToChange, function(i, itm){
+									if(itm === 'full_name'){
+										usrOb[itm] = `${newData.nombre} ${newData.paterno} ${newData.materno}`;
+									}else if(itm === 'fecha_nac'){
+										usrOb[itm] = newData.fecha_nacimiento;
+									}else if(itm === 'foto_perfil'){
+										usrOb[itm] = newData.foto;
+									}else{
+										usrOb[itm] = newData[itm];
+									}
+								});
+
+								usrNow[0] = usrOb;
+							}
+						}else if((typeof usrNow === "object") && (usrNow !== null)){
+							var datosToChange = ['fecha_nac', 'foto_perfil', 'full_name', 'genero', 'materno', 'paterno', 'nombre', 'tags'];
+
+								$.each(datosToChange, function(i, itm){
+									if(itm === 'full_name'){
+										usrNow[itm] = `${newData.nombre} ${newData.paterno} ${newData.materno}`;
+									}else if(itm === 'fecha_nac'){
+										usrNow[itm] = newData.fecha_nacimiento;
+									}else if(itm === 'foto_perfil'){
+										usrNow[itm] = newData.foto;
+									}else{
+										usrNow[itm] = newData[itm];
+									}
+								});
+						}
+
+						//console.log('actFullAft', usrNow);
+
+						usrNow = JSON.stringify(usrNow);
+
+						sessionStorage.setItem('currentUserInfo', usrNow);
+					}
+
+				}
+
+			}else if(flag === 'brands' && res.estado === 1){
 
 				var brands = res.mensaje.rs;
 		        brands = JSON.stringify(brands);
@@ -361,7 +505,7 @@ function checkIfActive(){
 function getInfo(info, flag, going) {
 	if(flag === 'user'){
 		
-		var devicId = sessionStorage.getItem('deviceId');
+		var devicId = localStorage.getItem('deviceId');
 		var data = {idUsr: info};
 
 		data = JSON.stringify(data);
@@ -370,7 +514,7 @@ function getInfo(info, flag, going) {
 		dataForGarage = JSON.stringify(dataForGarage);
 		sendPostToGet('garage/listar', dataForGarage, 'usrGrg');
 
-		(going) ? sendPostToGet('usuario/info', data, 'usrInfoToGo') : sendPostToGet('usuario/info', data, 'usrInfoToGet');
+		(going) ? sendPostToGet('usuario/info', data, 'usrInfoToGo') : sendPostToGet('usuario/info', data, 'usrInfoToGetR');
 
 	}
 

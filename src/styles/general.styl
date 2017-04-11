@@ -114,8 +114,8 @@ button.shareVrumm
 					a 
 						height 39px !important
 						line-height 10px !important
-						border-right 1px solid white
 						font-size 14px
+						cursor pointer
 						
 						&.profileNavLink
 							padding-top 4px
@@ -246,7 +246,8 @@ button.shareVrumm
 							.navSMenuList
 								display none
 
-								
+						a
+							border-right 1px solid white
 			
 .iconLogo
 	background-image url('../img/h_logo-l.png')
@@ -367,3 +368,60 @@ button.shareVrumm
 			
 			&.initialForms
 				width 1164px !important
+				
+.breadCrum
+	width 100%
+	position absolute
+	z-index 1
+	top 7px
+	display flex
+	
+	.breadTab
+		padding 1px 9px 1px 12px
+		background-color $regBrd
+		display block
+		text-align center
+		border 1.5px solid red
+		border-left hidden
+		border-right hidden
+		box-sizing border-box
+		position relative
+		cursor pointer
+		text-decoration none
+		
+		&:last-of-type
+			cursor default
+		
+		.textSpan
+			color whitesmoke
+		
+		.triangleSpan
+			width 16.8px
+			height 16.8px
+			background-color $regBrd
+			border-right 1px solid red
+			border-radius 0 0 0 27px
+			border-top 1px solid red
+			display block
+			position absolute
+			top 2.5px
+			transform rotate(46deg)
+			right -8px
+			z-index 2
+			
+		&:hover
+			background-color $grayVersionsInfo
+			
+			.triangleSpan
+				background-color $grayVersionsInfo
+				
+			&:last-of-type
+				background-color $regBrd
+				
+				.triangleSpan
+					background-color $regBrd
+				
+				
+
+			
+		

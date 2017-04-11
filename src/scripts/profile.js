@@ -3,6 +3,7 @@ import {con} from './commonFunc/consoling.js';
 import {alleGleichlich, sizingModelItms} from './commonFunc/sizingGarageImgs.js';
 import {queriesT, hashesExist} from './commonFunc/urlEncoder.js';
 import {sendPostToGo, sendPostToGet} from './commonFunc/httpProcesor.js';
+import {changeProfilePhoto} from './commonFunc/changeProfilePhoto.js';
 import {getVersions} from './commonFunc/getversiones.js';
 
 $(function(){
@@ -33,6 +34,11 @@ $(function(){
 		var usrIDG;
 		var garageAsked = false;
 		var garageRqst = false;
+
+		var metaTitle = $('meta.metaTitle');
+		var metaDescrip = $('meta.metaDescrip');
+		var metaImg = $('meta.metaImg');
+
 
 
 		var askInterval = setInterval(function(){
@@ -70,10 +76,6 @@ $(function(){
 		editProfileAnchor.click(function(e){
 			//e.preventDefault();
 		})
-
-		editPencil.click(function(){
-			alert('editar perfil');
-		});
 
 		function sizeAddGarageBtn() {
 			var hgt = addGarageBtn.width() * 0.6309;
@@ -214,7 +216,7 @@ $(function(){
 
 
 			var userId = sessionStorage.getItem('currentUserId');
-            var devicId = sessionStorage.getItem('deviceId');
+            var devicId = localStorage.getItem('deviceId');
 
             var data = {user: userId, device: devicId, tipo: cat, garage: grgId};
             data = JSON.stringify(data);
@@ -299,6 +301,8 @@ $(function(){
 
 		function checkUser(user) {
 
+
+
 			if(user !== null && user !== undefined && user !== 'nothing stored'){
 				clearInterval(askInterval);
 				user = JSON.parse(user);
@@ -365,9 +369,16 @@ $(function(){
 			        displayUserInfo(userInfoFromIn[0]);
 			        usrIDG = parseInt(userInfoFromIn[0].id);
 
-			        var users = (localStorage.getItem('visitedUsrs') !== null && localStorage.getItem('visitedUsrs') !== undefined) ? JSON.parse(localStorage.getItem('visitedUsrs')) : [];
+			        var indexOfUser = -1;
+
+					var users = (localStorage.getItem('visitedUsrs') !== null && localStorage.getItem('visitedUsrs') !== undefined) ? JSON.parse(localStorage.getItem('visitedUsrs')) : [];
 					
-					var indexOfUser = users.indexOf({al: userInfoFromIn[0].alias, id: userInfoFromIn[0].id});
+					users.forEach(function(itm, idx){
+						var someId = parseInt(itm.id);
+						if(someId == usrIDG){
+							indexOfUser = idx;
+						}
+					});
 
 					if(indexOfUser === -1){
 
@@ -393,7 +404,7 @@ $(function(){
 
 		function getUserGarage(id) {
 
-            var devicId = sessionStorage.getItem('deviceId');
+            var devicId = localStorage.getItem('deviceId');
 
 
             var dataForGarage = {idUsr: id, device: devicId};
@@ -446,6 +457,10 @@ $(function(){
 
 					value = value.slice(0, whiteSpaceIdx);
 
+					metaTitle.attr('content', `${value} está en Vrumm`);
+					metaDescrip.attr('content', `Checa los coches en el garage de ${value}`);
+
+
 				}else if(key === 'foto_perfil'){
 
 					if(value !== null){
@@ -464,6 +479,7 @@ $(function(){
 						if(val === 'foto_perfil' && imageOk){
 
 							$(el).css({'background-image': `url(${value})`});
+							metaImg.attr('content', value);
 
 						}else if(val === 'foto_perfil' && !imageOk){
 							$(el).css({'background-image': 'url(../img/profileDafault.png)'});
@@ -543,8 +559,8 @@ $(function(){
 		                                        <span class="fa fa-long-arrow-left left"></span>
 		                                        ${compareGroupEnd}
 		                                    </div>
-		                                    <div class="shareGroup">
-		                                        <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21">
+		                                    <div class="shareGroup shareLink">
+		                                        <svg class="shareLink" xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21">
 		                                          <g>
 		                                                <path d="M17.8 6.2h-2.2c-0.4 0-0.8 0.4-0.8 0.8s0.4 0.8 0.8 0.8h1.4v10.7H4.2v-10.7h1.7c0.4 0 0.8-0.4 0.8-0.8s-0.4-0.8-0.9-0.8h-2.4c-0.5 0-0.8 0.4-0.8 0.8v12.3c0 0.4 0.3 0.7 0.8 0.7h14.5c0.4 0 0.8-0.3 0.8-0.7v-12.3C18.6 6.6 18.3 6.2 17.8 6.2zM9.4 3.9l0.3-0.1v10.2c0 0.4 0.4 0.8 0.8 0.8s0.8-0.4 0.8-0.8v-10.6l0.8 0.5c0.1 0.1 0.3 0.2 0.5 0.2 0.2 0 0.4-0.1 0.6-0.3 0.3-0.3 0.3-0.8-0.1-1.1l-2-1.5c-0.3-0.2-0.7-0.3-1 0 -0.1 0.1-1.8 1.5-1.8 1.5 -0.3 0.3-0.3 0.8 0 1.1C8.6 4.2 9.1 4.2 9.4 3.9z" />
 		                                          </g>
@@ -605,7 +621,7 @@ $(function(){
 			versId = parseInt(versId);
 
 			var userId = parseInt(localStorage.getItem('aUsr'));
-            var deviceId = sessionStorage.getItem('deviceId');
+            var deviceId = localStorage.getItem('deviceId');
 
             var addedInComparatorAutos = (localStorage.getItem('addedInComAutosArr') !== null && localStorage.getItem('addedInComAutosArr') !== undefined) ? JSON.parse(localStorage.getItem('addedInComAutosArr')) : [];
             
@@ -640,7 +656,7 @@ $(function(){
 			versId = container.find('span.garageVersionId').text();
 
 			var userId = localStorage.getItem('aUsr');
-            var devicId = sessionStorage.getItem('deviceId');
+            var devicId = localStorage.getItem('deviceId');
             var dataForDelete = {user: userId, device: devicId, garage: garageID};
 
             dataForDelete = JSON.stringify(dataForDelete);
@@ -702,7 +718,7 @@ $(function(){
 								var dataImg = photoDiv.find('img').attr('src').replace(/^data:image\/(png|jpg);base64,/, "");
 								sessionStorage.setItem('temptyImgForLocal', dataImg.toString());
 								photoDiv.append('<span class="glyphicon glyphicon-camera profImgCameraIcon"></span>');
-								chageProfilePhoto(dataImg);
+								changeProfilePhoto(dataImg, usrIDG);
 							}
 
 							if(headerBackImg.find('img').length){
@@ -726,16 +742,8 @@ $(function(){
 				}
 			}
 
-
 		});
 
-		function chageProfilePhoto(photo){
-			var data = {device: sessionStorage.getItem('deviceId'), user: usrIDG, campo: 'foto_perfil', dato: photo};
-			//console.log('processing to send', data);
-			data = JSON.stringify(data);
-
-			sendPostToGet('usuario/actualizadato', data, 'usrAct');
-		}
 
 		var membershipDateCounter = $('div.membershipDateCounter');
 		var dateProfileRgtBtnCont = $('div.dateProfileRgtBtnCont');
@@ -752,6 +760,8 @@ $(function(){
 			var isInfo = (userInfoObj !== null && userInfoObj !== undefined && userInfoObj !== 'nothing stored') ? true : false;
 
 			var user = {};
+
+			let addGrgBtn = addGarageBtn.children('a');
 
 			if(isInfo){
 
@@ -802,6 +812,8 @@ $(function(){
 
 					photoDiv.removeClass('p-profilePhoto').addClass('p-profPict');
 
+					addGrgBtn.addClass('hiddenItm');
+
 
 					(dateProfileRgtBtnCont.hasClass('hiddenItm')) ? null : dateProfileRgtBtnCont.addClass('hiddenItm');
 					(membershipDateCounter.hasClass('hiddenItm')) ? membershipDateCounter.removeClass('hiddenItm') : null;
@@ -821,6 +833,8 @@ $(function(){
 				headerCameraIcon.addClass('hiddenItm');
 				editProfileAnchor.addClass('hiddenItm');
 				photoDiv.removeClass('p-profilePhoto').addClass('p-profPict');
+
+				addGrgBtn.addClass('hiddenItm');
 
 				(membershipDateCounter.hasClass('hiddenItm')) ? null : membershipDateCounter.addClass('hiddenItm');
 				(dateProfileRgtBtnCont.hasClass('hiddenItm')) ? dateProfileRgtBtnCont.removeClass('hiddenItm') : null;

@@ -108,7 +108,7 @@ $(function(){
 		function mailValidator(val){
 			if(val.length > 0){
 
-				var devID = sessionStorage.getItem('deviceId');
+				var devID = localStorage.getItem('deviceId');
 				devID = devID.toString();
 
 				var data = JSON.stringify({'email': val, 'device': devID});

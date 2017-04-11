@@ -9,14 +9,9 @@ $(function(){
 	linkRegCat = $('button#goToReg-Cat'),
 	initialRow = $('div.firstRow');
 
-	$(document).on('click', 'button#goToReg-Cat', function(){
-		con('the function gets');
-		navigating('registro');		
-	});
-
-	// linkRegCat.click(function(){
-	// 	navigating('registro');
-	// })
+	linkRegCat.click(function(){
+		navigating('registro');
+	})
 
 
 	if(myLocation === "/web/catalogo/index.html" || myLocation === "/web/catalogo/index" || myLocation === "/web/catalogo/"){
@@ -158,7 +153,7 @@ $(function(){
 
 		function askForModels(id) {
 			var theid = parseInt(id);
-			var device = sessionStorage.getItem('deviceId');
+			var device = localStorage.getItem('deviceId');
 
 			if(device !== undefined && device !== null && theid){
 				var data = {'device': device, brandId: theid};
@@ -171,5 +166,4 @@ $(function(){
 
 
 	}
-
 });
