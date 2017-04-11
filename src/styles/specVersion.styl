@@ -71,6 +71,23 @@
 	background #d44643 url(../img/ic_MiGarage_dream-boton@1x.png) 10px center no-repeat
 
 
+.colorCont
+	padding 5px
+	width 18%
+	margin 5px
+	float left
+	display flex
+	flex-direction column
+	
+	.colorName
+		margin auto
+		color whitesmoke
+		overflow hidden
+		text-overflow ellipsis
+		width 100%
+		white-space nowrap
+		display block
+
 //madeChema
 
 .compareVersionCont
@@ -175,5 +192,62 @@
 					
 			
 .fichaTecnicaDetail
-	padding-left 2%
+	padding 2%
+	
+	ul.fichaRenglon
+		display flex
+		justify-content space-between
+		padding-left 0 !important
+		
+		li
+			list-style-type none
+			text-align center
+					
+			.datoVal
+				padding 5px
+				color whitesmoke
+				margin-bottom 2px
+				font-size 12px
+				width 100%
+				
+				&.diffData
+					color $regActiveBtn
+					
+			.titleCont
+				height 35px
+				padding 4px
+				background-color $fichaTecnicaRow
+				font-size 10px !important
+				border-right 1px solid black
+				display flex
+				flex-direction column
+				justify-content center
+				
+				.datoTitle
+					color $fichaTecnicaWords
+					margin auto
+					width 100%
+	
+
+@media(min-width 400px)
+	.fichaTecnicaDetail
+		ul.fichaRenglon
+			li
+				.titleCont
+					font-size 11px
+					
+
+@media(min-width 520px)
+	.fichaTecnicaDetail
+		ul.fichaRenglon
+			li
+				.titleCont
+					font-size 12px
+					
+@media(min-width 800px)
+	.fichaTecnicaDetail
+		ul.fichaRenglon
+			li
+				.titleCont
+					font-size 13px
 	
