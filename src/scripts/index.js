@@ -1,9 +1,11 @@
 import {backing} from './commonFunc/backPage.js';
-import {myLocation, strongRoot, totalRoot, navigating} from './commonFunc/locating.js';
+import {myLocation, strongRoot, totalRoot, navigating, isMyLocationHideMode} from './commonFunc/locating.js';
 import {navInfo} from './commonFunc/activeSessionNav.js';
 import {sendPostToGo, sendPostToGet} from './commonFunc/httpProcesor.js';
 import {con} from './commonFunc/consoling.js';
 import {askBrands, theBrand} from './commonFunc/brandsImgs.js';
+import {notNullNotUndefined, NullOrUndefined} from './commonFunc/differentOfNullAndUndefined.js';
+import { returnLastVisitedProfile } from './commonFunc/visitedProfilesRecord.js';
 
 askBrands();
 
@@ -44,17 +46,24 @@ $(function(){
 	});
 
 	$(document).ready(function(){
-		(myLocation !== "/web/paseo/" && myLocation !== "/web/paseo/index" && myLocation !== "/web/paseo/index.html") ? $(this).scrollTop(0) : null;
+		(!isMyLocationHideMode("/web/paseo/")) ? $(this).scrollTop(0) : null;
 		getGeolocalization();
 		//setImgDataAttr();
 
-		if(myLocation !== "/web/" && myLocation !== "/web/registro/" && myLocation !== "/web/index" && myLocation !== "/web/registro/index" && myLocation !== "/web/index.html" && myLocation !== "/web/registro/index.html"){
-
-			addNavFooter(null, null);
-
-		}else{
-
+		if(!isMyLocationHideMode("/web/") && !isMyLocationHideMode("/web/registro/")) 
+		// if I'm not in login or sign up pages
+		{ addNavFooter(null, null);}
+		else
+		// if I'm in login or sign up pages
+		{
 			addNavFooter('never', 'never');
+			if(isMyLocationHideMode("/web/registro/")){
+				let posibleFriend =  returnLastVisitedProfile();
+				if(notNullNotUndefined(posibleFriend) && !$.isEmptyObject(posibleFriend)){
+					console.log('posibleFriend from visitedProfilesRecord', posibleFriend.id, posibleFriend.id);
+					// refInput.val(posibleFriend.al);
+				}
+			}
 		}
 
 	});
@@ -81,9 +90,9 @@ $(function(){
 		if(navFlag !== 'never'){
 
 			if(session === 'yes') {
-				(myLocation !== "/web/paseo/" && myLocation !== "/web/paseo/index" && myLocation !== "/web/paseo/index.html") ? (myNavBar.load('../templates/navbarIn.html'), navInfo()) : myNavBar.load('../templates/navbarPaseo.html');
+				(!isMyLocationHideMode("/web/paseo/")) ? (myNavBar.load('../templates/navbarIn.html'), navInfo()) : myNavBar.load('../templates/navbarPaseo.html');
 			} else{
-				(myLocation !== "/web/paseo/" && myLocation !== "/web/paseo/index" && myLocation !== "/web/paseo/index.html") ? myNavBar.load('../templates/navbarOut.html') : myNavBar.load('../templates/navbarPaseo.html');
+				(!isMyLocationHideMode("/web/paseo/")) ? myNavBar.load('../templates/navbarOut.html') : myNavBar.load('../templates/navbarPaseo.html');
 			}
 
 		}
@@ -93,14 +102,14 @@ $(function(){
 		if(footerFlag === null){
 
 			if(session === 'yes') { 
-				(myLocation !== "/web/paseo/" && myLocation !== "/web/paseo/index" && myLocation !== "/web/paseo/index.html") ? mainFooter.load('../templates/footerIn.html') : mainFooter.load('../templates/footerPaseo.html');
+				(!isMyLocationHideMode("/web/paseo/")) ? mainFooter.load('../templates/footerIn.html') : mainFooter.load('../templates/footerPaseo.html');
 			} else{
-				(myLocation !== "/web/paseo/" && myLocation !== "/web/paseo/index" && myLocation !== "/web/paseo/index.html") ? mainFooter.load('../templates/footerOut.html') : mainFooter.load('../templates/footerPaseo.html');
+				(!isMyLocationHideMode("/web/paseo/")) ? mainFooter.load('../templates/footerOut.html') : mainFooter.load('../templates/footerPaseo.html');
 			}
 		
 		}else{
 
-			(myLocation !== "/web/" && myLocation !== "/web/index" && myLocation !== "/web/index.html") ? mainFooter.load('../templates/footerLog.html') : mainFooter.load('./templates/footerIndex.html');
+			(!isMyLocationHideMode("/web/")) ? mainFooter.load('../templates/footerLog.html') : mainFooter.load('./templates/footerIndex.html');
 
 		}
 
@@ -111,7 +120,7 @@ $(function(){
 	function setImgDataAttr(){
 
 		
-		if(myLocation === "/registro/" || myLocation === "/registro/index" || myLocation === "/registro/index.html"){
+		if(isMyLocationHideMode("/web/registro/")){
 			 
 			 var wid = divImgCont.width();
 
@@ -140,7 +149,7 @@ $(function(){
 		 sessionStorage.removeItem('nickGood');
 		 sessionStorage.removeItem('mailGood');
 
-		 if(storedDeviceId !== null && storedDeviceId !== undefined)
+		 if(notNullNotUndefined(storedDeviceId))
 		 {
 		 	currentDeviceId = storedDeviceId;
 		 	con('el device id fue el mismo')
@@ -248,7 +257,7 @@ $(function(){
 	function getGeolocalization(){
 		var loc = localStorage.getItem('location');
 
-		if(loc !== undefined && loc !== null){
+		if(notNullNotUndefined(loc)){
 
 			currentLocation(loc);
 
@@ -269,22 +278,34 @@ $(function(){
 
 	function checkFriend(val) {
 		var itms = posFrList.children('li');
+		var valueToReturn = false;
+		let posibleFriend =  returnLastVisitedProfile();
 
-		return $.map(itms, function(value, key){
+		$.map(itms, function(value, key){
 			
 			var nickTxt = $(itms[key]).find('span.psFrAlias').html();
 			var idTxt = $(itms[key]).find('span.friendId').html();
 			if(nickTxt === val){ 
 
-				if(idTxt !== undefined && idTxt !== null && idTxt.length > 0){
+				if(notNullNotUndefined(idTxt) && idTxt.length > 0){
 					idTxt = idTxt.toString();					
 					sessionStorage.setItem("idPsFriend", idTxt);
 				}
 				
-				return true;
+				valueToReturn = true;
+			
+			// lets check if the value is the value of the lastVisitedProfile
+			}else if(notNullNotUndefined(posibleFriend) && !$.isEmptyObject(posibleFriend)){
+				if(val == posibleFriend.al && notNullNotUndefined(posibleFriend.al)){
+					console.log('on comprobation of visitedUser as friend did work out', posibleFriend.al, posibleFriend.id);
+					// sessionStorage.setItem("idPsFriend", posibleFriend.id.toString());
+					valueToReturn = true;
+				}
 			}
 
 		});
+
+		return valueToReturn;
 	}
 
 
@@ -301,7 +322,8 @@ $(function(){
 		if(value.length > 0 && value !== 'Sin invitación'){
 			var exist = checkFriend(value);
 			
-			if(exist.length > 0 && exist[0] === true){
+			// if(exist.length > 0 && exist[0] === true){
+			if(exist){
 				dataManagement(data);
 
 			}else{
@@ -317,6 +339,8 @@ $(function(){
 
 	});
 
+
+	// to save selected image
 	$(document).on('click', 'div.ok', function(){
 
 		setTimeout(function(){
@@ -351,20 +375,11 @@ $(function(){
 		photography = assignPhotoValue(null);
 		
 
-		if(localization === undefined) {
-				localization = {'geoloc': 'noAccesible'};
-			}else{
-				localization = {'geoloc': localization};
-		}
-
-		if(photography === undefined || photography === null) {
-				photography = {'foto': ''};
-			}else{
-				photography = {'foto': photography};
-		}
+		localization =  (NullOrUndefined(localization)) ? {'geoloc': 'noAccesible'} : localization = {'geoloc': localization};
+		photography = (NullOrUndefined(photography)) ? {'foto': ''} : photography = {'foto': photography};
 
 	
-		if(infoReg !== undefined && infoReg.length > 0){
+		if(notNullNotUndefined(infoReg) && infoReg.length > 0){
 			
 			infoReg.unshift(device, localization, photography);
 			
@@ -408,12 +423,15 @@ $(function(){
 
 	var userInfo = [];
 
+
+	// sends sign up form
 	function sendForm(val){
 
 		sendPostToGo('usuario/registro', val, 'perfilr');
 		
 	}
 
+	// to close session
 	$(document).on('click', 'a.closeSession', function(){
 		
 		localStorage.clear();

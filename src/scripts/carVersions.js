@@ -1,7 +1,8 @@
-import {navigating, myLocation, pathnameRoot} from './commonFunc/locating.js';
+import {navigating, isMyLocationExpMode, myLocation, pathnameRoot} from './commonFunc/locating.js';
 import {con} from './commonFunc/consoling.js';
 import {sendPostToGo, sendPostToGet} from './commonFunc/httpProcesor.js';
 import {queriesT, hashesExist} from './commonFunc/urlEncoder.js';
+import {notNullNotUndefined, NullOrUndefined} from './commonFunc/differentOfNullAndUndefined.js';
 
 $(function(){
 	var versions = [];
@@ -19,13 +20,13 @@ $(function(){
 	metaImg = $('meta.metaImg');
 
 
-	if(myLocation === "/web/catalogo/modelo-versiones.html" || myLocation === "/web/catalogo/modelo-versiones"){
+	if(isMyLocationExpMode("/web/catalogo/modelo-versiones")){
 
 		var brandName = sessionStorage.getItem('currentBrandName');
 
 		$(document).ready(function(){
 
-			if(sessionStorage.getItem('currentBrandImg') !== null && versionsArr.length > 0 && sessionStorage.getItem('currentBrandImg') !== undefined && sessionStorage.getItem('currentBrandImg') !== 'nothing stored'){
+			if(notNullNotUndefined(sessionStorage.getItem('currentBrandImg')) && versionsArr.length > 0 && sessionStorage.getItem('currentBrandImg') !== 'nothing stored'){
 
 				displayBrand();
 
@@ -53,12 +54,12 @@ $(function(){
 
 
 		function checkVersions(argument, pict) {
-			if(argument !== null && argument !== undefined && argument !== 'nothing stored'){
+			if(notNullNotUndefined(argument) && argument !== 'nothing stored'){
 				clearInterval(askInterval);
 				versions = argument;
 				manageVersions(versions);
 		    }
-		    if(pict !== null && pict !== undefined && pict !== 'nothing stored'){
+		    if(notNullNotUndefined(pict) && pict !== 'nothing stored'){
 				clearInterval(askPhotosInterval);
 				var photos = pict;
 
@@ -74,7 +75,7 @@ $(function(){
 			versionsArr = JSON.parse(argument);
 			currentVersion = versionsArr[0];
 
-			if(sessionStorage.getItem('currentBrandImg') !== null && sessionStorage.getItem('currentBrandImg') !== undefined && sessionStorage.getItem('currentBrandImg') !== 'nothing stored'){
+			if(notNullNotUndefined(sessionStorage.getItem('currentBrandImg')) && sessionStorage.getItem('currentBrandImg') !== 'nothing stored'){
 
 				displayBrand();
 
@@ -102,7 +103,7 @@ $(function(){
 		    var device = localStorage.getItem('deviceId');
 		    var dataForPhotos = {};
 
-		    if(device !== undefined && device !== null && modelId){
+		    if(notNullNotUndefined(device) && modelId){
 		      dataForPhotos = {'device': device, modelId: modelId};
 		    }
 		            
@@ -169,9 +170,9 @@ $(function(){
 		function getVersions(modelId) {
 		    var device = localStorage.getItem('deviceId');
 
-		    if(device !== undefined && device !== null && modelId){
+		    if(notNullNotUndefined(device) && modelId){
 
-		        var data = (localStorage.getItem('aUsr') !== null && localStorage.getItem('aUsr') !== undefined) ? {'device': device, modelId: modelId, user: localStorage.getItem('aUsr')} : {'device': device, modelId: modelId};
+		        var data = (notNullNotUndefined(localStorage.getItem('aUsr'))) ? {'device': device, modelId: modelId, user: localStorage.getItem('aUsr')} : {'device': device, modelId: modelId};
 		          
 		      data = JSON.stringify(data);
 
@@ -198,7 +199,7 @@ $(function(){
 			//con(versionsArr);
 			$.each(versionsArr, function(idx, objItm){
 
-				var hrefPath = (localStorage.getItem('aUsrA') !== null && localStorage.getItem('aUsrA') !== undefined) ? `${pathnameRoot}catalogo/specific-version?al=${localStorage.getItem('aUsrA')}&brdId=${objItm.brand_id}&mdlId=${objItm.model_id}&cId=${objItm.id}` : `${pathnameRoot}catalogo/specific-version?brdId=${objItm.brand_id}&mdlId=${objItm.model_id}&cId=${objItm.id}`;
+				var hrefPath = (notNullNotUndefined(localStorage.getItem('aUsrA'))) ? `${pathnameRoot}catalogo/specific-version?al=${localStorage.getItem('aUsrA')}&brdId=${objItm.brand_id}&mdlId=${objItm.model_id}&cId=${objItm.id}` : `${pathnameRoot}catalogo/specific-version?brdId=${objItm.brand_id}&mdlId=${objItm.model_id}&cId=${objItm.id}`;
 
 				var versName = objItm.name;
 				var verPrice = objItm.starting_price;
@@ -564,7 +565,7 @@ $(function(){
 
 			modelNameSpan.text(modelName);
 
-			var modelPrice = (localStorage.getItem('modelPrice') !== null) ? localStorage.getItem('modelPrice') : versionsArr[0].starting_price;
+			var modelPrice = (localStorage.getItem('modelPrice') !== null) ? localStorage.getItem('modelPrice') : `$ ${versionsArr[0].starting_price}`;
 			
 			modelPrcSpan.text(modelPrice);
 

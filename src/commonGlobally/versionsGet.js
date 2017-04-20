@@ -1,9 +1,11 @@
+import {notNullNotUndefined, NullOrUndefined} from '../scripts/commonFunc/differentOfNullAndUndefined.js';
+
 function getVersionsPhotos(modelId){
 
     var device = localStorage.getItem('deviceId');
     var data = {};
 
-    if(device !== undefined && device !== null && modelId){
+    if(notNullNotUndefined(device) && modelId){
       data = {'device': device, modelId: modelId};
     }
             

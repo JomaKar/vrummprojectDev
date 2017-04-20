@@ -1,4 +1,5 @@
-import {navigating, myLocation} from './commonFunc/locating.js';
+import {navigating, myLocation, isMyLocationHideMode, isMyLocationExpMode} from './commonFunc/locating.js';
+import {notNullNotUndefined, NullOrUndefined} from './commonFunc/differentOfNullAndUndefined.js';
 
 $(function(){
 
@@ -37,7 +38,7 @@ $(function(){
 
     $(document).on('click', 'button.firstMenu', function(){
         
-        if(myLocation !== "/web/catalogo/index.html" && myLocation !== "/web/catalogo/index" && myLocation !== "/web/catalogo/" && myLocation !== "/web/catalogo/brand-modelo.html" && myLocation !== "/web/catalogo/brand-modelo" && myLocation !== "/web/perfil/configuracion" && myLocation !== "/web/perfil/configuracion.html"){
+        if(!isMyLocationHideMode("/web/catalogo/") && !isMyLocationExpMode("/web/catalogo/brand-modelo") && !isMyLocationExpMode("/web/perfil/configuracion")){
             $('ul.navMenuList').find('li.shareVrummLi').removeClass('hiddenItm');
         }
 
@@ -45,7 +46,7 @@ $(function(){
 
 
     $(document).on('click', 'button#secondMenu', function(){
-        if(myLocation !== "/web/catalogo/index.html" && myLocation !== "/web/catalogo/index" && myLocation !== "/web/catalogo/" && myLocation !== "/web/catalogo/brand-modelo.html" && myLocation !== "/web/catalogo/brand-modelo" && myLocation !== "/web/perfil/configuracion" && myLocation !== "/web/perfil/configuracion.html"){
+        if(!isMyLocationHideMode("/web/catalogo/") && !isMyLocationExpMode("/web/catalogo/brand-modelo") && !isMyLocationExpMode("/web/perfil/configuracion")){
             $('ul.navSMenuList').find('li.shareVrummLi').removeClass('hiddenItm');
         }
     });
@@ -61,7 +62,7 @@ $(function(){
     function openShare(){
         modalShare.modal();
 
-        if(myLocation !== "/web/catalogo/index.html" && myLocation !== "/web/catalogo/index" && myLocation !== "/web/catalogo/" && myLocation !== "/web/catalogo/brand-modelo.html" && myLocation !== "/web/catalogo/brand-modelo" && myLocation !== "/web/perfil/configuracion" && myLocation !== "/web/perfil/configuracion.html"){
+        if(!isMyLocationHideMode("/web/catalogo/") && !isMyLocationExpMode("/web/catalogo/brand-modelo") && !isMyLocationExpMode("/web/perfil/configuracion")){
 
             var cssImg = (profilePict.length) ? profilePict.css('background-image') : versionsCarousel.css('background-image');
 
@@ -75,10 +76,10 @@ $(function(){
         
         }else{
 
-                if(sessionStorage.getItem('currentBrandImg') !== null && sessionStorage.getItem('currentBrandImg') !== undefined){
+                if(notNullNotUndefined(sessionStorage.getItem('currentBrandImg'))){
                     imageToSend = sessionStorage.getItem('currentBrandImg');
                 }else{
-                    if(sessionStorage.getItem('catalogBrands') !== null && sessionStorage.getItem('catalogBrands') !== undefined){
+                    if(notNullNotUndefined(sessionStorage.getItem('catalogBrands'))){
 
                             var brandsStored = JSON.parse(sessionStorage.getItem('catalogBrands'));
 

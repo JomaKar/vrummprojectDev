@@ -1,10 +1,10 @@
-import {myLocation} from './commonFunc/locating.js';
+import {myLocation, isMyLocationHideMode} from './commonFunc/locating.js';
 
 $(function(){
 
 	var askNavInterval = setInterval(function(){
 
-		if(myLocation !== "/web/" && myLocation !== "/web/index" && myLocation !== "/web/index.html" && myLocation !== "/web/registro/" && myLocation !== "/web/registro/index" && myLocation !== "/web/registro/index.html"){
+		if(!isMyLocationHideMode("/web/") && !isMyLocationHideMode("/web/registro/")){
 
 			if($('div.navbarInserted').length && $('div#appStoreFooter').length){
 
@@ -37,7 +37,7 @@ $(function(){
 		}
 
 		else{
-			console.log('wtf');
+			// console.log('inside app (not login or sign up page)');
 
 			if($('div#vrummFooter').length){
 				stopInterval();
@@ -60,7 +60,7 @@ $(function(){
 
 		var linksToChange = $('a.linkChangeOnEnv');
 
-		console.log(environment, linksToChange);
+		// console.log(environment, linksToChange);
 
 		if(environment == 'localhost'){
 

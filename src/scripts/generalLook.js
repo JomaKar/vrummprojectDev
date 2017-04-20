@@ -158,8 +158,8 @@ $(function(){
 		
 			var wWidth = $(window).width();
 			var outWidth = $(window).outerWidth();
-			console.log(wWidth, 'windowWidth');
-			console.log(outWidth, 'outerWidth');
+			// console.log(wWidth, 'windowWidth');
+			// console.log(outWidth, 'outerWidth');
 
 			if(wWidth < 481){
 				garageImgCont.addClass('col-xs-12').removeClass('col-xs-6');

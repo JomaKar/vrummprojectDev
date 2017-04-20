@@ -1,11 +1,11 @@
-import {navigating, myLocation, pathnameRoot} from './commonFunc/locating.js';
+import {navigating, myLocation, pathnameRoot, isMyLocationHideMode} from './commonFunc/locating.js';
 import {con} from './commonFunc/consoling.js';
 import {queriesT, hashesExist} from './commonFunc/urlEncoder.js';
 
 $(function(){
 
 
-	if(myLocation === "/web/paseo/index.html" || myLocation === "/web/paseo/"){
+	if(isMyLocationHideMode("/web/paseo/")){
 
 		const linksHelp = $('h4.panel-title a');
 		let actualImgColl;

@@ -1,14 +1,16 @@
-import {navigating, myLocation, pathnameRoot} from './commonFunc/locating.js';
+import {navigating, myLocation, pathnameRoot, isMyLocationHideMode} from './commonFunc/locating.js';
 import {con} from './commonFunc/consoling.js';
 import {alleGleichlich, sizingModelItms} from './commonFunc/sizingGarageImgs.js';
 import {queriesT, hashesExist} from './commonFunc/urlEncoder.js';
 import {sendPostToGo, sendPostToGet} from './commonFunc/httpProcesor.js';
 import {changeProfilePhoto} from './commonFunc/changeProfilePhoto.js';
 import {getVersions} from './commonFunc/getversiones.js';
+import {notNullNotUndefined, NullOrUndefined} from './commonFunc/differentOfNullAndUndefined.js';
+import {returnAlreadyVisitedProfileId, returnIdOfAlias, recordNewVisitedProfile, visitedFriends} from './commonFunc/visitedProfilesRecord.js';
 
 $(function(){
 
-	if(myLocation === "/web/perfil/" || myLocation === "/web/perfil/index" || myLocation === "/web/perfil/index.html"){
+	if(isMyLocationHideMode("/web/perfil/")){
 
 		var filterSelect = $('select#filterSelect'),
 		garageGrid = $('div.garageGrid'),
@@ -59,7 +61,7 @@ $(function(){
 
 		$(document).ready(function(){
 			sizeAddGarageBtn();
-			var hrefConfig = (localStorage.getItem('aUsrA') !== null && localStorage.getItem('aUsrA') !== undefined) ? `${pathnameRoot}perfil/configuracion?al=${localStorage.getItem('aUsrA')}` : `${pathnameRoot}perfil/configuracion`;
+			var hrefConfig = (notNullNotUndefined(localStorage.getItem('aUsrA'))) ? `${pathnameRoot}perfil/configuracion?al=${localStorage.getItem('aUsrA')}` : `${pathnameRoot}perfil/configuracion`;
 			editProfileAnchor.attr('href', hrefConfig);
 		});
 
@@ -118,9 +120,9 @@ $(function(){
 				var logUsr = localStorage.getItem('aUsr');
 				var visibleUserId = sessionStorage.getItem('currentUserId');
 
-				if(logUsr !== null && logUsr !== undefined){
+				if(notNullNotUndefined(logUsr)){
 					logUsr = parseInt(logUsr);
-					var visibleUser = (visibleUserId !== undefined && visibleUserId !== null) ? parseInt(visibleUserId) : parseInt(user.id);
+					var visibleUser = (notNullNotUndefined(visibleUserId)) ? parseInt(visibleUserId) : parseInt(user.id);
 
 					(logUsr === visibleUser) ? toggleCarSelection(catContainer, bar, innerDiv, notSelected) : null;
 				}
@@ -239,28 +241,25 @@ $(function(){
 
 		function checkUserGarage(garageArr) {
 			
-			if(garageArr !== null && garageArr !== undefined && garageArr !== 'nothing stored'){
+			// if the garageArray obtained from the api is not an empty value
+			if(notNullNotUndefined(garageArr) && garageArr !== 'nothing stored'){
 	        	
 	        	clearInterval(askForGarage);
 	        	usrGarageArr = JSON.parse(garageArr);
 	        	//con(usrGarageArr);
+
+	        	// lets make a little test
 	        	if(hashesExist){
-	        		if(queriesT.al.length > 0 && sessionStorage.getItem('currentUserAlias') !== null){
+	        		if(queriesT.al.length > 0 && notNullNotUndefined(sessionStorage.getItem('currentUserAlias'))){
 
 	        			var aliasN = sessionStorage.getItem('currentUserAlias');
 
-	        			if(aliasN == queriesT.al) { displayGarage()} else {
-	        				if(localStorage.getItem('visitedUsrs') !== null && localStorage.getItem('visitedUsrs') !== undefined){
+	        			if(aliasN == queriesT.al) { 
+	        				displayGarage();
+	        			} else {
 
-							  	var users = JSON.parse(localStorage.getItem('visitedUsrs'));
-
-							  	users.forEach(function(objItm, objIdx){
-							  		(alias == objItm.al) ? getUserGarage(objItm.id) : null;
-							  	});
-
-							}else{
-	        					getUserInfoAl(queriesT.al);
-							}
+	        				let visitedID = returnAlreadyVisitedProfileId();
+	        				(visitedID !== -1) ? getUserGarage(visitedID) : getUserInfoAl(queriesT.al);
 	        			}
 	        		
 	        		}else{
@@ -273,37 +272,22 @@ $(function(){
 	        		displayGarage();
 	        	}
 
-	        }else if(garageArr === null || garageArr === 'nothing stored' || garageArr === undefined){
-	        	if(hashesExist){
-	        		if(queriesT.al.length > 0){
-	        			if(localStorage.getItem('visitedUsrs') !== null && localStorage.getItem('visitedUsrs') !== undefined){
-
-							  	var users = JSON.parse(localStorage.getItem('visitedUsrs'));
-
-							  	users.forEach(function(objItm, objIdx){
-							  		(queriesT.al == objItm.al) ? (getUserGarage(objItm.id), clearInterval(askForGarage)) : null;
-							  	});
-
-							}
-	        		}
+	        // if the garageArray obtained from the api is an empty value
+	        }else if(NullOrUndefined(garageArr) || garageArr === 'nothing stored'){
+	        	let visitedID = returnAlreadyVisitedProfileId();
+	        	if(visitedID !== -1){
+	        		getUserGarage(visitedID);
+	        		clearInterval(askForGarage);
+	        	}else if(askingTimes >= 100 && notNullNotUndefined(sessionStorage.getItem('currentUserId'))){
+	        		clearInterval(askForGarage);
+        			getUserGarage(sessionStorage.getItem('currentUserId'));
 	        	}
-	        	else if(askingTimes >= 100){
-
-	        		if(sessionStorage.getItem('currentUserId') !== null && sessionStorage.getItem('currentUserId') !== undefined){
-
-	        			clearInterval(askForGarage);
-	        			getUserGarage(sessionStorage.getItem('currentUserId'));
-	        		}
-	        	}
-
 	        }
 		}
 
 		function checkUser(user) {
 
-
-
-			if(user !== null && user !== undefined && user !== 'nothing stored'){
+			if(notNullNotUndefined(user) && user !== 'nothing stored'){
 				clearInterval(askInterval);
 				user = JSON.parse(user);
 
@@ -347,15 +331,9 @@ $(function(){
 			  var data = {alias: alias};
 			  data = JSON.stringify(data);
 
-			  if(localStorage.getItem('visitedUsrs') !== null && localStorage.getItem('visitedUsrs') !== undefined){
+			  let idOfAlias = returnIdOfAlias(alias);
 
-			  	var users = JSON.parse(localStorage.getItem('visitedUsrs'));
-
-			  	users.forEach(function(objItm, objIdx){
-			  		(alias == objItm.al) ? getUserGarage(objItm.id) : null;
-			  	});
-
-			  }
+			  (idOfAlias > 0) ? getUserGarage(idOfAlias) : null;
 
 			  //console.log('fp. to get userInfo with alias', data);
 
@@ -368,38 +346,28 @@ $(function(){
 			        var userInfoFromIn = res.mensaje.rs;
 			        displayUserInfo(userInfoFromIn[0]);
 			        usrIDG = parseInt(userInfoFromIn[0].id);
-
-			        var indexOfUser = -1;
-
-					var users = (localStorage.getItem('visitedUsrs') !== null && localStorage.getItem('visitedUsrs') !== undefined) ? JSON.parse(localStorage.getItem('visitedUsrs')) : [];
-					
-					users.forEach(function(itm, idx){
-						var someId = parseInt(itm.id);
-						if(someId == usrIDG){
-							indexOfUser = idx;
-						}
-					});
-
-					if(indexOfUser === -1){
-
-						users.push({'al': userInfoFromIn[0].alias, id: userInfoFromIn[0].id});
-						users = JSON.stringify(users);
-						localStorage.setItem('visitedUsrs', users);
-					
-					}
-
+			        // visitedFriends(usrIDG);
 
 			        (!garageRqst) ? getUserGarage(usrIDG) : null;
 			        
 			        userInfoFromIn = JSON.stringify(userInfoFromIn);
 			        sessionStorage.setItem('currentUserInfo', userInfoFromIn);
-			        
+
+			        // start recording profile visit
+			        callVisitRecording(usrIDG, userInfoFromIn[0].alias);
 			      }
 
 			     }).fail(function(err){
 			        console.log(err);
 			  });
 
+		}
+
+		function callVisitRecording(id, al){
+			console.log('fromPROFILE-visit2', id, al);
+			setTimeout(() => {
+				recordNewVisitedProfile(id, al);
+			}, 400);
 		}
 
 		function getUserGarage(id) {
@@ -581,7 +549,7 @@ $(function(){
 			                            <span class="hiddenItm garageVersionId">${itm.version_id}</span>
 			                            <span class="hiddenItm garageModelId">${itm.model_id}</span>
 			                            <span class="hiddenItm garageModelName">${itm.model_name}</span>
-			                            <span class="hiddenItm garageModelPrice">${itm.starting_price}</span>
+			                            <span class="hiddenItm garageModelPrice">$ ${itm.starting_price}</span>
 			                            <span class="hiddenItm garageUsrCarId">${itm.garage_id}</span>
 			                            <span class="hiddenItm garageUsrBrandId">${itm.brand_id}</span>
 		                            </a>
@@ -668,7 +636,7 @@ $(function(){
                 if(res.estado === 1){
                 	con(res);
                 	container.remove();
-                	if(localStorage.getItem('addedAutosArr') !== null && localStorage.getItem('addedAutosArr') !== undefined){
+                	if(notNullNotUndefined(localStorage.getItem('addedAutosArr'))){
                 		var addedAutosArr = JSON.parse(localStorage.getItem('addedAutosArr'));
                 		versId = parseInt(versId);
                 		var newAutosArr = $.grep(addedAutosArr, function(el, i){
@@ -704,9 +672,9 @@ $(function(){
 				var logUsr = localStorage.getItem('aUsr');
 				var visibleUserId = sessionStorage.getItem('currentUserId');
 
-				if(logUsr !== null && logUsr !== undefined){
+				if(notNullNotUndefined(logUsr)){
 					logUsr = parseInt(logUsr);
-					var visibleUser = (visibleUserId !== undefined && visibleUserId !== null) ? parseInt(visibleUserId) : parseInt(user.id);
+					var visibleUser = (notNullNotUndefined(visibleUserId)) ? parseInt(visibleUserId) : parseInt(user.id);
 
 					if(logUsr === visibleUser){
 
@@ -757,7 +725,7 @@ $(function(){
 			var userInfoObj = sessionStorage.getItem('currentUserInfo');
 			var visibleUserId = sessionStorage.getItem('currentUserId');
 
-			var isInfo = (userInfoObj !== null && userInfoObj !== undefined && userInfoObj !== 'nothing stored') ? true : false;
+			var isInfo = (notNullNotUndefined(userInfoObj) && userInfoObj !== 'nothing stored') ? true : false;
 
 			var user = {};
 
@@ -777,10 +745,10 @@ $(function(){
 			//console.log('from navbar function', photo);
 
 			//logueado
-			if(logUsr !== undefined && logUsr !== null){
+			if(notNullNotUndefined(logUsr)){
 
 				logUsr = parseInt(logUsr);
-				var visibleUser = (visibleUserId !== undefined && visibleUserId !== null) ? parseInt(visibleUserId) : parseInt(user.id);
+				var visibleUser = (notNullNotUndefined(visibleUserId)) ? parseInt(visibleUserId) : parseInt(user.id);
 
 				//viendo mi perfil
 				if(logUsr === visibleUser){
@@ -798,7 +766,7 @@ $(function(){
 
 					if($('nav.myNavBar').length){
 						var theNavbar = $('nav.myNavBar');
-						(myLocation === "/web/perfil/" || myLocation === "/web/perfil/index" || myLocation === "/web/perfil/index.html") ? theNavbar.addClass('noPhoto') : null;
+						(isMyLocationHideMode("/web/perfil/")) ? theNavbar.addClass('noPhoto') : null;
 					}
 
 				//viendo el perfil de alguien más

@@ -5,6 +5,7 @@ import {sendPostToGo, sendPostToGet} from './commonFunc/httpProcesor.js';
 import {getVersions} from './commonFunc/getversiones.js';
 import {askBrands, theBrand} from './commonFunc/brandsImgs.js';
 import {queriesT, hashesExist} from './commonFunc/urlEncoder.js';
+import {notNullNotUndefined, NullOrUndefined} from './commonFunc/differentOfNullAndUndefined.js';
 
 
 $(function(){
@@ -45,7 +46,7 @@ $(function(){
 			if(askBrandTimes < 60){
 
 				setTimeout(function(){
-					if(img !== null && img !== undefined && img){
+					if(notNullNotUndefined(img) && img){
 						clearInterval(askBrand);
 						displayBrand(img.pic_url);
 				    }	
@@ -59,7 +60,7 @@ $(function(){
 		}
 
 		function checkBrands(argument) {
-			if(argument !== null && argument !== undefined && argument !== 'nothing stored'){
+			if(notNullNotUndefined(argument) && argument !== 'nothing stored'){
 				clearInterval(askInterval);
 				brands = argument;
 				extractModels(brands);
@@ -241,7 +242,7 @@ $(function(){
 						typeColl.forEach(function(typeItem, indexx){
 							var currentBox = $('div.modelBox' + yearUseType);
 
-							var hrefPath = (localStorage.getItem('aUsrA') !== null && localStorage.getItem('aUsrA') !== undefined) ? `${pathnameRoot}catalogo/modelo-versiones?al=${localStorage.getItem('aUsrA')}&brdId=${typeItem.brand_id}&mdlId=${typeItem.model_id}` : `${pathnameRoot}catalogo/modelo-versiones?brdId=${typeItem.brand_id}&mdlId=${typeItem.model_id}`;
+							var hrefPath = (notNullNotUndefined(localStorage.getItem('aUsrA'))) ? `${pathnameRoot}catalogo/modelo-versiones?al=${localStorage.getItem('aUsrA')}&brdId=${typeItem.brand_id}&mdlId=${typeItem.model_id}` : `${pathnameRoot}catalogo/modelo-versiones?brdId=${typeItem.brand_id}&mdlId=${typeItem.model_id}`;
 
 							var model = `<div class="col-xs-12 col-sm-4 noPadding noMargin modelItem">
 				                            <img src="${typeItem.pic_url}" class="img-responsive carImg"/>
@@ -249,7 +250,7 @@ $(function(){
 					                            <div class="hoverInfo">
 					                                <ul class="mDetails noPadding">
 					                                  <li class="mName">${typeItem.name}</li>
-					                                  <li class="vPrice">${typeItem.desde} - ${typeItem.hasta}</li>
+					                                  <li class="vPrice">$ ${typeItem.desde} - $ ${typeItem.hasta}</li>
 					                                  <li class="yModel">${typeItem.year}</li>
 					                                  <li class="hiddenItm modelId">${typeItem.model_id}</li>
 					                                </ul>
@@ -299,7 +300,7 @@ $(function(){
 					'background-image': `url(${img})`
 				});
 
-			}else if(!img && sessionStorage.getItem('currentBrandImg') !== null){
+			}else if(!img && notNullNotUndefined(sessionStorage.getItem('currentBrandImg'))){
 
 				var brandURL = sessionStorage.getItem('currentBrandImg');
 				

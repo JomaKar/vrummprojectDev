@@ -1,12 +1,13 @@
-import {navigating, myLocation, pathnameRoot} from './commonFunc/locating.js';
+import {navigating, myLocation, pathnameRoot, isMyLocationExpMode} from './commonFunc/locating.js';
 import {con} from './commonFunc/consoling.js';
 import {queriesT, hashesExist} from './commonFunc/urlEncoder.js';
 import {sendPostToGo, sendPostToGet} from './commonFunc/httpProcesor.js';
 import {changeProfilePhoto} from './commonFunc/changeProfilePhoto.js';
+import {notNullNotUndefined, NullOrUndefined} from './commonFunc/differentOfNullAndUndefined.js';
 
 $(function(){
 
-	if(myLocation === "/web/perfil/configuracion" || myLocation === "/web/perfil/configuracion.html"){
+	if(isMyLocationExpMode("/web/perfil/configuracion")){
 
 		//DOM variables
 
@@ -59,7 +60,7 @@ $(function(){
 
 
 		function checkUser(usr) {
-			if(usr !== undefined && usr !== null){
+			if(notNullNotUndefined(usr)){
 				clearInterval(askInt);
 				usr = JSON.parse(usr);
 				displayInForm(usr);
@@ -111,7 +112,11 @@ $(function(){
 
 					if(key === 'invitado_por'){
 						defaultContact = val;
-						(val === 'Usuario Pruebas' || val === null) ? (configForm.find(`input[name='${key}']`).removeAttr('readonly'), changeContact = true) : changeContact = false;
+						// achtung
+					  	// ///////
+					  	// ///////
+					  	// ///////
+						(val == 'Usuario Pruebas' || val === null || val == 'Sin invitación') ? (configForm.find(`input[name='${key}']`).removeAttr('readonly'), changeContact = true) : changeContact = false;
 						//console.log('when displaying', val, changeContact);
 					}
 				}
@@ -119,6 +124,7 @@ $(function(){
 			});
 		}
 
+		// revalidar el mail
 		btnValidate.click(function(){
 			let mail = mailInpEdit.val();
 			var data = {device: localStorage.getItem('deviceId'), user: localStorage.getItem('aUsr'), mail: mail, geoloc: localStorage.getItem('location')};
@@ -126,6 +132,7 @@ $(function(){
 
 		});
 
+		// click on a posible friendo, when editting that field
 		$(document).on('click', 'li.posibleFriend', function(e){
 			var cId = $(this).find('span.friendId').text();
 
@@ -134,6 +141,7 @@ $(function(){
 			sessionStorage.setItem('idPsFriend', cId);
 		});
 
+		// for saving new foto
 		$(document).on('click', 'div.ok', function(){
 
 				changePhoto = true;
@@ -165,7 +173,7 @@ $(function(){
 					var contactVal = contactInp.val();
 					//console.log(contactVal, defaultContact, changeContact);
 
-					(contactVal !== defaultContact) ? changeContactProcess(sessionStorage.getItem('idPsFriend'), contactVal) : null;
+					(contactVal != defaultContact) ? changeContactProcess(sessionStorage.getItem('idPsFriend'), contactVal) : null;
 				
 				}else if(itm.name === 'actual' || itm.name === 'nueva' || itm.name === 'nuevaConf'){
 					(itm.value !== '' && changePass) ? changePassProcess() : null;
@@ -234,7 +242,7 @@ $(function(){
 
 		}
 
-
+		// watch how several elements work according to device's width
 		function sizing(){
 			
 			let outWidth = $(window).outerWidth();
@@ -278,6 +286,10 @@ $(function(){
 
 		}
 
+
+		// this functions works for adjusting the button inside the mail input
+		// in case the mail is already validated, remove that button
+		// if not, keeps watching how it works according to device's width
 		function adjustValBtn(stop) {
 			if(stop === 'y'){
 				validateMail = true;
@@ -292,6 +304,8 @@ $(function(){
 			// body...
 		}
 
+
+		// watch how several elements work according to device's width
 		function adjustInputs(flag){
 			if(flag === 'down'){
 				divPaterno.removeClass('NoleftP halfR').css({padding: '0px 0px 6px'});

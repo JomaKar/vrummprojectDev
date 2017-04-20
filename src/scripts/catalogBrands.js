@@ -1,6 +1,7 @@
-import {navigating, myLocation, pathnameRoot} from './commonFunc/locating.js';
+import {navigating, myLocation, pathnameRoot, isMyLocationHideMode} from './commonFunc/locating.js';
 import {con} from './commonFunc/consoling.js';
 import {sendPostToGo, sendPostToGet} from './commonFunc/httpProcesor.js';
+import {notNullNotUndefined, NullOrUndefined} from './commonFunc/differentOfNullAndUndefined.js';
 
 $(function(){
 
@@ -14,7 +15,7 @@ $(function(){
 	})
 
 
-	if(myLocation === "/web/catalogo/index.html" || myLocation === "/web/catalogo/index" || myLocation === "/web/catalogo/"){
+	if(isMyLocationHideMode("/web/catalogo/")){
 
 		var askInterval = setInterval(function(){
 		
@@ -25,7 +26,7 @@ $(function(){
 
 
 		function checkBrands(argument) {
-			if(argument !== null && argument !== undefined && argument !== 'nothing stored'){
+			if(notNullNotUndefined(argument) && argument !== 'nothing stored'){
 				clearInterval(askInterval);
 				brands = argument;
 				displayBrands(brands);
@@ -44,7 +45,7 @@ $(function(){
 			var itmsLastRow = 0;
 			var brandItmCounter = 0;
 
-			var hrefStartPath = (localStorage.getItem('aUsrA') !== null && localStorage.getItem('aUsrA') !== undefined) ? `${pathnameRoot}catalogo/brand-modelo?al=${localStorage.getItem('aUsrA')}&brdId=` : `${pathnameRoot}catalogo/brand-modelo?brdId=`;
+			var hrefStartPath = (notNullNotUndefined(localStorage.getItem('aUsrA'))) ? `${pathnameRoot}catalogo/brand-modelo?al=${localStorage.getItem('aUsrA')}&brdId=` : `${pathnameRoot}catalogo/brand-modelo?brdId=`;
 
 			
 			if(num > 5){
@@ -135,13 +136,13 @@ $(function(){
 
 			brandUrl = brandUrl.substring(idxFQuote, idxLQuote);
 
-			if(id !== undefined && id !== null){
+			if(notNullNotUndefined(id)){
 				askForModels(id);
 				sessionStorage.setItem('currentBrandAutos', id.toString());
-				if(brandUrl !== undefined && brandUrl !== null){
+				if(notNullNotUndefined(brandUrl)){
 					sessionStorage.setItem('currentBrandImg', brandUrl);
 				}
-				if(name !== undefined && name !== null){
+				if(notNullNotUndefined(name)){
 					sessionStorage.setItem('currentBrandName', name);
 				}
 				
@@ -155,7 +156,7 @@ $(function(){
 			var theid = parseInt(id);
 			var device = localStorage.getItem('deviceId');
 
-			if(device !== undefined && device !== null && theid){
+			if(notNullNotUndefined(device) && theid){
 				var data = {'device': device, brandId: theid};
 				data = JSON.stringify(data);
 				//console.log('checking brands', data);

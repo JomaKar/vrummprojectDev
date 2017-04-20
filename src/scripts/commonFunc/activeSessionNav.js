@@ -1,5 +1,6 @@
 import {queriesT, hashesExist} from './urlEncoder.js';
-import {navigating, myLocation} from './locating.js';
+import {navigating, myLocation, isMyLocationHideMode} from './locating.js';
+import {notNullNotUndefined, NullOrUndefined} from './differentOfNullAndUndefined.js';
 
 export function navInfo() {
 	
@@ -22,9 +23,9 @@ export function navInfo() {
 		//if theres no info find it to compare
 
 
-	if(userInfo === null || userInfo === undefined){
+	if(NullOrUndefined(userInfo)){
 
-		if(visibleUserId !== null && visibleUserId !== undefined){
+		if(notNullNotUndefined(visibleUserId)){
 
 		  	getUserInfo(visibleUserId, 'id');
 
@@ -38,7 +39,7 @@ export function navInfo() {
 			}
 		}
 
-	}else if(userInfo !== null && userInfo !== undefined){
+	}else if(notNullNotUndefined(userInfo)){
 
 		var usrInf = JSON.parse(userInfo);
 
@@ -98,8 +99,8 @@ export function navInfo() {
 
 		if(isNavbar && isInfo){
 
-			var image = (photo !== null && photo !== undefined) ? `data:image/png;base64,${photo}` : '../img/profileDafault.png';
-			var alias = (logUserAlias !== null && logUserAlias !== undefined) ? logUserAlias : userInfoObj.alias;
+			var image = (notNullNotUndefined(photo)) ? `data:image/png;base64,${photo}` : '../img/profileDafault.png';
+			var alias = (notNullNotUndefined(logUserAlias)) ? logUserAlias : userInfoObj.alias;
 
 			let spanAlias = $('span.aliasNavSpan');
 			let anchorProfile = spanAlias.closest('a');
@@ -120,7 +121,7 @@ export function navInfo() {
 
 		}
 
-		if(logUsr !== undefined && logUsr !== null){
+		if(notNullNotUndefined(logUsr)){
 
 			var links = $('div.loggedNavbar').find('a');
 
@@ -143,12 +144,12 @@ export function navInfo() {
 			});
 
 			logUsr = parseInt(logUsr);
-			var visibleUser = (visibleUserId !== undefined && visibleUserId !== null) ? parseInt(visibleUserId) : parseInt(userInfoObj.id);
+			var visibleUser = (notNullNotUndefined(visibleUserId)) ? parseInt(visibleUserId) : parseInt(userInfoObj.id);
 
 			//console.log('aquí en navbar', logUsr, visibleUser);
 
 			if(logUsr === visibleUser){
-				if(myLocation === "/web/perfil/" || myLocation === "/web/perfil/index" || myLocation === "/web/perfil/index.html"){
+				if(isMyLocationHideMode("/web/perfil/")){
 
 					theNavbar.addClass('noPhoto')
 				}

@@ -18,3 +18,11 @@ export function navigating(placeToGo){
 	(placeToGo === 'home') ? window.location = `${strongRoot}/web/` : window.location = `${strongRoot}/web/${placeToGo}`;
 
 }
+
+export function isMyLocationHideMode(location){
+	return (webRoot === location || webRoot === `${location}index` || webRoot === `${location}index.html`) ? true : false;
+}
+
+export function isMyLocationExpMode(location){
+	return (webRoot === location || webRoot === `${location}.html`) ? true : false;
+}

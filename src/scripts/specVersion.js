@@ -1,6 +1,7 @@
 import {con} from './commonFunc/consoling.js';
 import {navigating, myLocation} from './commonFunc/locating.js';
 import {queriesT, hashesExist} from './commonFunc/urlEncoder.js';
+import {notNullNotUndefined, NullOrUndefined} from './commonFunc/differentOfNullAndUndefined.js';
 
 
 $(function(){
@@ -46,7 +47,7 @@ $(function(){
 
 		//console.log(theCarousel);
 
-		if(sessionStorage.getItem('versionsArr') !== null && sessionStorage.getItem('versionStored') !== null){
+		if(notNullNotUndefined(sessionStorage.getItem('versionsArr')) && notNullNotUndefined(sessionStorage.getItem('versionStored'))){
 			version = JSON.parse(sessionStorage.getItem('versionStored'));
 			versions = JSON.parse(sessionStorage.getItem('versionsArr'));
 
@@ -69,7 +70,7 @@ $(function(){
 
 		function wait() {
 			setTimeout(function(){
-				if(sessionStorage.getItem('versionStored') !== null){
+				if(notNullNotUndefined(sessionStorage.getItem('versionStored'))){
 					version = JSON.parse(sessionStorage.getItem('versionStored'));
 					versions = JSON.parse(sessionStorage.getItem('versionsArr'));
 
@@ -94,7 +95,7 @@ $(function(){
 
 		function askVersionsAgain() {
 			if(hashesExist){
-				var datos = (localStorage.getItem('aUsr') !== null && localStorage.getItem('aUsr') !== undefined) ? {'device': localStorage.getItem('deviceId'), modelId: parseInt(queriesT.mdlId), user: localStorage.getItem('aUsr')} : {'device': localStorage.getItem('deviceId'), modelId: parseInt(queriesT.mdlId)};
+				var datos = (notNullNotUndefined(localStorage.getItem('aUsr'))) ? {'device': localStorage.getItem('deviceId'), modelId: parseInt(queriesT.mdlId), user: localStorage.getItem('aUsr')} : {'device': localStorage.getItem('deviceId'), modelId: parseInt(queriesT.mdlId)};
 				datos = JSON.stringify(datos);
 				$.post('https://vrummapp.net/ws/v2/catalogo/getversiones', datos)
 				.then(function(res){
@@ -139,7 +140,7 @@ $(function(){
 
 			version = versionAr[0];
 
-			(version !== undefined && version !== null) ? kickStart('selectVersionStart') : askVersionsAgain(); 
+			(notNullNotUndefined(version)) ? kickStart('selectVersionStart') : askVersionsAgain(); 
 			//console.log('selectVersionStart', version);
 		}
 
@@ -367,7 +368,7 @@ $(function(){
 
 				//this throw the info in the corresponding tab
 				if(itm.tab !== 'Colores'){
-					if(itm.dato !== null && itm.dato !== undefined){
+					if(notNullNotUndefined(itm.dato)){
 						if(versionDetailCont.find(`div.${itm.tab}`).find(`li.dato${itm.dato}`).length){
 							var xIfFalse = '<i class="fa fa-times" aria-hidden="true"></i';
 							var yIfTrue = '<i class="fa fa-check" aria-hidden="true"></i';
@@ -425,7 +426,7 @@ $(function(){
 							
 							var colors = itm.colors;
 
-							if(colors !== null && colors !== undefined && $.isArray(colors)){
+							if(notNullNotUndefined(colors) && $.isArray(colors)){
 								versionDetailCont.find(`div.${itm.tab}`).find(`li.dato${itm.dato}`).children('p.datoVal').remove();
 								colors.forEach((color, idx) => {
 									var colorBtn = `<input type="image" src="${color.boton}" class="autoColorOption" data-auto="${color.foto}">`;
@@ -457,7 +458,7 @@ $(function(){
 	        var deviceId = localStorage.getItem('deviceId');
 	        var versionId = ( versionChange ) ? selectedVersion.id : version.id;
 
-	        var addedAutos = (localStorage.getItem('addedAutosArr') !== null && localStorage.getItem('addedAutosArr') !== undefined) ? JSON.parse(localStorage.getItem('addedAutosArr')) : [];
+	        var addedAutos = (notNullNotUndefined(localStorage.getItem('addedAutosArr'))) ? JSON.parse(localStorage.getItem('addedAutosArr')) : [];
 
 
 	        var dataForGarage = { 'device': deviceId, 'user': userId, 'version': versionId, 'tipo': type };
@@ -495,12 +496,12 @@ $(function(){
 	    
 	    isGarageImg.click(function(){
 
-	    	(localStorage.getItem('aUsr') !== null && localStorage.getItem('aUsr') !== undefined) ? null : $('div#failLog').modal();
+	    	(notNullNotUndefined(localStorage.getItem('aUsr'))) ? null : $('div#failLog').modal();
 
 	    });
 
 	    compareGroup.click(function(e) {
-			(localStorage.getItem('aUsr') !== null && localStorage.getItem('aUsr') !== undefined) ? addToComparator(localStorage.getItem('aUsr')) : $('div#failLog').modal();
+			(notNullNotUndefined(localStorage.getItem('aUsr'))) ? addToComparator(localStorage.getItem('aUsr')) : $('div#failLog').modal();
 	    });
 
 	    function addToComparator(id){
@@ -510,7 +511,7 @@ $(function(){
 	    	var deviceId = localStorage.getItem('deviceId');
 	        var versionId = ( versionChange ) ? selectedVersion.id : version.id;
 
-	        var addedInComparatorAutos = (localStorage.getItem('addedInComAutosArr') !== null && localStorage.getItem('addedInComAutosArr') !== undefined) ? JSON.parse(localStorage.getItem('addedInComAutosArr')) : [];
+	        var addedInComparatorAutos = (notNullNotUndefined(localStorage.getItem('addedInComAutosArr'))) ? JSON.parse(localStorage.getItem('addedInComAutosArr')) : [];
 
 
 	        var dataForCompare = JSON.stringify({ 'device': deviceId, 'idUsr': theId, 'version': versionId});
@@ -544,10 +545,10 @@ $(function(){
 			var versionNameP = $('p.versionName');
 
 			var brandURL = version.pic_marca;
-			var modelName = (localStorage.getItem('modelName') !== null) ? localStorage.getItem('modelName') : version.model_name;
+			var modelName = (notNullNotUndefined(localStorage.getItem('modelName'))) ? localStorage.getItem('modelName') : version.model_name;
 			
 			sessionStorage.setItem('currentBrandAutos', versions[0].brand_id);
-			localStorage.setItem('modelPrice', `${versions[0].starting_price} - ${versions[versions.length - 1].starting_price}`);
+			localStorage.setItem('modelPrice', `$ ${versions[0].starting_price} - $ ${versions[versions.length - 1].starting_price}`);
 			sessionStorage.setItem('currentBrandImg', version.pic_marca);
 			localStorage.setItem('modelName', version.model_name);
 
@@ -582,7 +583,7 @@ $(function(){
 			metaDescrip.attr('content', `Vrumm te permite ver todos los autos del mercado mexicano, como el ${modelName}`);
 			
 			modelNameSpan.text(modelName);
-			modelPrcSpan.text(modelPrice);
+			modelPrcSpan.text(`$ ${modelPrice}`);
 			versionNameP.text(versionName);
 
 		}
@@ -591,7 +592,7 @@ $(function(){
 
 			//console.log('specific-version', vers, localStorage.getItem('addedAutosArr'));
 
-			if(localStorage.getItem('addedAutosArr') !== null && localStorage.getItem('addedAutosArr') !== undefined){
+			if(notNullNotUndefined(localStorage.getItem('addedAutosArr'))){
 
 				var autosAlreadyAdded = JSON.parse(localStorage.getItem('addedAutosArr'));
 				var lastAutoStoredIdx = autosAlreadyAdded.length - 1;
@@ -610,14 +611,14 @@ $(function(){
 
 							if(indx === lastAutoStoredIdx && currAutoId !== idStored && !versionInGarage){
 								isGarageImg.attr('src', '../img/ic_AddGarage@2x.png');
-								(localStorage.getItem('aUsr') !== null && localStorage.getItem('aUsr') !== undefined) ? (versionInGarage = false, addToGrgMsg.text('Agregar a Mi Garage'), addGarageBtn.removeClass('defaultPointer')) : (versionInGarage = true, addGrgList.addClass('hiddenItm'));	
+								(notNullNotUndefined(localStorage.getItem('aUsr'))) ? (versionInGarage = false, addToGrgMsg.text('Agregar a Mi Garage'), addGarageBtn.removeClass('defaultPointer')) : (versionInGarage = true, addGrgList.addClass('hiddenItm'));	
 							}
 
 						});
 
 				}else{
 					isGarageImg.attr('src', '../img/ic_AddGarage@2x.png');
-					(localStorage.getItem('aUsr') !== null && localStorage.getItem('aUsr') !== undefined) ? (versionInGarage = false, addToGrgMsg.text('Agregar a Mi Garage'), addGarageBtn.removeClass('defaultPointer')) : (versionInGarage = true, addGrgList.addClass('hiddenItm'));
+					(notNullNotUndefined(localStorage.getItem('aUsr'))) ? (versionInGarage = false, addToGrgMsg.text('Agregar a Mi Garage'), addGarageBtn.removeClass('defaultPointer')) : (versionInGarage = true, addGrgList.addClass('hiddenItm'));
 				}
 
 
@@ -628,7 +629,7 @@ $(function(){
 			}else{
 
 				isGarageImg.attr('src', '../img/ic_AddGarage@2x.png');
-				(localStorage.getItem('aUsr') !== null && localStorage.getItem('aUsr') !== undefined) ? (versionInGarage = false, addToGrgMsg.text('Agregar a Mi Garage'), addGarageBtn.removeClass('defaultPointer')) : (versionInGarage = true, addGrgList.addClass('hiddenItm'));
+				(notNullNotUndefined(localStorage.getItem('aUsr'))) ? (versionInGarage = false, addToGrgMsg.text('Agregar a Mi Garage'), addGarageBtn.removeClass('defaultPointer')) : (versionInGarage = true, addGrgList.addClass('hiddenItm'));
 				//console.log( 'versionInGarage', versionInGarage);
 			}
 		}
@@ -636,14 +637,14 @@ $(function(){
 		function isInComparator(vers){
 			
 			//con(vers);
-			if(localStorage.getItem('addedInComAutosArr') !== null && localStorage.getItem('addedInComAutosArr') !== undefined){
+			if(notNullNotUndefined(localStorage.getItem('addedInComAutosArr'))){
 				//console.log(localStorage.getItem('addedInComAutosArr'));
 
 				var autosAlreadyCompared = JSON.parse(localStorage.getItem('addedInComAutosArr'));
 				var lastAutoInCmpIdx = autosAlreadyCompared.length - 1;
 				var currAutoId = parseInt(vers.id);
 
-				if(vers.esta_comparador !== null && vers.esta_comparador !== 'false'){
+				if(notNullNotUndefined(vers.esta_comparador) && vers.esta_comparador !== 'false'){
 					isCmpTrue();
 				}else if(autosAlreadyCompared.length > 0){
 
@@ -666,7 +667,7 @@ $(function(){
 				}
 
 
-			}else if(vers.esta_comparador !== null && vers.esta_comparador !== 'false'){
+			}else if(notNullNotUndefined(vers.esta_comparador) && vers.esta_comparador !== 'false'){
 			
 				isCmpTrue();
 			

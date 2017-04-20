@@ -1,7 +1,12 @@
-import {navigating, myLocation} from '../scripts/commonFunc/locating.js';
+import {navigating, myLocation, isMyLocationHideMode, isMyLocationExpMode} from '../scripts/commonFunc/locating.js';
 import {queriesT, hashesExist} from '../scripts/commonFunc/urlEncoder.js';
 import {sendPostToGo, sendPostToGet} from '../scripts/commonFunc/httpProcesor.js';
 import {askBrands, theBrand} from '../scripts/commonFunc/brandsImgs.js';
+import {notNullNotUndefined, NullOrUndefined} from '../scripts/commonFunc/differentOfNullAndUndefined.js';
+
+
+// the main purpose of this function is to speed the information downloading time
+// to have all the required information for the pages as soon as posible
 
 askBrands();
 
@@ -20,7 +25,7 @@ var usrGarage = sessionStorage.getItem('currentUserGarage');
 var theresGarage = false;
 var isDevice = false;
 
-if(devicId !== undefined && devicId !== null){
+if(notNullNotUndefined(devicId)){
   start();
 }else{
   setTimeout(function(){
@@ -30,75 +35,64 @@ if(devicId !== undefined && devicId !== null){
 
 function start() {
     
-    if(myLocation === "/web/perfil/" || myLocation === "/web/perfil/index" || myLocation === "/web/perfil/index.html"){
+    if(isMyLocationHideMode("/web/perfil/")){
 
-        //if user hasn't logged in or sign in
+        //if the user info is in sessionStorage
+        if(notNullNotUndefined(userInfo)){
 
-        if(userInfo === null || userInfo === undefined){
+            // question if the alias is sessionStorage
+            if(notNullNotUndefined(usrAlias)){
 
-            if(usrAlias !== null && usrAlias !== undefined){
+              // question if the alias is in the url
               if(hashesExist){
-                if(queriesT.al !== undefined && queriesT.al !== null){
+                if(notNullNotUndefined(queriesT.al)){
+                  // question if the alias in the url is the same as the alias in the sessionStorage
+                  // and ask for the userInfo depending on the answer
                   (usrAlias == queriesT.al) ? getUserInfo(usrAlias, 'al') :  getUserInfo(queriesT.al, 'al'); 
                 }
+
+              // if there's nothing in the url use the alias of the sessionStorage
               }else{
                   getUserInfo(usrAlias, 'al');
               }
 
+            // if there's no alias in the sessionStorage
             }else if(hashesExist){
-
-                if(queriesT.al !== undefined && queriesT.al !== null){
-                    if(queriesT.al.length > 0){
-                        getUserInfo(queriesT.al, 'al');
-                    }else{navigating('home');}
-                }else{navigating('home');}
+                // question the alias in the url and if its not an empty value
+                (notNullNotUndefined(queriesT.al) && queriesT.al.length > 0) ? getUserInfo(queriesT.al, 'al') : navigating('home');
 
             }else{
               navigating('home');
             }
 
+        // if the user info is not in sessionStorage
         }else{
 
-            if(usrAlias !== null && usrAlias !== undefined){
+            // but the alias is in sessionStorage
+            if(notNullNotUndefined(usrAlias)){
               
               if(hashesExist){
-                if(queriesT.al !== undefined && queriesT.al !== null){
+                if(notNullNotUndefined(queriesT.al)){
                   (usrAlias == queriesT.al) ? null :  getUserInfo(queriesT.al, 'al');
                 }
               }
 
+            // but if any are in sessionStorage
+            }else if(hashesExist){
+              (notNullNotUndefined(queriesT.al) && queriesT.al.length > 0) ? getUserInfo(queriesT.al, 'al') : navigating('home');
             }
         
         }
 
-
-        /////
-
-
-        if(usrGarage  !== null && usrGarage !== undefined && usrGarage !== 'nothing stored'){
-            if(usrAlias !== null && usrAlias !== undefined){
-              
-              if(hashesExist){
-                if(queriesT.al !== undefined && queriesT.al !== null){
-                  (usrAlias == queriesT.al) ? null :  getUserInfo(queriesT.al, 'al');
-                }
-              }
-
-            }else{
-              
-            }
-
-        }
-
     }
 
-    if(myLocation === "/web/perfil/configuracion" ||  myLocation === "/web/perfil/configuracion.html"){
+    if(isMyLocationExpMode("/web/perfil/configuracion")){
       //console.log('im in config')
-        if(localStorage.getItem('aUsr') !== null && localStorage.getItem('aUsr') !== undefined){
+        if(notNullNotUndefined(localStorage.getItem('aUsr'))){
 
           var usrId = parseInt(localStorage.getItem('aUsr'));
 
-          if(sessionStorage.getItem('currentUserInfo') !== null && sessionStorage.getItem('currentUserInfo') !== undefined){
+          if(notNullNotUndefined(sessionStorage.getItem('currentUserInfo'))){
               
               var usrStored = JSON.parse(sessionStorage.getItem('currentUserInfo'))[0];
               var usrIdStored = parseInt(usrStored.id);
@@ -114,11 +108,11 @@ function start() {
         //technically, here says, if theres no a logged user, go back, to the visitted profile or to the landing page.
         }else{
           
-          if(queriesT.al !== null && queriesT.al !== undefined){
+          if(notNullNotUndefined(queriesT.al)){
             navigating(`perfil/?al=${queriesT.al}`);
           }else{
 
-              if(sessionStorage.getItem('currentUserAlias') !== null && sessionStorage.getItem('currentUserAlias') !== undefined){
+              if(notNullNotUndefined(sessionStorage.getItem('currentUserAlias'))){
                   navigating(`perfil/?al=${sessionStorage.getItem('currentUserAlias')}`); 
               }else{
                 navigating('home');
@@ -131,28 +125,28 @@ function start() {
     }
 
 
-    if(myLocation === "/web/catalogo/index.html" || myLocation === "/web/catalogo/index" || myLocation === "/web/catalogo/"){
+    if(isMyLocationHideMode("/web/catalogo/")){
         var brandsStored = sessionStorage.getItem('catalogBrands'),
         brands = [];
 
         sessionStorage.removeItem('modelsArr');
 
-        if(brandsStored === null || brandsStored === undefined || brandsStored === 'nothing stored'){
+        if(NullOrUndefined(brandsStored) || brandsStored === 'nothing stored'){
                   
             getBrands();
         
         }
     }
 
-    if(myLocation === "/web/catalogo/brand-modelo.html" || myLocation === "/web/catalogo/brand-modelo"){
+    if(isMyLocationExpMode("/web/catalogo/brand-modelo")){
 
         //console.log('hello models from bfl')
         var brandId = sessionStorage.getItem('currentBrandAutos'),
         modelsStored = sessionStorage.getItem('modelsArr');
 
-          if(brandId === null || brandId === undefined || brandId === 'nothing store'){
+          if(NullOrUndefined(brandId) || brandId === 'nothing store'){
 
-            if(modelsStored === null || modelsStored === undefined){
+            if(NullOrUndefined(modelsStored)){
 
                 if(hashesExist){
 
@@ -167,13 +161,13 @@ function start() {
             }
 
           
-          }else if(modelsStored === null || modelsStored === undefined){
+          }else if(NullOrUndefined(modelsStored)){
 
-            if(hashesExist && brandId !== null && brandId !== undefined && brandId !== 'nothing store'){
+            if(hashesExist && notNullNotUndefined(brandId) && brandId !== 'nothing store'){
 
               (queriesT.brdId == brandId) ? getModelsInfo(brandId) : getModelsInfo(queriesT.brdId);
             
-            }else if(brandId !== null && brandId !== undefined && brandId !== 'nothing store'){
+            }else if(notNullNotUndefined(brandId) && brandId !== 'nothing store'){
 
               getModelsInfo(brandId);
 
@@ -193,9 +187,9 @@ function start() {
 
     }
 
-    if(myLocation === "/web/catalogo/modelo-versiones.html" || myLocation === "/web/catalogo/modelo-versiones" || myLocation === "/web/catalogo/specific-version.html" || myLocation === "/web/catalogo/specific-version"){
+    if(isMyLocationExpMode("/web/catalogo/modelo-versiones") || isMyLocationExpMode("/web/catalogo/specific-version")){
           //console.log(myLocation, 'onbeforeunload');
-          var onVersions = (myLocation !== "/web/catalogo/specific-version.html" && myLocation !== "/web/catalogo/specific-version") ? true : false;
+          var onVersions = ( isMyLocationExpMode("/web/catalogo/specific-version") ) ? true : false;
 
           var versionsStored = sessionStorage.getItem('versionsArr'),
           versionsPhotosStored = sessionStorage.getItem('versionsPhotos'),
@@ -204,18 +198,18 @@ function start() {
           versionsArr = [];
 
 
-          if(modelId === null || modelId === undefined || modelId === 'nothing store'){
+          if(NullOrUndefined(modelId) || modelId === 'nothing store'){
               
               if(hashesExist){
                   if(queriesT.mdlId.length > 0){
 
                       var urlMdlId = queriesT.mdlId;
                       
-                      if(versionsStored === null || versionsStored === undefined){
+                      if(NullOrUndefined(versionsStored)){
                           getVersions(urlMdlId);
                       }
 
-                      if(versionsPhotosStored === null || versionsPhotosStored === undefined){
+                      if(NullOrUndefined(versionsPhotosStored)){
                         
                           if(onVersions){
                             getVersionsPhotos(urlMdlId);
@@ -234,7 +228,7 @@ function start() {
               }
 
 
-          }else if(versionsStored === null || versionsStored === undefined || versionsPhotosStored === null || versionsPhotosStored === undefined){
+          }else if(NullOrUndefined(versionsStored) || NullOrUndefined(versionsPhotosStored)){
 
               if(hashesExist){
                 console.log('hashesExist');
@@ -290,10 +284,10 @@ function start() {
 function getUserInfo(idOrAl, type) {
 
   var data = (type === 'al') ? {alias: idOrAl} : {idUsr: idOrAl};
-  console.log(localStorage.getItem('visitedUsrs'), idOrAl);
+  // console.log(localStorage.getItem('visitedUsrs'), idOrAl, 'bfl');
   if(type=== 'al'){
 
-      if(localStorage.getItem('visitedUsrs') !== null && localStorage.getItem('visitedUsrs') !== undefined){
+      if(notNullNotUndefined(localStorage.getItem('visitedUsrs'))){
 
           var users = JSON.parse(localStorage.getItem('visitedUsrs'));
 
@@ -302,7 +296,7 @@ function getUserInfo(idOrAl, type) {
               if(idOrAl == objItm.al || idOrAl == objItm.id){
                   var device = localStorage.getItem('deviceId');
 
-                  if(device !== undefined && device !== null){
+                  if(notNullNotUndefined(device)){
                       var dataForGarage = {idUsr: objItm.id, device: localStorage.getItem('deviceId')};
                       dataForGarage = JSON.stringify(dataForGarage);
                       sendPostToGet('garage/listar', dataForGarage, 'usrGrg');
@@ -333,8 +327,8 @@ function getModelsInfo(id){
     var theId = parseInt(id);
     var device = localStorage.getItem('deviceId');
 
-    if(device !== undefined && device !== null && theId){
-      console.log('without waiting')
+    if(notNullNotUndefined(device) && theId){
+      // console.log('without waiting');
       var data = {'device': device, brandId: theId};
       data = JSON.stringify(data);
 
@@ -360,21 +354,19 @@ function getVersions(theModelId) {
     var device = localStorage.getItem('deviceId');
     var userId = sessionStorage.getItem('currentUserId');
 
-    if(device !== undefined && device !== null){
+    if(notNullNotUndefined(device)){
           
           //console.log('sin esperar las versiones');
-          data = (localStorage.getItem('aUsr') !== null && localStorage.getItem('aUsr') !== undefined) ? {'device': device, modelId: theModelId, user: localStorage.getItem('aUsr')} : {'device': device, modelId: theModelId};
+          data = (notNullNotUndefined(localStorage.getItem('aUsr'))) ? {'device': device, modelId: theModelId, user: localStorage.getItem('aUsr')} : {'device': device, modelId: theModelId};
 
-          (myLocation === "/web/catalogo/modelo-versiones.html" || myLocation === "/web/catalogo/modelo-versiones") ? sendPostToGet('catalogo/getversiones', JSON.stringify(data), 'vrsInfo') : sendPostToGet('catalogo/getversiones', JSON.stringify(data), 'spVrsInfo');
+          (isMyLocationExpMode("/web/catalogo/modelo-versiones")) ? sendPostToGet('catalogo/getversiones', JSON.stringify(data), 'vrsInfo') : sendPostToGet('catalogo/getversiones', JSON.stringify(data), 'spVrsInfo');
 
     }else{
       setTimeout(function(){
         
-        data = (localStorage.getItem('aUsr') !== null && localStorage.getItem('aUsr') !== undefined) ? {'device':  localStorage.getItem('deviceId'), modelId: theModelId, user: localStorage.getItem('aUsr')} : {'device':  localStorage.getItem('deviceId'), modelId: theModelId};
+        data = (notNullNotUndefined(localStorage.getItem('aUsr'))) ? {'device':  localStorage.getItem('deviceId'), modelId: theModelId, user: localStorage.getItem('aUsr')} : {'device':  localStorage.getItem('deviceId'), modelId: theModelId};
         //console.log(data);
-
-        (myLocation === "/web/catalogo/modelo-versiones.html" || myLocation === "/web/catalogo/modelo-versiones") ? sendPostToGet('catalogo/getversiones', JSON.stringify(data), 'vrsInfo') : sendPostToGet('catalogo/getversiones', JSON.stringify(data), 'spVrsInfo');
-
+        (isMyLocationExpMode("/web/catalogo/modelo-versiones")) ? sendPostToGet('catalogo/getversiones', JSON.stringify(data), 'vrsInfo') : sendPostToGet('catalogo/getversiones', JSON.stringify(data), 'spVrsInfo');
 
       }, 700);
     }
@@ -388,7 +380,7 @@ function getVersionsPhotos(theModelId){
     var device = localStorage.getItem('deviceId');
     var data = {};
 
-    if(device !== undefined && device !== null){
+    if(notNullNotUndefined(device)){
       //console.log('sin esperar fotos de las versiones', theModelId);
       data = {'device': device, modelId: theModelId};
       sendPostToGet('catalogo/getgaleria', JSON.stringify(data), 'vrsGal');
@@ -405,6 +397,6 @@ window.onbeforeunload = function() {
   sessionStorage.removeItem('currentUserGarage');
   //sessionStorage.removeItem('currentUserInfo');
 
-    if(myLocation === "/web/catalogo/brand-modelo.html" || myLocation === "/web/catalogo/brand-modelo"){sessionStorage.removeItem('modelsArr')}
+    if(isMyLocationExpMode("/web/catalogo/brand-modelo")){sessionStorage.removeItem('modelsArr')}
 
 };

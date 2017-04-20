@@ -1,4 +1,4 @@
-import {navigating, myLocation} from './commonFunc/locating.js';
+import {navigating, myLocation, isMyLocationHideMode} from './commonFunc/locating.js';
 import {con} from './commonFunc/consoling.js';
 import {sendPostToGo, sendPostToGet} from './commonFunc/httpProcesor.js';
 
@@ -81,6 +81,7 @@ $(function(){
 
 
 	loginForm.submit(function(e){
+
 		e.preventDefault();
 		var devID = localStorage.getItem('deviceId');
 		devID = devID.toString();
@@ -119,7 +120,7 @@ $(function(){
 		//sendPostToGo('usuario/login', data, 'perfil');
 		//later when trying with the alias in url
 
-		(myLocation !== "/web/" && myLocation !== "/web/index" && myLocation !== "/web/index.html") ? sendPostToGo('usuario/login', data, 'perfilLogIrgenwo') : sendPostToGo('usuario/login', data, 'perfilLog');
+		(!isMyLocationHideMode("/web/")) ? sendPostToGo('usuario/login', data, 'perfilLogIrgenwo') : sendPostToGo('usuario/login', data, 'perfilLog');
 
 	}
 

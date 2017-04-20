@@ -20,6 +20,7 @@ $(function(){
 		listWidth();
 	});
 
+	// support list width according to device width
 	function listWidth(){
 		var referedWidth = refInput.outerWidth();
 
@@ -58,9 +59,15 @@ $(function(){
 
 	    var itms = posFrList.children('li').length;
 	  
-	    posFrList.animate({
+	  	// achtung
+	  	// ///////
+	  	// ///////
+	  	// ///////
+	  	if(!refInput.attr('readonly')){
+			posFrList.animate({
 				height: itms *  25
 			}, 20);
+		}
 
 	    //recordFriends();
 
@@ -125,6 +132,8 @@ $(function(){
 		}
 		
 		var itms = posFrList.children('li').length;
+
+		// change height of friend's list
 		posFrList.animate({
 			height: itms *  25
 		}, 20);	
@@ -151,13 +160,14 @@ $(function(){
 									<span class="psFrAlias">${itm.alias}</span>
 								</li>`;
 				
-				if($('li.noFriends')){
+				if($('li.noFriends').length){
 					$('li.noFriends').remove();
 				}
 
 				/*console.log("displayedAlready when necessary", displayedAlready);*/
 
 				if(itm.id.length > 0){
+					// chech if its already in list, as a string or as a number
 					var idNum = parseInt(itm.id);
 					var idStr = itm.id.toString();
 					var mayBeNum = displayedAlready.indexOf(idNum);
@@ -176,9 +186,16 @@ $(function(){
 		}
 
 		var itms = posFrList.children('li').length;
-		posFrList.animate({
-			height: itms *  25
-		}, 20);	
+
+		// achtung
+	  	// ///////
+	  	// ///////
+	  	// ///////
+		if(!refInput.attr('readonly')){
+			posFrList.animate({
+				height: itms *  25
+			}, 20);
+		}
 
 	}
 
