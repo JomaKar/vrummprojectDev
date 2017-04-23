@@ -1,4 +1,4 @@
-import {navigating, myLocation, pathnameRoot, isMyLocationHideMode} from './commonFunc/locating.js';
+import { myLocation, pathnameRoot, isMyLocationHideMode} from './commonFunc/locating.js';
 import {con} from './commonFunc/consoling.js';
 import {alleGleichlich, sizingModelItms} from './commonFunc/sizingGarageImgs.js';
 import {queriesT, hashesExist} from './commonFunc/urlEncoder.js';

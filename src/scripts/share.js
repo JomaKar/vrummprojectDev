@@ -1,4 +1,4 @@
-import {navigating, myLocation, isMyLocationHideMode, isMyLocationExpMode} from './commonFunc/locating.js';
+import { myLocation, isMyLocationHideMode, isMyLocationExpMode} from './commonFunc/locating.js';
 import {notNullNotUndefined, NullOrUndefined} from './commonFunc/differentOfNullAndUndefined.js';
 
 $(function(){

@@ -1,4 +1,4 @@
-import {navigating, isMyLocationExpMode, myLocation, pathnameRoot} from './commonFunc/locating.js';
+import {isMyLocationExpMode, myLocation, pathnameRoot} from './commonFunc/locating.js';
 import {con} from './commonFunc/consoling.js';
 import {sendPostToGo, sendPostToGet} from './commonFunc/httpProcesor.js';
 import {queriesT, hashesExist} from './commonFunc/urlEncoder.js';

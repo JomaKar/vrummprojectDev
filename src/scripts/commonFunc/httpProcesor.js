@@ -74,7 +74,8 @@ export function sendPostToGo(urlEnd, data, whereTo){
 				localStorage.setItem('activeSession', 'yes');
 
 				if(notNullNotUndefined(queriesT.al)){
-					(queriesT.al !== alias) ? navigating(`perfil?al=${alias}`) : navigating(`perfil`);
+					con('why doesnt work?');
+					(queriesT.al != alias && !isMyLocationHideMode("/web/perfil/")) ? navigating(`perfil?al=${alias}`) : navigating(`perfil`);
 				}else{
 					navigating(`perfil?al=${alias}`);
 				}
@@ -168,13 +169,17 @@ export function sendPostToGet(urlEnd, data, flag){
 						var routHref = window.location.href;
 						var params = routHref.slice(routHref.indexOf('?') + 1);
 
-						window.location = `${window.location.pathname}?al=${usrA}&${params}`;
+						let alIdx = params.search(usrA);
+						let windowLoc = (notNullNotUndefined(queriesT.al)) ? `${window.location.pathname}?${params}` : `${window.location.pathname}?al=${usrA}&${params}`;
+						console.log('whereTo', windowLoc);
+						window.location = windowLoc;
 
 					}else{
 
 						if(!isMyLocationHideMode("/web/perfil/")){
 							if(notNullNotUndefined(queriesT.al)){
-								(queriesT.al !== usrA) ? navigating(`perfil?al=${usrA}`) : navigating(`perfil`);
+								con('why doesnt work?');
+								(queriesT.al != usrA && !isMyLocationHideMode("/web/perfil/")) ? navigating(`perfil?al=${usrA}`) : navigating(`perfil`);
 							}else{
 								navigating(`perfil?al=${usrA}`);
 							}

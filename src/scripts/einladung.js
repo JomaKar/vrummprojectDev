@@ -1,4 +1,5 @@
 import {con} from './commonFunc/consoling.js';
+import {notNullNotUndefined, NullOrUndefined} from './commonFunc/differentOfNullAndUndefined.js';
 
 $(function(){
 	var refInput = $('input#referido'),
@@ -63,7 +64,8 @@ $(function(){
 	  	// ///////
 	  	// ///////
 	  	// ///////
-	  	if(!refInput.attr('readonly')){
+	  	// console.log('readonlyFocus', refInput.attr('readonly'), NullOrUndefined(refInput.attr('readonly')));
+	  	if(NullOrUndefined(refInput.attr('readonly'))){
 			posFrList.animate({
 				height: itms *  25
 			}, 20);
@@ -87,7 +89,8 @@ $(function(){
 		var id = $(this).children('span.friendId').html();
 		var nick = $(this).children('span.psFrAlias').html();
 		
-		if(nick !== undefined){
+		// console.log(NullOrUndefined(refInput.attr('readonly')), 'attaching value');
+		if(notNullNotUndefined(nick) && NullOrUndefined(refInput.attr('readonly'))){
 			refInput.val(nick);
 		}
 	});
@@ -134,9 +137,12 @@ $(function(){
 		var itms = posFrList.children('li').length;
 
 		// change height of friend's list
-		posFrList.animate({
-			height: itms *  25
-		}, 20);	
+		// console.log('readonlyClean', refInput.attr('readonly'), NullOrUndefined(refInput.attr('readonly')));
+		if(NullOrUndefined(refInput.attr('readonly'))){
+			posFrList.animate({
+				height: itms *  25
+			}, 20);
+		}
 
 	}
 
@@ -191,7 +197,8 @@ $(function(){
 	  	// ///////
 	  	// ///////
 	  	// ///////
-		if(!refInput.attr('readonly')){
+	  	// console.log('readonlyDisplay', refInput.attr('readonly'), NullOrUndefined(refInput.attr('readonly')));
+		if(NullOrUndefined(refInput.attr('readonly'))){
 			posFrList.animate({
 				height: itms *  25
 			}, 20);

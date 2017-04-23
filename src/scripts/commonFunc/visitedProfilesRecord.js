@@ -19,7 +19,7 @@ import {sendPostToGo, sendPostToGet} from './httpProcesor.js';
 // to automatically add a visited profile to the refered_by parameter when after visiting the profile some one wants to sign up
 
 
-let isFirstRecordMigrationDone = false;
+let isFirstRecordMigrationDone = (notNullNotUndefined(localStorage.getItem('FMR'))) ? localStorage.getItem('FMR') : 'false';
 let profilesToRecordForAPI = (notNullNotUndefined(localStorage.getItem('visitedOnAPI'))) ? JSON.parse(localStorage.getItem('visitedOnAPI')) : [];
 
 // let currentUserId = (notNullNotUndefined(sessionStorage.getItem('currentUserId'))) ? parseInt(sessionStorage.getItem('currentUserId')) : undefined;
@@ -84,9 +84,13 @@ export function recordNewVisitedProfile(id, al){
 			startProcessToRecordInAPI(null, null);
 		}
 
-
+	// meaning its gonna start the process
 	}else{
 		console.log('no body visited yet');
+		if(notNullNotUndefined(localStorage.getItem('aUsrA')) && theId && al){
+			startProcessToRecordInAPI(theId, al);
+		}
+
 		(theId && al) ? pushNewProfileInLocal(theId, al) : pushNewProfileInLocal(null, null);
 	}
 
@@ -177,7 +181,7 @@ function startProcessToRecordInAPI(id, al){
 	let usersToCheck = deletingActiveUserFromVisitedUsrs();
 
 	// if its the first migration
-	if(!isFirstRecordMigrationDone){
+	if(isFirstRecordMigrationDone != 'true'){
 
 		// if there are already visited profiles
 		// at least the first one would be record here-if it was not deleted for been the active users profile
@@ -186,36 +190,41 @@ function startProcessToRecordInAPI(id, al){
 			usersToCheck.forEach((itm, idx) => {
 				let visitedForApi = itm;
 				visitedForApi.usrState = 'pending';
-				// recordInAPIVisitedProfile(visitedForApi);
+				recordInAPIVisitedProfile(visitedForApi);
 			});
-			isFirstRecordMigrationDone = true;
+			localStorage.setItem('FMR', 'true');
 		
 		// if there are not visited profiles
 		}else{
-			isFirstRecordMigrationDone = true;
+			localStorage.setItem('FMR', 'true');
 		}
 	
 	// if is not the first migration
 	}else{
 
-		// that means this profile is new
-		// and its not already recorded in api as niether as in local
+		// that means this visit is made after the user was logged and it is not the active user profile
+		// and its not already recorded in api as niether as in local, cause when they are new records the id is sended as parameter
 		if(id !== null && al !== null && differentNumbers(id, localStorage.getItem('aUsr'))){
 
 			// lets check if there are already visited profiles, if not, that would mean the first visit to a profile
 			// was made when someone sing in
 			if(profilesToRecordForAPI.length > 0){
+				let diferentFromAll = 0;
+				let objectToSend = {};
+
 				profilesToRecordForAPI.forEach((itm, idx) => {
 					if(differentNumbers(id, itm.id)){
-						let objectToSend = {al: al, id: id, usrState: 'pending'};
-						// recordInAPIVisitedProfile(objectToSend);
+						objectToSend = {al: al, id: id, usrState: 'pending'};
+						diferentFromAll++;
 					}
 				});
+
+				(diferentFromAll >= profilesToRecordForAPI.length) ? recordInAPIVisitedProfile(objectToSend) : null;
 			
 			// if there are not recorded profiles
 			}else{
 				let objectToSend = {al: al, id: id, usrState: 'pending'};
-				// recordInAPIVisitedProfile(objectToSend);
+				recordInAPIVisitedProfile(objectToSend);
 			}
 
 		// that would mean this are old profiles that are not already recorded
@@ -237,7 +246,7 @@ function startProcessToRecordInAPI(id, al){
 							let visitedForApi = itm;
 							console.log('this is an old value that wasnt recorded yet', visitedForApi);
 							visitedForApi.usrState = 'pending';
-							// recordInAPIVisitedProfile(visitedForApi);
+							recordInAPIVisitedProfile(visitedForApi);
 						}
 					});
 				});
@@ -262,18 +271,16 @@ function deletingActiveUserFromVisitedUsrs(){
 	console.log('deleting record2', idCheck, 'numbers for delete');
 
 	let repitedIdIndex = returnRepitedVisitedIndex(idCheck);
-	
-	let usersWithoutLogged = [];
 
 	// visitedUsrs array without the active user
 	if($.isNumeric(repitedIdIndex) && repitedIdIndex > -1){ 
-		usersWithoutLogged = visitedUsrs.splice(repitedIdIndex, 1);
+		visitedUsrs.splice(repitedIdIndex, 1);
+
 		recordInLocal();
-	}else{
-		usersWithoutLogged = visitedUsrs;
 	}
 
-	return usersWithoutLogged;
+	// console.log('usersWithoutLogged', usersWithoutLogged, visitedUsrs);
+	return visitedUsrs;;
 }
 
 
@@ -352,7 +359,8 @@ function recordInAPIVisitedProfile(futureRecord){
 				if(res.estado === 1){
 					console.log(res);
 					futureRecord.usrState = 'recorded';
-					profilesToRecordForAPI.push(visitedForApi);
+					profilesToRecordForAPI.push(futureRecord);
+					localStorage.setItem('visitedOnAPI', JSON.stringify(profilesToRecordForAPI));
 				}
 			});
 

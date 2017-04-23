@@ -60,8 +60,8 @@ $(function(){
 			if(isMyLocationHideMode("/web/registro/")){
 				let posibleFriend =  returnLastVisitedProfile();
 				if(notNullNotUndefined(posibleFriend) && !$.isEmptyObject(posibleFriend)){
-					console.log('posibleFriend from visitedProfilesRecord', posibleFriend.id, posibleFriend.id);
-					// refInput.val(posibleFriend.al);
+					console.log('posibleFriend from visitedProfilesRecord', posibleFriend.id, posibleFriend.al);
+					refInput.val(posibleFriend.al);
 				}
 			}
 		}
@@ -254,6 +254,7 @@ $(function(){
 		
 	}
 
+	con('sonntag, 14 30 Uhr');
 	function getGeolocalization(){
 		var loc = localStorage.getItem('location');
 
@@ -298,7 +299,7 @@ $(function(){
 			}else if(notNullNotUndefined(posibleFriend) && !$.isEmptyObject(posibleFriend)){
 				if(val == posibleFriend.al && notNullNotUndefined(posibleFriend.al)){
 					console.log('on comprobation of visitedUser as friend did work out', posibleFriend.al, posibleFriend.id);
-					// sessionStorage.setItem("idPsFriend", posibleFriend.id.toString());
+					sessionStorage.setItem("idPsFriend", posibleFriend.id.toString());
 					valueToReturn = true;
 				}
 			}
@@ -319,7 +320,7 @@ $(function(){
 		var value = refInput.val();
 
 
-		if(value.length > 0 && value !== 'Sin invitación'){
+		if(value.length > 0){
 			var exist = checkFriend(value);
 			
 			// if(exist.length > 0 && exist[0] === true){
@@ -330,10 +331,6 @@ $(function(){
 
 				noFriendMsg.toggle();
 			}
-
-		}else if(value === 'Sin invitación'){
-			
-			dataManagement(data);
 
 		}
 

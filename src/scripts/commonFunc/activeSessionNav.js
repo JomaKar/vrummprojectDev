@@ -1,5 +1,5 @@
 import {queriesT, hashesExist} from './urlEncoder.js';
-import {navigating, myLocation, isMyLocationHideMode} from './locating.js';
+import {myLocation, isMyLocationHideMode} from './locating.js';
 import {notNullNotUndefined, NullOrUndefined} from './differentOfNullAndUndefined.js';
 
 export function navInfo() {

@@ -1,5 +1,5 @@
 import {con} from './commonFunc/consoling.js';
-import {navigating, myLocation} from './commonFunc/locating.js';
+import { myLocation} from './commonFunc/locating.js';
 import {queriesT, hashesExist} from './commonFunc/urlEncoder.js';
 import {notNullNotUndefined, NullOrUndefined} from './commonFunc/differentOfNullAndUndefined.js';
 
@@ -28,6 +28,8 @@ $(function(){
 		addToGrgMsg = $('span.addToGrgMsg'),
 		addToCmpMsg = $('span.addToCmpMsg'),
 		addGrgList = $('ul.addToGarage'),
+		colorsTab = $('div.colorsTab'),
+		colorsContainer = $('div.colorsContainer'),
 		
 		metaTitle = $('meta.metaTitle'),
 		metaDescrip = $('meta.metaDescrip'),
@@ -159,7 +161,7 @@ $(function(){
 			sizeCarousel();
 		});
 
-
+		// this display the size each element of the details card must have
 		function displayTecnichCard() {
 			const infoCont = $('ul.fichaRenglon').children('li');
 
@@ -350,7 +352,7 @@ $(function(){
 			$('div.fichaCat').empty();*/
 			//til here
 			var actualCat = info[0].tab;
-			//con(info);
+			// console.log(info, 'from versionsSpecific');
 
 			//this info need to be displayed with endpoint getfichatecnica
 			
@@ -421,31 +423,54 @@ $(function(){
 						con(itm.dato);
 					}
 				}else{
-					if(versionDetailCont.find(`div.${itm.tab}`).find(`li.dato${itm.dato}`).length){
-						if(itm.valor !== 0){
+					// console.log(itm.colors);
+					// con('trying to make a new way to put colors');
+					if(itm.valor != 0){
+						
+						var colors = itm.colors;
+
+						if(notNullNotUndefined(colors) && $.isArray(colors)){
+							colorsTab.css({display: 'flex'});
 							
-							var colors = itm.colors;
 
-							if(notNullNotUndefined(colors) && $.isArray(colors)){
-								versionDetailCont.find(`div.${itm.tab}`).find(`li.dato${itm.dato}`).children('p.datoVal').remove();
-								colors.forEach((color, idx) => {
-									var colorBtn = `<input type="image" src="${color.boton}" class="autoColorOption" data-auto="${color.foto}">`;
-									var btnWrapper = `<div class="color${idx} colorCont">${colorBtn} <span class="colorName">${color.nombre}</span></div>`;
-
-									if(idx == 0){
-										versionDetailCont.find(`div.${itm.tab}`).find(`li.dato${itm.dato}`).children('div.titleCont').after(btnWrapper);
-									}else{
-										versionDetailCont.find(`div.${itm.tab}`).find(`li.dato${itm.dato}`).children(`div.color${idx-1}`).after(btnWrapper);
-									}
-								});
-							}else{
-								versionDetailCont.find(`div.${itm.tab}`).find(`li.dato${itm.dato}`).children('p.datoVal').text('No hay colores para mostrar');	
-							}
-
+							colors.forEach((color, idx) => {
+								var colorBtn = `<input type="image" src="${color.boton}" class="autoColorOption" data-auto="${color.foto}">`;
+								var btnWrapper = `<div class="color${idx} colorCont">${colorBtn} <span class="colorName">${color.nombre}</span></div>`;
+								colorsContainer.append(btnWrapper);
+							});
 						}else{
-							versionDetailCont.find(`div.${itm.tab}`).find(`li.dato${itm.dato}`).children('p.datVal').text(itm.valor);
+							colorsTab.css({display: 'none'});
 						}
+
 					}
+
+					// old way in small tab
+					// if(versionDetailCont.find(`div.${itm.tab}`).find(`li.dato${itm.dato}`).length){
+					// 	if(itm.valor != 0){
+							
+					// 		var colors = itm.colors;
+
+					// 		if(notNullNotUndefined(colors) && $.isArray(colors)){
+					// 			versionDetailCont.find(`div.${itm.tab}`).find(`li.dato${itm.dato}`).children('p.datoVal').remove();
+					// 			colors.forEach((color, idx) => {
+					// 				var colorBtn = `<input type="image" src="${color.boton}" class="autoColorOption" data-auto="${color.foto}">`;
+					// 				var btnWrapper = `<div class="color${idx} colorCont">${colorBtn} <span class="colorName">${color.nombre}</span></div>`;
+
+					// 				if(idx == 0){
+					// 					versionDetailCont.find(`div.${itm.tab}`).find(`li.dato${itm.dato}`).children('div.titleCont').after(btnWrapper);
+					// 				}else{
+					// 					versionDetailCont.find(`div.${itm.tab}`).find(`li.dato${itm.dato}`).children(`div.color${idx-1}`).after(btnWrapper);
+					// 				}
+					// 			});
+					// 		}else{
+					// 			versionDetailCont.find(`div.${itm.tab}`).find(`li.dato${itm.dato}`).children('p.datoVal').text('No hay colores para mostrar');	
+					// 		}
+
+					// 	}
+					// 	// else{
+					// 	// 	versionDetailCont.find(`div.${itm.tab}`).find(`li.dato${itm.dato}`).children('p.datVal').text(itm.valor);
+					// 	// }
+					// }
 				}
 			});
 		}

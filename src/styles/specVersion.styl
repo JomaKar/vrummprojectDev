@@ -71,6 +71,17 @@
 	background #d44643 url(../img/ic_MiGarage_dream-boton@1x.png) 10px center no-repeat
 
 
+.colorsTab
+	width 100%
+	height 100px
+	display none
+	justify-content center
+	
+	.colorsContainer
+		width 80%
+		overflow-x scroll
+		display flex
+
 .colorCont
 	padding 5px
 	width 18%
@@ -121,9 +132,12 @@
 	
 	li
 		border-bottom 1px solid $grayVersionsInfo
+		// for eight
 		// width 12.5%
-		// width 20% for five
-		width 16.67%
+		// for five
+		width 20%
+		// for six
+		// width 16.67%
 		overflow hidden
 		
 		&:hover, &:focus

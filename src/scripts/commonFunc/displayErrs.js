@@ -1,4 +1,3 @@
-import {navigating, myLocation} from './locating.js';
 
 var userE = $('#l-email'),
 	userPass = $('#l-pass'),

@@ -37,7 +37,7 @@ function start() {
     
     if(isMyLocationHideMode("/web/perfil/")){
 
-        //if the user info is in sessionStorage
+        //if the user info is not in sessionStorage
         if(notNullNotUndefined(userInfo)){
 
             // question if the alias is sessionStorage
@@ -65,7 +65,7 @@ function start() {
               navigating('home');
             }
 
-        // if the user info is not in sessionStorage
+        // if the user info is in sessionStorage
         }else{
 
             // but the alias is in sessionStorage
@@ -189,7 +189,7 @@ function start() {
 
     if(isMyLocationExpMode("/web/catalogo/modelo-versiones") || isMyLocationExpMode("/web/catalogo/specific-version")){
           //console.log(myLocation, 'onbeforeunload');
-          var onVersions = ( isMyLocationExpMode("/web/catalogo/specific-version") ) ? true : false;
+          var onVersions = (!isMyLocationExpMode("/web/catalogo/specific-version")) ? true : false;
 
           var versionsStored = sessionStorage.getItem('versionsArr'),
           versionsPhotosStored = sessionStorage.getItem('versionsPhotos'),
