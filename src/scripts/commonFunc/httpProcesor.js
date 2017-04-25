@@ -3,7 +3,7 @@ import {navigating, myLocation, isMyLocationHideMode} from './locating.js';
 import {displayErr} from './displayErrs.js';
 import {con} from './consoling.js';
 import {queriesT, hashesExist} from './urlEncoder.js';
-import {returnAlreadyVisitedProfileId, returnIdOfAlias, recordNewVisitedProfile, visitedFriends} from './visitedProfilesRecord.js';
+import {returnAlreadyVisitedProfileId, returnIdOfAlias, recordNewVisitedProfile} from './visitedProfilesRecord.js';
 
 //urlEnd inticate where to go
 
@@ -29,6 +29,7 @@ export function sendPostToGo(urlEnd, data, whereTo){
 		).then(function(res){
 
 			//con(res);
+			// somebody wants to go to his profile or just accessing to session. its always with sign in form
 			if(whereTo === 'perfilLog' || whereTo === 'perfilLogIrgenwo'){
 				
 				if(res.estado === 1){
@@ -49,12 +50,12 @@ export function sendPostToGo(urlEnd, data, whereTo){
 					displayErr('login');
 				}
 
+			// when somebody sign up
 			}if(whereTo === 'perfilr' && res.estado === 1){
 				
 				var id = res.mensaje.usr.id,
 				alias = res.mensaje.usr.alias;
 
-				// visitedFriends(id);
 
 				localStorage.setItem('aUsrA', alias);
 
@@ -80,7 +81,7 @@ export function sendPostToGo(urlEnd, data, whereTo){
 					navigating(`perfil?al=${alias}`);
 				}
 
-				callVisitRecording(id, alias);
+				callVisitRecording(id, alias, 'registro');
 
 			}else if(whereTo === 'brands' && res.estado === 1){
 
@@ -127,7 +128,9 @@ export function sendPostToGet(urlEnd, data, flag){
 	$.post(`https://vrummapp.net/ws/v2/${urlEnd}`, 
 				datos
 		).then(function(res){
+			
 			//con(res);
+			// somebody wants to go to his profile or just accessing to session. its always with sign in form
 			if(flag === 'usrInfoToGetR' || flag === 'usrInfoToGo'){
 
 				if(res.estado === 1){
@@ -143,7 +146,6 @@ export function sendPostToGet(urlEnd, data, flag){
 					var usrA = userInfo[0].alias;
 					var userId = userInfo[0].id;
 
-					// visitedFriends(userId);
 
 					var device = localStorage.getItem('deviceId');
 
@@ -164,6 +166,7 @@ export function sendPostToGet(urlEnd, data, flag){
 					ssRmForSet('currentUserInfo', userInfo);
 
 
+					// when somebody get into session but not directly to his profile
 					if(flag === 'usrInfoToGetR'){
 
 						var routHref = window.location.href;
@@ -171,14 +174,15 @@ export function sendPostToGet(urlEnd, data, flag){
 
 						let alIdx = params.search(usrA);
 						let windowLoc = (notNullNotUndefined(queriesT.al)) ? `${window.location.pathname}?${params}` : `${window.location.pathname}?al=${usrA}&${params}`;
-						console.log('whereTo', windowLoc);
+						// console.log('whereTo', windowLoc);
 						window.location = windowLoc;
 
+					// when somebody get into session to his profile
 					}else{
 
 						if(!isMyLocationHideMode("/web/perfil/")){
 							if(notNullNotUndefined(queriesT.al)){
-								con('why doesnt work?');
+								// con('why doesnt work?');
 								(queriesT.al != usrA && !isMyLocationHideMode("/web/perfil/")) ? navigating(`perfil?al=${usrA}`) : navigating(`perfil`);
 							}else{
 								navigating(`perfil?al=${usrA}`);
@@ -186,12 +190,12 @@ export function sendPostToGet(urlEnd, data, flag){
 						}
 					}
 
-					callVisitRecording(userId, usrA);
+					callVisitRecording(userId, usrA, 'logging');
 
 				}
 
 
-
+			// somebody is in some profile page
 			}else if(res.estado === 1 && flag === 'usrInfoToGet'){
 
 
@@ -210,7 +214,7 @@ export function sendPostToGet(urlEnd, data, flag){
 				ssRmForSet('currentUserInfo', userInfo);
 
 				var device = localStorage.getItem('deviceId');
-				callVisitRecording(userId, usrA);
+				callVisitRecording(userId, usrA, 'justVisitingProfile');
 
 				//I've commented this code 'cause it's been done before in the circuit, if problems, uncomment, else, delete
 			    /*if(device !== undefined && device !== null && userId){
@@ -467,7 +471,7 @@ function checkIfActive(){
 	return (session === 'yes') ? true : false;
 }
 
-
+// this is usefull when somebody get inside his own profile
 function getInfo(info, flag, going) {
 	if(flag === 'user'){
 		
@@ -480,6 +484,8 @@ function getInfo(info, flag, going) {
 		dataForGarage = JSON.stringify(dataForGarage);
 		sendPostToGet('garage/listar', dataForGarage, 'usrGrg');
 
+		// usrInfoToGo is used when actually the person is entering to his profile fromo the loggin page
+		// usrInfoToGetR when somebody doesn't want to go to his profile but wants to get into his session
 		(going) ? sendPostToGet('usuario/info', data, 'usrInfoToGo') : sendPostToGet('usuario/info', data, 'usrInfoToGetR');
 
 	}
@@ -491,11 +497,14 @@ function ssRmForSet(item, data) {
 	sessionStorage.setItem(item, data);
 }
 
-
-function callVisitRecording(id, al){
+// called when:
+	// somebody sign up
+	// somebody sign in
+	// 
+function callVisitRecording(id, al, origin){
 	console.log('fromHTTP-visit2', id, al);
 	setTimeout(() => {
-		recordNewVisitedProfile(id, al);
+		recordNewVisitedProfile(id, al, origin);
 	}, 400);
 }
 

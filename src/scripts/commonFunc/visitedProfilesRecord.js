@@ -38,32 +38,20 @@ let visitedUsrs = (notNullNotUndefined(localStorage.getItem('visitedUsrs')))
 				: 
 				[];
 
-// not implemented yet
-export function visitedFriends(id){
-	let dataToSend = {device: localStorage.getItem('deviceId'), user: id};
-	let dataString = JSON.stringify(dataToSend);
-
-	$.post('https://vrummapp.net/ws/v2/usuario/garagefriends', 
-		dataString
-	).then((res) => {
-		if(res.estado === 1){
-			profilesToRecordForAPI = res.mensaje.rs;
-			let visitedFriends = ('visitedOnAPI', JSON.stringify(res.mensaje.rs));
-		}
-	});
-}
-
-
 // tells you if the logged user is actually the actual user
 // console.log(sessionStorage.getItem('currentUserId'), localStorage.getItem('aUsr'), 'recording');
 let loggedEqualActual = ((queriesT.al == localStorage.getItem('aUsr') || sessionStorage.getItem('currentUserId') == localStorage.getItem('aUsr')) && localStorage.getItem('aUsr') !== undefined) ? true : false;
 
-export function recordNewVisitedProfile(id, al){
+export function recordNewVisitedProfile(id, al, or){
+	console.log('recordVisitInReal... from', or);
 	let theId = ($.isNumeric(id)) ? id : parseInt(id);
 	var indexOfUser = (theId) ? returnRepitedVisitedIndex(theId) : returnRepitedVisitedIndex(null);
-	console.log('trying to record');
+	// console.log('trying to record');
+	
+
+	// there are profiles already recorded in local
 	if(visitedUsrs.length > 0){
-		console.log('alreadySomeone visited', visitedUsrs);
+		// console.log('alreadySomeone visited', visitedUsrs);
 
 		// this is only usefull to add new profiles that hasn't been already visit
 
@@ -78,15 +66,15 @@ export function recordNewVisitedProfile(id, al){
 
 
 		// if its not the first time this profile is visited (the id is repeated)
-		// check if its necesary remove the record, maybe if the visited profile is from the logged person
+		// check if its necesary to remove the record, maybe if the visited profile is from the logged person
 		// but also its a way to register the already visited profiles after deleting the logged profile
 		}else if(notNullNotUndefined(localStorage.getItem('aUsrA'))){
 			startProcessToRecordInAPI(null, null);
 		}
 
-	// meaning its gonna start the process
+	// meaning its gonna start the process, and there are not profiles visited yet
 	}else{
-		console.log('no body visited yet');
+		// console.log('no body visited yet');
 		if(notNullNotUndefined(localStorage.getItem('aUsrA')) && theId && al){
 			startProcessToRecordInAPI(theId, al);
 		}
@@ -175,22 +163,21 @@ function startProcessToRecordInAPI(id, al){
 		// at the moment this function runs, the actual profile is already recorded in localStorage
 		// the parameters are for new sites
 
-	console.log('working on api record');
-
 	// the active user profile is removed from the visitedUsrs array
 	let usersToCheck = deletingActiveUserFromVisitedUsrs();
 
 	// if its the first migration
 	if(isFirstRecordMigrationDone != 'true'){
+		// console.log('trying first record when loging');
 
 		// if there are already visited profiles
 		// at least the first one would be record here-if it was not deleted for been the active users profile
 		if(usersToCheck.length > 0){
-			console.log(usersToCheck, 'almost on api');
+			// console.log(usersToCheck, 'almost on api');
 			usersToCheck.forEach((itm, idx) => {
 				let visitedForApi = itm;
 				visitedForApi.usrState = 'pending';
-				recordInAPIVisitedProfile(visitedForApi);
+				recordInAPIVisitedProfile(visitedForApi, 'firstMigration');
 			});
 			localStorage.setItem('FMR', 'true');
 		
@@ -219,18 +206,19 @@ function startProcessToRecordInAPI(id, al){
 					}
 				});
 
-				(diferentFromAll >= profilesToRecordForAPI.length) ? recordInAPIVisitedProfile(objectToSend) : null;
+				(diferentFromAll >= profilesToRecordForAPI.length) ? (recordInAPIVisitedProfile(objectToSend, 'record after logged with profiles already')) : null;
 			
 			// if there are not recorded profiles
 			}else{
 				let objectToSend = {al: al, id: id, usrState: 'pending'};
-				recordInAPIVisitedProfile(objectToSend);
+				// console.log('trying record after logged')
+				recordInAPIVisitedProfile(objectToSend, 'after log and without profiles');
 			}
 
 		// that would mean this are old profiles that are not already recorded
 		}else{
 			if(profilesToRecordForAPI.length > 0){
-				console.log('retrying to insert old profiles', usersToCheck);
+				// console.log('retrying to insert old profiles', usersToCheck);
 				usersToCheck.forEach((itm, idx) => {
 					let differenceNumber = 0;
 					$.map(profilesToRecordForAPI, (el, idx) => {
@@ -244,9 +232,9 @@ function startProcessToRecordInAPI(id, al){
 						// if its completly different to every number in the already saved ids, its gonna be save
 						if(differenceNumber >= profilesToRecordForAPI.length){
 							let visitedForApi = itm;
-							console.log('this is an old value that wasnt recorded yet', visitedForApi);
+							// console.log('this is an old value that wasnt recorded yet', visitedForApi);
 							visitedForApi.usrState = 'pending';
-							recordInAPIVisitedProfile(visitedForApi);
+							recordInAPIVisitedProfile(visitedForApi, 'retrying records');
 						}
 					});
 				});
@@ -268,7 +256,7 @@ function deletingActiveUserFromVisitedUsrs(){
 
 	let idCheck = ($.isNumeric(localStorage.getItem('aUsr'))) ? localStorage.getItem('aUsr') : parseInt(localStorage.getItem('aUsr'));
 	
-	console.log('deleting record2', idCheck, 'numbers for delete');
+	// console.log('deleting record2', idCheck, 'numbers for delete');
 
 	let repitedIdIndex = returnRepitedVisitedIndex(idCheck);
 
@@ -286,7 +274,7 @@ function deletingActiveUserFromVisitedUsrs(){
 
 // just working with no visited profiles
 function pushNewProfileInLocal(id, al){
-	console.log(queriesT.al, 'url', localStorage.getItem('aUsrA'), 'local', sessionStorage.getItem('currentUserAlias'), 'session', "newTests-workOk");
+	// console.log(queriesT.al, 'url', localStorage.getItem('aUsrA'), 'local', sessionStorage.getItem('currentUserAlias'), 'session', "newTests-workOk");
 	var alternativeIdToSend = ($.isNumeric(sessionStorage.getItem('currentUserId'))) ? sessionStorage.getItem('currentUserId') : parseInt(sessionStorage.getItem('currentUserId'));
 	
 	// recording with an active user
@@ -303,8 +291,6 @@ function pushNewProfileInLocal(id, al){
 			(id && al) ? visitedUsrs.push({al: al, id: id, usrState: 'active'}) : visitedUsrs.push({al: sessionStorage.getItem('currentUserAlias'), id: alternativeIdToSend, usrState: 'active'});
 		}
 
-		// start process of recording for the api
-		startProcessToRecordInAPI(id, al);
 	
 	}else{
 	// recording with a passive user
@@ -337,12 +323,14 @@ function returnRepitedVisitedIndex(id){
 
 function recordInLocal(){
 	let visitedUsrsString = JSON.stringify(visitedUsrs);
-	console.log(visitedUsrsString, 'recording');
+	// console.log(visitedUsrsString, 'recording');
 	localStorage.setItem('visitedUsrs', visitedUsrsString);
 }
 
-function recordInAPIVisitedProfile(futureRecord){
+var calls = 0;
+function recordInAPIVisitedProfile(futureRecord, origin){
 	if(notNullNotUndefined(localStorage.getItem('aUsr'))){
+		calls++;
 
 		let dataToSend = {
 			user: parseInt(localStorage.getItem('aUsr')), 
@@ -351,13 +339,13 @@ function recordInAPIVisitedProfile(futureRecord){
 		};
 
 		let dataString = JSON.stringify(dataToSend);
+		// console.log('times call', calls, origin, dataString);
 
 		$.post('https://vrummapp.net/ws/v2/usuario/clicvisita',
 				dataString
 			).then((res) => {
 				console.log(res);
 				if(res.estado === 1){
-					console.log(res);
 					futureRecord.usrState = 'recorded';
 					profilesToRecordForAPI.push(futureRecord);
 					localStorage.setItem('visitedOnAPI', JSON.stringify(profilesToRecordForAPI));

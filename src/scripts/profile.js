@@ -6,7 +6,7 @@ import {sendPostToGo, sendPostToGet} from './commonFunc/httpProcesor.js';
 import {changeProfilePhoto} from './commonFunc/changeProfilePhoto.js';
 import {getVersions} from './commonFunc/getversiones.js';
 import {notNullNotUndefined, NullOrUndefined} from './commonFunc/differentOfNullAndUndefined.js';
-import {returnAlreadyVisitedProfileId, returnIdOfAlias, recordNewVisitedProfile, visitedFriends} from './commonFunc/visitedProfilesRecord.js';
+import {returnAlreadyVisitedProfileId, returnIdOfAlias, recordNewVisitedProfile} from './commonFunc/visitedProfilesRecord.js';
 
 $(function(){
 
@@ -346,7 +346,6 @@ $(function(){
 			        var userInfoFromIn = res.mensaje.rs;
 			        displayUserInfo(userInfoFromIn[0]);
 			        usrIDG = parseInt(userInfoFromIn[0].id);
-			        // visitedFriends(usrIDG);
 
 			        (!garageRqst) ? getUserGarage(usrIDG) : null;
 			        
@@ -354,7 +353,7 @@ $(function(){
 			        sessionStorage.setItem('currentUserInfo', userInfoFromIn);
 
 			        // start recording profile visit
-			        callVisitRecording(usrIDG, userInfoFromIn[0].alias);
+			        // callVisitRecording(usrIDG, userInfoFromIn[0].alias);
 			      }
 
 			     }).fail(function(err){
@@ -363,12 +362,12 @@ $(function(){
 
 		}
 
-		function callVisitRecording(id, al){
-			console.log('fromPROFILE-visit2', id, al);
-			setTimeout(() => {
-				recordNewVisitedProfile(id, al);
-			}, 400);
-		}
+		// function callVisitRecording(id, al){
+		// 	console.log('fromPROFILE-visit2', id, al);
+		// 	setTimeout(() => {
+		// 		recordNewVisitedProfile(id, al, 'profileJS');
+		// 	}, 400);
+		// }
 
 		function getUserGarage(id) {
 

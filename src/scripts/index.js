@@ -254,7 +254,7 @@ $(function(){
 		
 	}
 
-	con('sonntag, 14 30 Uhr');
+	con('es funcktioniert nicht mehr!');
 	function getGeolocalization(){
 		var loc = localStorage.getItem('location');
 
@@ -406,7 +406,6 @@ $(function(){
 			goodNick = sessionStorage.getItem('nickGood');
 
 			if(mailGood === 'yes' && goodNick === 'yes'){
-				//sendForm(formData);
 				sendPostToGo('usuario/registro', formData, 'perfilr');
 			}else{
 			
@@ -420,13 +419,6 @@ $(function(){
 
 	var userInfo = [];
 
-
-	// sends sign up form
-	function sendForm(val){
-
-		sendPostToGo('usuario/registro', val, 'perfilr');
-		
-	}
 
 	// to close session
 	$(document).on('click', 'a.closeSession', function(){

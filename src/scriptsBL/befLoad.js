@@ -121,7 +121,6 @@ function start() {
           }
 
         }
-
     }
 
 
@@ -282,9 +281,14 @@ function start() {
 
 
 function getUserInfo(idOrAl, type) {
+  var jemandGefunden = false;
 
   var data = (type === 'al') ? {alias: idOrAl} : {idUsr: idOrAl};
+  var dataForGarage = {};
   // console.log(localStorage.getItem('visitedUsrs'), idOrAl, 'bfl');
+  
+  // the id is only sended when the user is in the edit page, so then they don't need
+  // to ask for the garage, that's why we don't ask for it in those cases
   if(type=== 'al'){
 
       if(notNullNotUndefined(localStorage.getItem('visitedUsrs'))){
@@ -294,16 +298,24 @@ function getUserInfo(idOrAl, type) {
           users.forEach(function(objItm, objIdx){
               //console.log(idOrAl, objItm.al, 'bfl');
               if(idOrAl == objItm.al || idOrAl == objItm.id){
-                  var device = localStorage.getItem('deviceId');
-
-                  if(notNullNotUndefined(device)){
-                      var dataForGarage = {idUsr: objItm.id, device: localStorage.getItem('deviceId')};
-                      dataForGarage = JSON.stringify(dataForGarage);
-                      sendPostToGet('garage/listar', dataForGarage, 'usrGrg');
-
-                  }
+                  jemandGefunden = true;
+                  dataForGarage = {idUsr: objItm.id};
               }
           });
+
+          if(!jemandGefunden && notNullNotUndefined(session)){
+              if(idOrAl == userId || idOrAl == usrAlias){ 
+                dataForGarage = {idUsr: userId};
+                jemandGefunden = true;
+              }
+          }
+
+          var device = localStorage.getItem('deviceId');
+          if(notNullNotUndefined(device) && jemandGefunden){ 
+              dataForGarage.device = localStorage.getItem('deviceId');
+              dataForGarage = JSON.stringify(dataForGarage);
+              sendPostToGet('garage/listar', dataForGarage, 'usrGrg');
+          }
 
       }
   }
