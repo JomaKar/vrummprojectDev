@@ -6,7 +6,6 @@ import {sendPostToGo, sendPostToGet} from './commonFunc/httpProcesor.js';
 import {changeProfilePhoto} from './commonFunc/changeProfilePhoto.js';
 import {getVersions} from './commonFunc/getversiones.js';
 import {notNullNotUndefined, NullOrUndefined} from './commonFunc/differentOfNullAndUndefined.js';
-import {returnAlreadyVisitedProfileId, returnIdOfAlias, recordNewVisitedProfile} from './commonFunc/visitedProfilesRecord.js';
 
 $(function(){
 
@@ -249,23 +248,10 @@ $(function(){
 	        	//con(usrGarageArr);
 
 	        	// lets make a little test
-	        	if(hashesExist){
-	        		if(queriesT.al.length > 0 && notNullNotUndefined(sessionStorage.getItem('currentUserAlias'))){
-
-	        			var aliasN = sessionStorage.getItem('currentUserAlias');
-
-	        			if(aliasN == queriesT.al) { 
-	        				displayGarage();
-	        			} else {
-
-	        				let visitedID = returnAlreadyVisitedProfileId();
-	        				(visitedID !== -1) ? getUserGarage(visitedID) : getUserInfoAl(queriesT.al);
-	        			}
+	        	if(notNullNotUndefined(queriesT.al) && notNullNotUndefined(sessionStorage.getItem('currentUserAlias'))){
 	        		
-	        		}else{
-
-	        			displayGarage();
-	        		}
+	        		var aliasN = sessionStorage.getItem('currentUserAlias');
+        			(aliasN == queriesT.al) ? displayGarage() : getUserGarage(queriesT.al);
 	        	
 	        	}else{
 
@@ -274,9 +260,9 @@ $(function(){
 
 	        // if the garageArray obtained from the api is an empty value
 	        }else if(NullOrUndefined(garageArr) || garageArr === 'nothing stored'){
-	        	let visitedID = returnAlreadyVisitedProfileId();
-	        	if(visitedID !== -1){
-	        		getUserGarage(visitedID);
+	        	
+	        	if(notNullNotUndefined(queriesT.al)){
+	        		getUserGarage(queriesT.al);
 	        		clearInterval(askForGarage);
 	        	}else if(askingTimes >= 100 && notNullNotUndefined(sessionStorage.getItem('currentUserId'))){
 	        		clearInterval(askForGarage);
@@ -330,12 +316,7 @@ $(function(){
 		function getUserInfoAl(alias) {
 			  var data = {alias: alias};
 			  data = JSON.stringify(data);
-
-			  let idOfAlias = returnIdOfAlias(alias);
-
-			  (idOfAlias > 0) ? getUserGarage(idOfAlias) : null;
-
-			  //console.log('fp. to get userInfo with alias', data);
+			  getUserGarage(alias)
 
 			  $.post('https://vrummapp.net/ws/v2/usuario/info', 
 			      data
@@ -352,8 +333,6 @@ $(function(){
 			        userInfoFromIn = JSON.stringify(userInfoFromIn);
 			        sessionStorage.setItem('currentUserInfo', userInfoFromIn);
 
-			        // start recording profile visit
-			        // callVisitRecording(usrIDG, userInfoFromIn[0].alias);
 			      }
 
 			     }).fail(function(err){
@@ -362,19 +341,13 @@ $(function(){
 
 		}
 
-		// function callVisitRecording(id, al){
-		// 	console.log('fromPROFILE-visit2', id, al);
-		// 	setTimeout(() => {
-		// 		recordNewVisitedProfile(id, al, 'profileJS');
-		// 	}, 400);
-		// }
 
-		function getUserGarage(id) {
+		function getUserGarage(idOrAl) {
 
             var devicId = localStorage.getItem('deviceId');
 
 
-            var dataForGarage = {idUsr: id, device: devicId};
+            var dataForGarage = {idUsr: idOrAl, device: devicId};
             dataForGarage = JSON.stringify(dataForGarage);
 
             //console.log('getting the garage', dataForGarage);
@@ -806,10 +779,7 @@ $(function(){
 				(membershipDateCounter.hasClass('hiddenItm')) ? null : membershipDateCounter.addClass('hiddenItm');
 				(dateProfileRgtBtnCont.hasClass('hiddenItm')) ? dateProfileRgtBtnCont.removeClass('hiddenItm') : null;
 				(garageGrid.hasClass('noToggleArea')) ? null : garageGrid.addClass('noToggleArea');
-			}
-
-
-			
+			}			
 		}
 
 

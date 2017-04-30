@@ -19,7 +19,7 @@ var session = localStorage.getItem('activeSession');
 var devicId = localStorage.getItem('deviceId');
 var userInfo = sessionStorage.getItem('currentUserInfo');
 var userId = sessionStorage.getItem('currentUserId');
-var usrAlias = sessionStorage.getItem('currentUserAlias');
+var usrAlias = (notNullNotUndefined(queriesT.al) && queriesT.al.length > 0) ? queriesT.al : sessionStorage.getItem('currentUserAlias');
 var usrGarage = sessionStorage.getItem('currentUserGarage');
 
 var theresGarage = false;
@@ -38,49 +38,18 @@ function start() {
     if(isMyLocationHideMode("/web/perfil/")){
 
         //if the user info is not in sessionStorage
-        if(notNullNotUndefined(userInfo)){
+        if(NullOrUndefined(userInfo)){
 
             // question if the alias is sessionStorage
-            if(notNullNotUndefined(usrAlias)){
-
-              // question if the alias is in the url
-              if(hashesExist){
-                if(notNullNotUndefined(queriesT.al)){
-                  // question if the alias in the url is the same as the alias in the sessionStorage
-                  // and ask for the userInfo depending on the answer
-                  (usrAlias == queriesT.al) ? getUserInfo(usrAlias, 'al') :  getUserInfo(queriesT.al, 'al'); 
-                }
-
-              // if there's nothing in the url use the alias of the sessionStorage
-              }else{
-                  getUserInfo(usrAlias, 'al');
-              }
-
-            // if there's no alias in the sessionStorage
-            }else if(hashesExist){
-                // question the alias in the url and if its not an empty value
-                (notNullNotUndefined(queriesT.al) && queriesT.al.length > 0) ? getUserInfo(queriesT.al, 'al') : navigating('home');
-
-            }else{
-              navigating('home');
-            }
+            (notNullNotUndefined(usrAlias)) ? getUserInfo(usrAlias, 'al') : navigating('home');
 
         // if the user info is in sessionStorage
         }else{
-
-            // but the alias is in sessionStorage
-            if(notNullNotUndefined(usrAlias)){
-              
-              if(hashesExist){
-                if(notNullNotUndefined(queriesT.al)){
-                  (usrAlias == queriesT.al) ? null :  getUserInfo(queriesT.al, 'al');
-                }
-              }
-
-            // but if any are in sessionStorage
-            }else if(hashesExist){
-              (notNullNotUndefined(queriesT.al) && queriesT.al.length > 0) ? getUserInfo(queriesT.al, 'al') : navigating('home');
-            }
+          
+            let storedId = JSON.parse(sessionStorage.getItem('currentUserInfo'))[0]['id'];
+            let storedAl = JSON.parse(sessionStorage.getItem('currentUserInfo'))[0]['alias'];
+            // question if the alias is sessionStorage
+            (storedAl != usrAlias && storedId != usrAlias) ? getUserInfo(usrAlias, 'al') : null;
         
         }
 
@@ -281,43 +250,16 @@ function start() {
 
 
 function getUserInfo(idOrAl, type) {
-  var jemandGefunden = false;
 
   var data = (type === 'al') ? {alias: idOrAl} : {idUsr: idOrAl};
-  var dataForGarage = {};
   // console.log(localStorage.getItem('visitedUsrs'), idOrAl, 'bfl');
   
   // the id is only sended when the user is in the edit page, so then they don't need
   // to ask for the garage, that's why we don't ask for it in those cases
   if(type=== 'al'){
 
-      if(notNullNotUndefined(localStorage.getItem('visitedUsrs'))){
-
-          var users = JSON.parse(localStorage.getItem('visitedUsrs'));
-
-          users.forEach(function(objItm, objIdx){
-              //console.log(idOrAl, objItm.al, 'bfl');
-              if(idOrAl == objItm.al || idOrAl == objItm.id){
-                  jemandGefunden = true;
-                  dataForGarage = {idUsr: objItm.id};
-              }
-          });
-
-          if(!jemandGefunden && notNullNotUndefined(session)){
-              if(idOrAl == userId || idOrAl == usrAlias){ 
-                dataForGarage = {idUsr: userId};
-                jemandGefunden = true;
-              }
-          }
-
-          var device = localStorage.getItem('deviceId');
-          if(notNullNotUndefined(device) && jemandGefunden){ 
-              dataForGarage.device = localStorage.getItem('deviceId');
-              dataForGarage = JSON.stringify(dataForGarage);
-              sendPostToGet('garage/listar', dataForGarage, 'usrGrg');
-          }
-
-      }
+      var dataForGarage = JSON.stringify({device: localStorage.getItem('deviceId'), idUsr: idOrAl});
+      sendPostToGet('garage/listar', dataForGarage, 'usrGrg');
   }
 
   data = JSON.stringify(data);

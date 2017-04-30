@@ -29,7 +29,7 @@ export function sendPostToGo(urlEnd, data, whereTo){
 		).then(function(res){
 
 			//con(res);
-			// somebody wants to go to his profile or just accessing to session. its always with sign in form
+			// somebody wants to go to his profile (login) or just accessing to session. its always with sign in form
 			if(whereTo === 'perfilLog' || whereTo === 'perfilLogIrgenwo'){
 				
 				if(res.estado === 1){
@@ -39,10 +39,22 @@ export function sendPostToGo(urlEnd, data, whereTo){
 
 					localStorage.setItem('activeSession', 'yes');
 
-					(whereTo !== 'perfilLogIrgenwo') ? getInfo(id, 'user', true) : getInfo(id, 'user', false); 
-					id.toString();
-					localStorage.setItem('aUsr', id);					
-					ssRmForSet('currentUserId', id);
+
+					var devicId = localStorage.getItem('deviceId');
+					
+					var data = JSON.stringify({idUsr: id});
+
+					var dataForGarage = JSON.stringify({idUsr: id, device: devicId});
+
+					sendPostToGet('garage/listar', dataForGarage, 'usrGrg');
+
+					// usrInfoToGo is used when actually the person is entering to his profile fromo the loggin page
+					// usrInfoToGetR when somebody doesn't want to go to his profile but wants to get into his session
+					(whereTo !== 'perfilLogIrgenwo') ? sendPostToGet('usuario/info', data, 'usrInfoToGo') : sendPostToGet('usuario/info', data, 'usrInfoToGetR');
+					
+
+					localStorage.setItem('aUsr', id.toString());					
+					ssRmForSet('currentUserId', id.toString());
 
 
 				}else{
@@ -65,8 +77,7 @@ export function sendPostToGo(urlEnd, data, whereTo){
 				var userInfo = [];
 				userInfo[0] = res.mensaje.usr;
 				userInfo = JSON.stringify(userInfo);
-				id.toString();
-				localStorage.setItem('aUsr', id);
+				localStorage.setItem('aUsr', id.toString());
 
 				ssRmForSet('currentUserId', id);
 				ssRmForSet('currentUserAlias', alias);
@@ -149,15 +160,6 @@ export function sendPostToGet(urlEnd, data, flag){
 
 					var device = localStorage.getItem('deviceId');
 
-
-					//I've commented this code 'cause it's been done before in the circuit, if problems, uncomment, else, delete
-				    /*if(device !== undefined && device !== null && userId){
-				        var dataForGarage = {idUsr: userId, device: localStorage.getItem('deviceId')};
-				        dataForGarage = JSON.stringify(dataForGarage);
-				        sendPostToGet('garage/listar', dataForGarage, 'usrGrg');
-
-				    }*/
-
 					userInfo = JSON.stringify(userInfo);
 					localStorage.setItem('aUsrA', usrA);
 
@@ -172,7 +174,6 @@ export function sendPostToGet(urlEnd, data, flag){
 						var routHref = window.location.href;
 						var params = routHref.slice(routHref.indexOf('?') + 1);
 
-						let alIdx = params.search(usrA);
 						let windowLoc = (notNullNotUndefined(queriesT.al)) ? `${window.location.pathname}?${params}` : `${window.location.pathname}?al=${usrA}&${params}`;
 						// console.log('whereTo', windowLoc);
 						window.location = windowLoc;
@@ -215,14 +216,6 @@ export function sendPostToGet(urlEnd, data, flag){
 
 				var device = localStorage.getItem('deviceId');
 				callVisitRecording(userId, usrA, 'justVisitingProfile');
-
-				//I've commented this code 'cause it's been done before in the circuit, if problems, uncomment, else, delete
-			    /*if(device !== undefined && device !== null && userId){
-			        var dataForGarage = {idUsr: userId, device: localStorage.getItem('deviceId')};
-			        dataForGarage = JSON.stringify(dataForGarage);
-			        sendPostToGet('garage/listar', dataForGarage, 'usrGrg');
-
-			    }*/
 
 			}else if(flag === 'usrGrg'){
 
@@ -471,26 +464,6 @@ function checkIfActive(){
 	return (session === 'yes') ? true : false;
 }
 
-// this is usefull when somebody get inside his own profile
-function getInfo(info, flag, going) {
-	if(flag === 'user'){
-		
-		var devicId = localStorage.getItem('deviceId');
-		var data = {idUsr: info};
-
-		data = JSON.stringify(data);
-		var dataForGarage = {idUsr: info, device: devicId};
-
-		dataForGarage = JSON.stringify(dataForGarage);
-		sendPostToGet('garage/listar', dataForGarage, 'usrGrg');
-
-		// usrInfoToGo is used when actually the person is entering to his profile fromo the loggin page
-		// usrInfoToGetR when somebody doesn't want to go to his profile but wants to get into his session
-		(going) ? sendPostToGet('usuario/info', data, 'usrInfoToGo') : sendPostToGet('usuario/info', data, 'usrInfoToGetR');
-
-	}
-
-}
 
 function ssRmForSet(item, data) {
 	sessionStorage.removeItem(item);

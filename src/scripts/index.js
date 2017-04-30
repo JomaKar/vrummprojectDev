@@ -254,7 +254,7 @@ $(function(){
 		
 	}
 
-	con('es funcktioniert nicht mehr!');
+	con('Mauerparks Sonntag!');
 	function getGeolocalization(){
 		var loc = localStorage.getItem('location');
 
