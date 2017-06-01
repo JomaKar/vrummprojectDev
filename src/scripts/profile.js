@@ -701,7 +701,7 @@ $(function(){
 
 			var user = {};
 
-			let addGrgBtn = addGarageBtn.children('a');
+			let addGrgBtn = addGarageBtn;
 
 			if(isInfo){
 

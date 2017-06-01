@@ -3,7 +3,7 @@ import {queriesT, hashesExist} from '../scripts/commonFunc/urlEncoder.js';
 import {sendPostToGo, sendPostToGet} from '../scripts/commonFunc/httpProcesor.js';
 import {askBrands, theBrand} from '../scripts/commonFunc/brandsImgs.js';
 import {notNullNotUndefined, NullOrUndefined} from '../scripts/commonFunc/differentOfNullAndUndefined.js';
-
+import { allVisitedProfiles } from '../scripts/commonFunc/visitedProfilesRecord.js'
 
 // the main purpose of this function is to speed the information downloading time
 // to have all the required information for the pages as soon as posible
@@ -36,6 +36,8 @@ if(notNullNotUndefined(devicId)){
 function start() {
     
     if(isMyLocationHideMode("/web/perfil/")){
+        var visitedFriends = allVisitedProfiles(usrAlias);
+        console.log('hello friends', visitedFriends);
 
         //if the user info is not in sessionStorage
         if(NullOrUndefined(userInfo)){

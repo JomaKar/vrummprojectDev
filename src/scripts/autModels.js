@@ -74,117 +74,78 @@ $(function(){
 
 		function extractModels(brandsArr){
 			models = JSON.parse(brandsArr);
-			var availableYears = [],
-			availableUses = [],
+			// console.log('new version', models);
+			var availableUses = [],
 			availableTypes = [],
 			diffUses = [], 
 			tipo = [];
 
 			if(models !== ''){
-				//figuring out the different years available
-
-				models.forEach(function(itm, idx){
-					var inArray = $.inArray(itm.year, availableYears, 0);
-					if(inArray === -1){
-						availableYears.push(itm.year);				}
-				});
-
-				//asking which of the elements in the full array
-				//match the available years and grouping them
-
-				var itmsDependingOnYear = [];
-				
-				availableYears.forEach(function(yearName, idx){
-					itmsDependingOnYear[idx] = [];
-
-					itmsDependingOnYear[idx] = $.grep(models, function(el, idex){
-						return (el.year === availableYears[idx] && el.uso);
-					});
-
-				});
-
 				//figuring out the different uses available
-
-				models.forEach(function(itm, idx){
-					var inArr = $.inArray(itm.uso, availableUses, 0);
-					if(inArr === -1){
-						availableUses.push(itm.uso);
-					}
-				});
 
 				models.forEach(function(itm, idx){
 					var inArray = $.inArray(itm.tipo_catalogo, availableTypes, 0);
 					if(inArray === -1){
-						availableTypes.push(itm.tipo_catalogo);
-					}
+						availableTypes.push(itm.tipo_catalogo);				}
 				});
 
-				var itmsYearUse = [];
+				// console.log('availableTypes', availableTypes);
 
-				//creating clasification depending on their use
+				//ordering depending on uses
 
-				itmsDependingOnYear.forEach(function(yearColl, indx){
-					itmsYearUse[indx] = [];
-
-					availableUses.forEach(function(useName, index){
-						itmsYearUse[indx][index] = [];
-
-						itmsYearUse[indx][index] = $.grep(yearColl, function(el, idx){
-							return el.uso === availableUses[index];
-						});
-					});
-
-				});
-
-				//deleting arrays with nothing inside them in the useCollection 
-
-				itmsYearUse.forEach(function(yearColl, indx){
-
-					itmsYearUse[indx] = $.grep(yearColl, function(arr, idx){
-						return arr.length > 0;
-					});
-
-				});
+				var itmsDependingOnType = [];
 				
-				// con(itmsYearUse);
+				availableTypes.forEach(function(typeName, idx){
+					itmsDependingOnType[idx] = [];
 
-				var itmsYearUseType = [];
+					itmsDependingOnType[idx] = $.grep(models, function(el, idex){
+						return (el.tipo_catalogo === availableTypes[idx]);
+					});
 
-				//creating last clasification depending on their type
+				});
 
-				itmsYearUse.forEach(function(yearColl, indx){
-					itmsYearUseType[indx] = [];
 
-					yearColl.forEach(function(useColl, index){
-						itmsYearUseType[indx][index] = [];
+				var availableYears = new Array(itmsDependingOnType.length);
+				var itmsDividedPerYear = new Array(itmsDependingOnType.length);
+				var actualYear = '';
 
-						availableTypes.forEach(function(typeName, ind){
-							itmsYearUseType[indx][index][ind] = [];
+				// discover how many different years are for each type
+				// make an array for each inside the general part of the array
+				// push them inside of it
 
-							itmsYearUseType[indx][index][ind] = $.grep(useColl, function(el, idx){
-								return el.tipo_catalogo === availableTypes[ind];
-							});
-						});
+				$.map(itmsDependingOnType, function(itm, idx){
+
+					availableYears[idx] = [];
+					
+					$.each(itm, function(idxt, el){
+
+						// set the year to check.
+						if(idxt === 0){ actualYear = el.year.replace(/\s/g, ''); availableYears[idx].push(actualYear);}
+						else{
+							var yearToTest = el.year.replace(/\s/g, '');
+							var idxOfYear = availableYears[idx].indexOf(yearToTest);
+							(idxOfYear == -1) ? availableYears[idx].push(yearToTest) : null;
+						}
 
 					});
 
 				});
 
-				//deleting arrays with nothing inside them in typeCollection
+				// console.log('availableYears', availableYears);
 
-				itmsYearUseType.forEach(function(yearColl, indx){
+				availableYears.forEach(function(itm, idx){
+					itmsDividedPerYear[idx] = [];
 
-					yearColl.forEach(function(useColl, index){
-
-						itmsYearUseType[indx][index] = $.grep(useColl, function(arr, idx){
-								return arr.length > 0;
-							});
+					$.map(itm, function(theYear, yIdx){
+						var elements = [];
+						elements = itmsDependingOnType[idx].filter(el => el.year.replace(/\s/g, '') == theYear);
+						itmsDividedPerYear[idx].push(elements);
 					});
-
 				});
-				//con(itmsYearUse);
-				//con(itmsYearUseType);
-				displayModels(itmsDependingOnYear, itmsYearUse, itmsYearUseType);
+
+				displayModels(itmsDividedPerYear);
+
+				// console.log('itmsDividedPerYear', itmsDividedPerYear);
 	
 			}else{
 				initialTxt.html('No hay información sobre esta marca para mostrar');
@@ -193,77 +154,78 @@ $(function(){
 		}
 
 
-		function displayModels(collYear, collYearUse, collYearUseType) {
+		function displayModels(collYearType) {
+			console.log('filterTypes', collYearType);
 			initialTxt.remove();
 
-			collYearUse.forEach(function(yearColl, ind){
-				yearColl.forEach(function(useColl, indx){
-					var year = useColl[0].year;
-					var use = useColl[0].uso;
 
-					var yearUseFilter = `<div class="galleryHead col-xs-12 noPadding noMargin yearFilter${year + use}">
-											<span class="modelUse">${use}</span>
-											<span class="modelY">${year}</span>
-										</div>
-										<div class="col-xs-12 noPadding noMargin yearFilterCont${year + use}"></div>`;
-
-					modelsSpace.append(yearUseFilter);					
-
-				});
-			});
-
-			collYearUseType.forEach(function(yearColl, ind){
-				yearColl.forEach(function(useColl, indx){
-					
-					useColl.forEach(function(typeColl, index){
-						var year = typeColl[0].year;
-						var use =  typeColl[0].uso;
-						var yearUse = year + use;
-						var currentYearUseFilter = $('div.yearFilterCont' + yearUse);
-						var type = typeColl[0].tipo_catalogo;
-						var typeName = type;
-						type = type.replace(/ /g, '');
-						
-						var yearUseType = yearUse + type;
+			collYearType.forEach(function(typeColl, ind){
+				var type = typeColl[0][0].tipo_catalogo;
+				var typeName = type;
+				console.log('typeColl', typeName, typeColl);
+				type = type.replace(/ /g, '');
+				// var currentYearUseFilter = $('div.yearFilterCont' + type);
 
 
-						var typeFilter = `<div class="galleryNeck col-xs-12 noPadding noMargin typeFilter${year + use + type}">
-						                    <span class="gallNeckCarSp"></span>
-						                    <span class="gallNeckCarTxt">${typeName}</span>
-						                </div>
-						                <div class="col-xs-12 noPadding noMargin">
-						                    <div class="row-fluid noPadding noMargin childHeight modelBox${year + use + type}">
-						                        
-						                    </div>
-						                </div>`;
+				var typeFilter = `<div class="galleryHead col-xs-12 noPadding noMargin typeFilter${typeName}">
+								 </div>
+								 <div class="col-xs-12 noPadding noMargin">
+				                    <div class="row-fluid noPadding noMargin childHeight modelColl${type}">
+				                        
+				                    </div>
+				                 </div>`;
 
-						currentYearUseFilter.append(typeFilter);
-						
-						typeColl.forEach(function(typeItem, indexx){
-							var currentBox = $('div.modelBox' + yearUseType);
+				modelsSpace.append(typeFilter);
 
-							var hrefPath = (notNullNotUndefined(localStorage.getItem('aUsrA'))) ? `${pathnameRoot}catalogo/modelo-versiones?al=${localStorage.getItem('aUsrA')}&brdId=${typeItem.brand_id}&mdlId=${typeItem.model_id}` : `${pathnameRoot}catalogo/modelo-versiones?brdId=${typeItem.brand_id}&mdlId=${typeItem.model_id}`;
 
-							var model = `<div class="col-xs-12 col-sm-4 noPadding noMargin modelItem">
-				                            <img src="${typeItem.pic_url}" class="img-responsive carImg"/>
-				                            <a href="${hrefPath}" class="modelItmAnchor">
-					                            <div class="hoverInfo">
-					                                <ul class="mDetails noPadding">
-					                                  <li class="mName">${typeItem.name}</li>
-					                                  <li class="vPrice">$ ${typeItem.desde} - $ ${typeItem.hasta}</li>
-					                                  <li class="yModel">${typeItem.year}</li>
-					                                  <li class="hiddenItm modelId">${typeItem.model_id}</li>
-					                                </ul>
-					                            </div>
-					                        </a>
-				                        </div>`;
+				typeColl.forEach(function(yearItem, idxOfYearNow){
+					var modelCollBox = $('div.modelColl' + type);
+					var yearActual = yearItem[0].year;
+					var yearName = yearActual;
 
-				            currentBox.append(model);            
-						});
+					yearActual.replace(/ /g, '');
+					console.log('yearItem', 'modelCollBox' + type, yearItem);
 
+					var myModelYear = `<div class="galleryNeck col-xs-12 noPadding noMargin typeFilter${yearName}">
+					                    <span class="gallNeckCarSp"></span>
+					                    <span class="gallNeckCarTxt">${typeName} ${yearName}</span>
+					                </div>
+					                <div class="col-xs-12 noPadding noMargin">
+					                    <div class="row-fluid noPadding noMargin childHeight modelBoxYear${type + yearActual}">
+					                        
+					                    </div>
+					                </div>`;
+
+					modelCollBox.append(myModelYear); 
+					var currentYearBox = $('div.modelBoxYear' + type + yearActual);
+
+					yearItem.forEach(function(yearEl){
+						var myYear = yearEl.year;
+						// console.log('myYear', myYear);
+						console.log('myYear', 'modelBoxYear' + type + myYear, myYear);
+
+						var hrefPath = (notNullNotUndefined(localStorage.getItem('aUsrA'))) ? `fuxkar/catalogo/modelo-versiones?al=${localStorage.getItem('aUsrA')}&brdId=${yearEl.brand_id}&mdlId=${yearEl.model_id}` : `fuxkar/catalogo/modelo-versiones?brdId=${yearEl.brand_id}&mdlId=${yearEl.model_id}`;
+
+						var modelItem = `<div class="col-xs-12 col-sm-4 noPadding noMargin modelItem">
+			                            <img src="${yearEl.pic_url}" class="img-responsive carImg"/>
+			                            <a href="${hrefPath}" class="modelItmAnchor">
+				                            <div class="hoverInfo">
+				                                <ul class="mDetails noPadding">
+				                                  <li class="mName">${yearEl.name}</li>
+				                                  <li class="vPrice">$ ${yearEl.desde} - $ ${yearEl.hasta}</li>
+				                                  <li class="yModel">${yearEl.year}</li>
+				                                  <li class="hiddenItm modelId">${yearEl.model_id}</li>
+				                                </ul>
+				                            </div>
+				                        </a>
+			                        </div>`;
+
+			            currentYearBox.append(modelItem); 
 
 					});
+
 				});
+				
 			});
 
 			sizingModelItms();

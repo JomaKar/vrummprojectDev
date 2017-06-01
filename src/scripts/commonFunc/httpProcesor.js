@@ -72,7 +72,7 @@ export function sendPostToGo(urlEnd, data, whereTo){
 				localStorage.setItem('aUsrA', alias);
 
 				var usrPhoto = (notNullNotUndefined(res.mensaje.usr.foto_perfil)) ? res.mensaje.usr.foto_perfil.toString() : '';
-				if(usrPhoto.length > 0){localStorage.setItem('aUPP', usrPhoto);}
+				if(usrPhoto.length > 5){localStorage.setItem('aUPP', usrPhoto);}
 				
 				var userInfo = [];
 				userInfo[0] = res.mensaje.usr;

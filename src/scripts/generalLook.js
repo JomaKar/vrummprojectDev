@@ -4,6 +4,8 @@ $(function(){
 	//profile elements
 	var header = $('header.p-header');
 	var profileImg = $('div.p-profilePhoto'),
+	garageGrid = $('div.garageGrid'),
+	staticsProfileContainer = $('div.staticsProfileContainer'),
 	profileInfo = $('div.p-profileInfo');
 	var profileInfoCont = $('div.p-profileInfoCont'),
 	infoDetailsCont = $('div.p-profActDetCont'),
@@ -32,6 +34,8 @@ $(function(){
 	loginMailInput = $('input#l-email'),
 	simInputsCont = $('#simInputsCont');
 
+	let areFriends = true;
+
 	loginMailInput.focus(function(){
 		if(errMsg.css('display') === 'block'){
 			errMsg.css({display: 'none'});
@@ -46,7 +50,6 @@ $(function(){
 
 
 	var inputsNoPad = [passCont, inputAPtn, passConfCont, inputMat];
-
 
 		$(document).ready(function(){
 			elementsPositioning(profileImg.width());
@@ -64,7 +67,7 @@ $(function(){
 
 			var theWidth = $(window).width();
 
-			console.log(theWidth);
+			console.log(theWidth, 'theWidthGL');
 
 			upDown975();
 
@@ -73,14 +76,13 @@ $(function(){
 		function hideBef400() {
 			var docWidth = $(window).width();
 
-			if(docWidth < 420){
-				membershipDateCounter.hide();
-				carsCounter.removeClass('col-xs-2').addClass('col-xs-3');
-				shareCounter.removeClass('col-xs-2').addClass('col-xs-3');
+			if(docWidth <= 420){
+				// shareCounter.removeClass('col-xs-2').addClass('col-xs-3');
+				shareCounter.hide()
 			}else{
-				carsCounter.addClass('col-xs-2').removeClass('col-xs-3');
-				membershipDateCounter.show();
-				shareCounter.addClass('col-xs-2').removeClass('col-xs-3');
+				(docWidth < 550) ? membershipDateCounter.hide() : membershipDateCounter.show();
+				// shareCounter.addClass('col-xs-2').removeClass('col-xs-3');
+				shareCounter.show()
 			}
 		}
 
@@ -124,14 +126,14 @@ $(function(){
 				profileImg.removeClass('col-xs-4').addClass('col-xs-3 NorightM halfML');
 				profileName.removeClass('NotopM');
 				profileInfo.removeClass('col-xs-7 NorightP').addClass('col-xs-8');
-				carsCounter.removeClass('col-xs-offset-4 noPadding').addClass('col-xs-offset-3 NorightP');
+				// carsCounter.removeClass('col-xs-offset-4 noPadding').addClass('col-xs-offset-3 NorightP');
 				membershipDateCounter.removeClass('col-xs-offset-2').addClass('col-xs-offset-3');
 
 			}else if(docWidth < 420){
 				
 				profileImg.removeClass('col-xs-3').addClass('col-xs-4');
 				profileInfo.addClass('col-xs-7').removeClass('col-xs-8');
-				carsCounter.addClass('col-xs-offset-4').removeClass('col-xs-offset-3');
+				// carsCounter.addClass('col-xs-offset-4').removeClass('col-xs-offset-3');
 				membershipDateCounter.addClass('col-xs-offset-2').removeClass('col-xs-offset-3');
 
 			}else if(docWidth > 750.5 && docWidth < 975){
@@ -140,7 +142,7 @@ $(function(){
 				profileName.addClass('NotopM');
 				profileInfo.addClass('NorightP');
 
-				carsCounter.removeClass('dblleftP NorightP').addClass('noPadding');
+				// carsCounter.removeClass('dblleftP NorightP').addClass('noPadding');
 
 
 			}else if(docWidth >= 975){
@@ -149,9 +151,27 @@ $(function(){
 				profileName.addClass('NotopM');
 				profileInfo.addClass('NorightP');
 
-				carsCounter.removeClass('noPadding').addClass('dblleftP NorightP');
+				// carsCounter.removeClass('noPadding').addClass('dblleftP NorightP');
 
 			}
+
+			staticsContainerResize();
+		}
+
+		function staticsContainerResize(){
+			var theWidth = $(window).width();
+			var imgW = profileImg.width();
+			var imgMarginL = profileImg.offset().left;
+	        var gridW = garageGrid.width();
+	        var resultantWidth = gridW - imgW;
+
+	        var staticsMarginL = (theWidth > 1200 ) ? imgW : imgW + imgMarginL;
+
+	        // console.log('imgW', imgW, 'imgMarginL', imgMarginL, 'gridW', gridW, 'resultantWidth', resultantWidth);
+			staticsProfileContainer.css({
+				width: resultantWidth  - 19,
+				'margin-left': staticsMarginL
+			});
 		}
 
 		function upDown975() {

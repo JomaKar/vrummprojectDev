@@ -96,15 +96,79 @@
 			background-color black
 			box-shadow inset 0 10px 20px -10px white
 			color white
-			padding-top 3.5%
-
-			.garageCarsCounter, .garageShareCounter
-				display flex
-				flex-wrap wrap-reverse
+			padding 15px 10px 0 0
+			
+			.garageInfoDetailsSubContainer
+				position relative
+				min-height 70px
+				width 100%
 				
-			.membershipDateCounter
-				text-align right
+				.staticsProfileContainer
+					display flex
+					justify-content space-between
 
+					.garageCarsCounter, .garageShareCounter
+						width 18%
+						display flex
+						flex-direction column
+						flex-wrap wrap-reverse
+						padding-left 4px
+						
+					.membershipDateCounter
+						width 25%
+						display none
+						text-align right
+						
+					.friendsCounter
+						width 38%
+						margin-right 2px
+						border 1px solid
+						border-radius 5px
+						height 35px
+						padding 7px
+						cursor pointer
+						position relative
+						
+						.frdsCountTxt
+							width 100%
+							display flex
+							justify-content space-around
+							font-size 13px
+							color white
+							
+							.selectCaret
+								position relative
+								top 4px
+						
+						.friendsList
+							list-style-type none
+							background-color beige
+							position absolute
+							top 33px
+							width 149px
+							left -21px
+							z-index 8
+							display block
+							margin-bottom 0px !important
+							
+							.friendItem
+								width 100%
+								padding 6px 8px
+								height 30px
+								display flex
+								justify-content space-between
+								
+								.friendImg
+									width 24px
+									height 24px
+									border-radius 50%
+								
+								.friendAlias
+									color black
+									font-size 13px
+									font-family sans-serif
+									margin-top 5px
+								
 
 .carsCountTxt, .sharedCountTxt, .membershipCountTxt
 	color $regTextColor
@@ -156,9 +220,31 @@
 			background-color $grayBtn
 			border-color $grayBtn
 
-@media(min-width 440px)
+@media(min-width 550px)
 	.dateProfileRgtBtnCont
 		display block
+		
+	.p-header
+		.p-profActDetCont
+			.garagaInfoDetails
+				.garageInfoDetailsSubContainer
+					.staticsProfileContainer
+						.membershipDateCounter
+							display block
+							
+						.friendsCounter
+							width 20%
+
+
+@media(min-width 750px)
+	.p-header
+		.p-profActDetCont
+			.garagaInfoDetails
+				.garageInfoDetailsSubContainer
+					.staticsProfileContainer
+						.garageCarsCounter, .garageShareCounter
+							padding-left 11px
+
 		
 @media(min-width 666px)
 	.dateProfileRgtBtnCont
@@ -181,6 +267,21 @@
 	.dateProfileRgtBtnCont
 		.rgtInvTxt
 			font-size 15px
+
+@media(min-width 768px)
+	.p-header
+		.p-profActDetCont
+			.garagaInfoDetails
+				.garageInfoDetailsSubContainer
+					width 93.33333333%
+					
+@media(min-width 992px)
+	.p-header
+		.p-profActDetCont
+			.garagaInfoDetails
+				.garageInfoDetailsSubContainer
+					width 84.33333333%
+		
 			
 @media(min-width 930px)
 	.dateProfileRgtBtnCont
@@ -228,6 +329,11 @@
 				fill white
 				padding-right 10px
 				cursor pointer
+				
+				.shareIconTxt
+					font-size 14px
+					position relative
+					top -4px
 			
 			.filterDivCont
 				height 100%
@@ -279,8 +385,84 @@
 	
 .garageGridCont
 	padding-bottom 1px !important
+
+
+
+.profileCommentsArea
+	margin-top 5px
 	
+	form.newCommentForm
+		display flex
+		justify-content space-between
+		
+		input.commentInput
+			width 84%
+			color black
+			border hidden
+			border-radius 10px
+			height 24px
+			font-size 14px
+			font-family sans-serif
+			padding-left 10px
+			
+			&:focus
+				border hidden
+				height 30px
+				font-size 17.5px
+				
+			
+		button.addCommentBtn
+			color white
+			background-color $regActiveBtn !important
+			width 15%
+			border-radius 9px
+			border hidden
 	
+	ul.commentsList
+		margin-bottom 12px
+		margin-top 10px
+		padding-left 0 !important
+		list-style-type none
+		max-height 400px
+		overflow-y scroll		
+		
+		li.comment
+			background-color $catBackGray
+			padding 3px
+			border-bottom 2px solid $regActiveBtn
+			padding 5px 2px 2px 10px
+			margin-bottom 5px
+			
+			p.commentBody
+				font-size 14px
+				font-family sans-serif
+				margin-bottom 5px
+				
+			a.authorDetails
+				display flex
+				cursor pointer
+				text-decoration none
+				width 158px
+				
+				&:active
+					text-decoration none
+				
+				img.athImg
+					width 24px
+					height 24px
+					margin 2px
+					border-radius 50%
+						
+				span.athName
+					font-size 11px
+					font-family sans-serif
+					color black
+					position relative
+					top 8px
+					left 5px
+
+					&:hover
+						color $regActiveBtn	
 
 .addGarageBtnCon
 	padding 2% !important
@@ -517,8 +699,6 @@
 		
 
 @media(min-width 400px)
-	.carsCountTxt, .sharedCountTxt, .membershipCountTxt
-		margin-left 5px
 		
 	.p-header
 		.p-profileInfoCont	
@@ -528,12 +708,6 @@
 					
 				.profileAlias
 					font-size 14px	
-
-@media(min-width 500px)
-	.p-header
-		.p-profActDetCont
-			.garagaInfoDetails
-				padding-top 2.5%
 
 
 @media(min-width 630px)		
@@ -553,12 +727,6 @@
 
 	.carsCountTxt, .sharedCountTxt, .membershipCountTxt
 		font-size 11px
-		
-
-
-@media(min-width 730px)
-	.carsCountTxt, .sharedCountTxt, .membershipCountTxt
-		margin-left 10px
 		
 
 @media(min-width 992px)

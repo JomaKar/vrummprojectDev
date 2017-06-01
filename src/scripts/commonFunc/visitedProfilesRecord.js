@@ -14,20 +14,8 @@ import {sendPostToGo, sendPostToGet} from './httpProcesor.js';
 // offer a source of ids related with aliases ::: done
 
 
-// get the actual user alias and id ::: done
-
-// to automatically add a visited profile to the refered_by parameter when after visiting the profile some one wants to sign up
-
-
 let isFirstRecordMigrationDone = (notNullNotUndefined(localStorage.getItem('FMR'))) ? localStorage.getItem('FMR') : 'false';
 let profilesToRecordForAPI = (notNullNotUndefined(localStorage.getItem('visitedOnAPI'))) ? JSON.parse(localStorage.getItem('visitedOnAPI')) : [];
-
-// let currentUserId = (notNullNotUndefined(sessionStorage.getItem('currentUserId'))) ? parseInt(sessionStorage.getItem('currentUserId')) : undefined;
-// let currentUserAlias = (notNullNotUndefined(sessionStorage.getItem('currentUserAlias'))) ? sessionStorage.getItem('currentUserAlias') : undefined;
-
-// get logged user id and alias
-
-// var loggedUsrID = ( notNullNotUndefined(localStorage.getItem('aUsr')) ) ? parseInt(localStorage.getItem('aUsr')) : undefined;
 
 
 // get all visited users or start the array of them
@@ -41,6 +29,20 @@ let visitedUsrs = (notNullNotUndefined(localStorage.getItem('visitedUsrs')))
 // tells you if the logged user is actually the actual user
 // console.log(sessionStorage.getItem('currentUserId'), localStorage.getItem('aUsr'), 'recording');
 let loggedEqualActual = ((queriesT.al == localStorage.getItem('aUsr') || sessionStorage.getItem('currentUserId') == localStorage.getItem('aUsr')) && localStorage.getItem('aUsr') !== undefined) ? true : false;
+
+
+export function allVisitedProfiles(alOrId){
+
+	var data = JSON.stringify({user: alOrId, device: localStorage.getItem('deviceId')});
+
+	return $.post('https://vrummapp.net/ws/v2/usuario/garagefriends',
+		data
+	).then(res => {
+		console.log(res);
+		return (res.estado === 1) ? res.mensaje.rs :  'No body';
+	});
+}
+
 
 export function recordNewVisitedProfile(id, al, or){
 	console.log('recordVisitInReal... from', or);
@@ -351,8 +353,6 @@ function recordInAPIVisitedProfile(futureRecord, origin){
 					localStorage.setItem('visitedOnAPI', JSON.stringify(profilesToRecordForAPI));
 				}
 			});
-
-		// etc...
 	}
 }
 

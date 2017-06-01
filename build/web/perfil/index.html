@@ -40,9 +40,9 @@
       <div data-width="991" data-height="400" class="p-headerBackImg backImg">    
       </div>
 
-      <div class="p-profileInfoCont row-fluid childHeight noPadding noMargin">
+      <div class="p-profileInfoCont row-fluid noPadding noMargin">
           <div class="col-xs-12 col-sm-11 col-md-offset-2 col-md-8 noPadding noMoreGrow">
-              <div class="row-fluid childHeight noPadding">
+              <div class="row-fluid noPadding">
                   <div id="profilePict" data-width="100" data-height="134" class="p-profilePhoto noPadding NorightM halfML col-xs-4 col-sm-2 col-sm-offset-1 col-md-offset-0 backImg">
                       <span class="glyphicon glyphicon-camera profImgCameraIcon"></span>
                   </div> 
@@ -59,35 +59,80 @@
           </div>
       </div>
 
-      <div class="p-profActDetCont row-fluid childHeight noMargin noPadding">
+      <div class="p-profActDetCont row-fluid noMargin noPadding">
           <div class="garagaInfoDetails col-xs-12">
-              <div class="row-fluid noMoreGrow childHeight noMargin noPadding">
-                  <div class="col-xs-offset-4 col-xs-2 col-sm-offset-3 col-lg-offset-2 NorightP garageCarsCounter">
-                      <span class="carsNumb">5</span>
-                      <span class="carsCountTxt">VEHICULOS <br> EN EL GARAGE</span>
+              <div class="garageInfoDetailsSubContainer noMoreGrow noMargin noPadding">
+
+                  <!-- garageCarsCounter -->
+                  <div class="staticsProfileContainer">
+                      <div class="NorightP garageCarsCounter">
+                          <span class="carsNumb">5</span>
+                          <span class="carsCountTxt">VEHICULOS</span>
+                      </div>
+
+                      <!-- garageShareCounter -->
+                      <div class="NorightP garageShareCounter">
+                          <span class="shareNumb">13</span>
+                          <span class="sharedCountTxt">VECES <br> COMPARTIDO</span>
+                      </div>
+
+                      <!-- membershipDateCounter -->
+                      <div class="noPadding membershipDateCounter hiddenItm">
+                          <span class="membershipCountTxt">MIEMBRO DESDE</span>
+                          <br >
+                          <span class="memDateNumb">12/07/2016</span>
+                      </div>
+
+                      <!-- friendsCounter -->
+                      <div class="NorightP friendsCounter">
+                          <span class="frdsCountTxt">
+                              <span class="frndsInfo">
+                                  <span class="frndsNumb">
+                                    5
+                                  </span> 
+                                  amigos 
+                              </span>
+                              <span class="glyphicon glyphicon-triangle-bottom selectCaret"></span>
+                          </span>
+                          <ul class="noPadding friendsList">
+                              <li class="friendItem">
+                                  <img src="../img/profileDafault.png" width="24px" class="friendImg">
+                                  <span class="friendAlias">Alias</span>
+                              </li>
+                              <li class="friendItem">
+                                  <img src="../img/profileDafault.png" width="24px" class="friendImg">
+                                  <span class="friendAlias">Alias</span>
+                              </li>
+                              <li class="friendItem">
+                                  <img src="../img/profileDafault.png" width="24px" class="friendImg">
+                                  <span class="friendAlias">Alias</span>
+                              </li>
+                              <li class="friendItem">
+                                  <img src="../img/profileDafault.png" width="24px" class="friendImg">
+                                  <span class="friendAlias">Alias</span>
+                              </li>
+                              <li class="friendItem">
+                                  <img src="../img/profileDafault.png" width="24px" class="friendImg">
+                                  <span class="friendAlias">Alias</span>
+                              </li>
+                          </ul>
+                      </div>
+
+                      <!-- regBtn -->
+                      <div class="dateProfileRgtBtnCont noPadding">
+                          <p class="rgtInvTxt">¿Estás en Vrumm?</p>
+                          <a href="/vrumm/build/web/registro/" data-dev="/vrumm/build/web/registro/" data-prod="/web/registro/" class="btn btn-primary rgtInvBtn linkChangeOnEnv">Regístrate</a>
+                      </div>
                   </div>
-                  <div class="col-xs-2 NorightP garageShareCounter">
-                      <span class="shareNumb">13</span>
-                      <span class="sharedCountTxt">VECES <br> COMPARTIDO</span>
-                  </div>
-                  <div class="col-xs-2 noPadding col-xs-offset-2 col-sm-offset-2 col-md-offset-1 col-lg-offset-4 membershipDateCounter hiddenItm">
-                      <span class="membershipCountTxt">EN VRUMM DESDE</span>
-                      <br >
-                      <span class="memDateNumb">12/07/2016</span>
-                  </div>
-                  <div class="dateProfileRgtBtnCont col-xs-3 noPadding col-sm-offset-1 col-lg-offset-3 col-lg-3 col-md-2 col-xs-offset-2">
-                      <p class="rgtInvTxt">¿<span class="hidD666">Aún no </span> <span class="hidU666">No </span> tienes <span class="hidD666"> una </span> <span class="whiteSpace"></span> cuenta?</p>
-                      <!-- just development -->
-                      <a href="/vrumm/build/web/registro/" data-dev="/vrumm/build/web/registro/" data-prod="/web/registro/" class="btn btn-primary rgtInvBtn linkChangeOnEnv">Regístrate</a>
-                      <!-- just production -->
-                      <!-- <a href="/web/registro/" class="btn btn-primary rgtInvBtn">Regístrate</a> -->
-                  </div>
+                  
+
               </div>
           </div>
           <div class="col-xs-12 garageFilterBar noPadding">
-              <div class="row-fluid noPadding noMargin childHeight garageFilterRow">
+              <div class="row-fluid noPadding noMargin garageFilterRow">
                   <div class="col-xs-12 col-sm-11 noMoreGrow noPadding col-md-10 filterBar">
                       <span class="shareGarageIcon sharePage">
+                          <span class="shareIconTxt">Compartir garage</span>
                           <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21">
                             <g>
                                   <path d="M17.8 6.2h-2.2c-0.4 0-0.8 0.4-0.8 0.8s0.4 0.8 0.8 0.8h1.4v10.7H4.2v-10.7h1.7c0.4 0 0.8-0.4 0.8-0.8s-0.4-0.8-0.9-0.8h-2.4c-0.5 0-0.8 0.4-0.8 0.8v12.3c0 0.4 0.3 0.7 0.8 0.7h14.5c0.4 0 0.8-0.3 0.8-0.7v-12.3C18.6 6.6 18.3 6.2 17.8 6.2zM9.4 3.9l0.3-0.1v10.2c0 0.4 0.4 0.8 0.8 0.8s0.8-0.4 0.8-0.8v-10.6l0.8 0.5c0.1 0.1 0.3 0.2 0.5 0.2 0.2 0 0.4-0.1 0.6-0.3 0.3-0.3 0.3-0.8-0.1-1.1l-2-1.5c-0.3-0.2-0.7-0.3-1 0 -0.1 0.1-1.8 1.5-1.8 1.5 -0.3 0.3-0.3 0.8 0 1.1C8.6 4.2 9.1 4.2 9.4 3.9z" />
@@ -106,18 +151,19 @@
                   </div>
               </div>
           </div>
+          <div style="clear:both"></div>
       </div>
     </header>
 
     <div class="container-fluid noPadding">
 
-      <div class="row-fluid noPadding noMargin childHeight imgCatContBackg garage">
+      <div class="row-fluid noPadding noMargin imgCatContBackg garage">
           <div class="col-xs-12 col-sm-offset-1 col-sm-10 col-md-offset-2 col-md-8 noMoreGrow noPadding">
-            <div class="row-fluid childHeight noPadding noMargin modelsSpace">
+            <div class="row-fluid noPadding noMargin modelsSpace">
                 <div class="col-xs-12 noPadding noMargin garageGridCont">
-                    <div class="row-fluid noPadding noMargin childHeight garageGrid">
+                    <div class="row-fluid noPadding noMargin garageGrid">
                         <!-- <p class="startingText gallery usrGarageLoadingTxt">Cargando modelos de la marca solicitada...</p> -->
-                        <div class="sk-circle">
+                        <!-- <div class="sk-circle">
                           <div class="sk-circle1 sk-child"></div>
                           <div class="sk-circle2 sk-child"></div>
                           <div class="sk-circle3 sk-child"></div>
@@ -133,25 +179,74 @@
                         </div>
                         <p class="startingText gallery usrGarageInitialTxt hiddenItm">Aún no tienes autos en tu garage, añade uno nuevo...</p>
                         <div class="col-xs-12 modelItem col-sm-6 col-md-4 addGarageBtnCon">
-                            <!-- just development-->
                             <a href="/vrumm/build/web/catalogo/" data-dev="/vrumm/build/web/catalogo/" data-prod="/web/catalogo/" class="addGarageBtn linkChangeOnEnv">
                                 <span class="fa fa-plus-square addGarageIcon"></span>
                                 <p class="addGarageTxt">Añade autos</p>
                             </a>
-                            <!-- just production-->
-                            <!-- <a href="/web/catalogo/" class="addGarageBtn">
-                                <span class="fa fa-plus-square addGarageIcon"></span>
-                                <p class="addGarageTxt">Añade autos</p>
-                            </a> -->
-                        </div>
+                        </div> -->
 
+
+                        <div class="profileCommentsArea noPadding col-xs-12">
+                            <form action="" class="newCommentForm">
+                                <input class="commentInput" type="text">
+                                <button class="addCommentBtn">comentar</button>
+                            </form>
+                            <ul class="commentsList">
+                                <li class="comment">
+                                    <p class="commentBody">
+                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos cumque repellat suscipit minima molestiae earum in, atque,
+                                    </p>
+                                    <a class="authorDetails">
+                                        <img src="../img/profileDafault.png" class="athImg">
+                                        <span class="athName">Author name</span>
+                                    </a>
+                                </li>
+                                <li class="comment">
+                                    <p class="commentBody">
+                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugit voluptatem, dolorum ipsum, repudiandae hic nostrum eos libero eaque possimus
+                                    </p>
+                                    <a class="authorDetails">
+                                        <img src="../img/profileDafault.png" class="athImg">
+                                        <span class="athName">Author name</span>
+                                    </a>
+                                </li>
+                                <li class="comment">
+                                    <p class="commentBody">
+                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iste optio architecto, hic eaque, fugiat qui explicabo quia voluptatum aspernatur molestias
+                                    </p>
+                                    <a class="authorDetails">
+                                        <img src="../img/profileDafault.png" class="athImg">
+                                        <span class="athName">Author name</span>
+                                    </a>
+                                </li>
+                                <li class="comment">
+                                    <p class="commentBody">
+                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsam esse, placeat aspernatur quae, consequatur soluta ex doloremque reiciendis
+                                    </p>
+                                    <a class="authorDetails">
+                                        <img src="../img/profileDafault.png" class="athImg">
+                                        <span class="athName">Author name</span>
+                                    </a>
+                                </li>
+                                <li class="comment">
+                                    <p class="commentBody">
+                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Optio velit placeat, veniam sequi cumque rem unde nisi, esse adipisci
+                                    </p>
+                                    <a class="authorDetails">
+                                        <img src="../img/profileDafault.png" class="athImg">
+                                        <span class="athName">Author name</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>        
             </div>
           </div>
+          <div style="clear:both"></div>
       </div>
 
-      <div class="row-fluid noPadding childHeight mainFooter">
+      <div class="mainFooter">
           
       </div>
 
